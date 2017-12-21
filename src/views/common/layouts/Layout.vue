@@ -1,0 +1,53 @@
+<template>
+<div id="layout">
+  <ComHeader/>
+  <!-- ComHeader -->
+  <ComSidebar/>
+  <!-- ComSidebar -->
+  <div id="content">
+    <!-- <Breadcrumb class="layout-breadcrumb">
+      <BreadcrumbItem :to="item.path" v-for="(item, key) in $route.matched" :key="key">
+        {{ item.name }}
+      </BreadcrumbItem>
+    </Breadcrumb> -->
+    <!-- .layout-breadcrumb -->
+    <div class="layout-content">
+      <router-view/>
+    </div>
+    <!-- .layout-content -->
+  </div>
+  <!-- #content -->
+  <!-- <ComFooter/> -->
+  <!-- ComFooter -->
+</div>
+</template>
+<script>
+// import ComFooter from '../partials/Footer'
+import ComHeader from '../partials/Header'
+import ComSidebar from '../partials/Sidebar'
+
+export default {
+  name: 'layout',
+  components: {
+    // ComFooter,
+    ComHeader,
+    ComSidebar
+  }
+}
+</script>
+<style lang="scss" scoped>
+#content {
+    overflow: auto;
+    height: calc(100vh - 60px);
+    margin-left: 240px;
+    background-color: #f8f8f8;
+    .layout-breadcrumb,
+    .layout-content {
+        margin: 16px;
+    }
+    .layout-content {
+        background-color: #fff;
+        padding: 16px;
+    }
+}
+</style>
