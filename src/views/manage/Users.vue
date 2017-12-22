@@ -19,7 +19,7 @@ import {
   delUser,
   editUser
 } from '@/services/manage/users'
-import formItems from './users'
+import formItems from './usersForm'
 
 export default {
   data() {
