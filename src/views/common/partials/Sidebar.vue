@@ -49,9 +49,12 @@ export default {
     overflow: auto;
     width: 240px;
     height: calc(100vh - 60px);
-    background-color: #fff;
-    .ivu-menu-vertical.ivu-menu-light:after {
-        display: none;
+    background-color: #efeff1;
+    .ivu-menu-vertical {
+        background-color: #efeff1;
+        &::after {
+            display: none;
+        }
     }
 }
 </style>

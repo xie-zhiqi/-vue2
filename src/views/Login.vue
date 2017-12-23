@@ -1,8 +1,8 @@
 <template>
 <div id="login">
   <div class="logo-info">
-    <img class="logo" src="../assets/logo.png" width="64">
-    <span class="name">XX管理系统 <br> http://www.xx.com/ </span>
+    <img class="logo" src="../assets/logo.png">
+    <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
   </div>
   <!-- .logo-info -->
   <Form ref="loginForm" :model="loginModel" :rules="loginRules" @keyup.enter.native="handleLogin('loginForm')">
@@ -100,10 +100,21 @@ export default {
         height: 64px;
         margin-bottom: 22px;
         text-align: center;
+        .logo {
+            width: 64px;
+            height: 64px;
+            margin-right: 10px;
+        }
         .name {
             position: relative;
-            bottom: 16px;
+            bottom: 14px;
             display: inline-block;
+            text-align: left;
+            font-size: 18px;
+            line-height: 20px;
+        }
+        span {
+            font-size: 12px;
         }
     }
     .submit {

@@ -9,7 +9,7 @@
 - Axios @0.x
 - iView @2.x
 - Mockjs @1.x
-- Vue @2.x
+- Vue @2.5.x
 - Vue-Router @3.x
 - Vuex @3.x
 - ES6

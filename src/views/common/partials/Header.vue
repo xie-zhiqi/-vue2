@@ -2,7 +2,7 @@
 <div id="header">
   <div class="logo-info">
     <img class="logo" src="../../../assets/logo.png">
-    <p class="name"> XX管理系统 <br> <span> http://www.xx.com/ </span> </p>
+    <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
   </div>
   <!-- .logo-info -->
   <div class="login-info"> {{ welcome }},
@@ -92,13 +92,17 @@ export default {
             float: left;
             width: 40px;
             height: 40px;
-            margin: 10px 20px;
+            margin: 10px 16px 10px 24px;
         }
         .name {
             float: left;
             width: 160px;
-            margin: 12px 0 8px;
+            margin: 12px 0 6px;
+            font-size: 18px;
             line-height: 20px;
+        }
+        span {
+            font-size: 12px;
         }
     }
     .login-info {
