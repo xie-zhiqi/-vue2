@@ -39,13 +39,14 @@ axios.interceptors.response.use(response => {
   if (code === 200) {
     return response.data
   }
-  if (code > 10090 && code < 10095) {
+  if (code > 5090 && code < 5095) {
     router.push('/login') // 路由跳转登录页
     store.commit('MENU_RESET') // 重置菜单
   } else {
     Message.error(msg)
   }
 }, error => {
+  console.log(`Error Status: ${error.response.status}`)
   return Promise.reject(error)
 })
 
