@@ -88,13 +88,15 @@ export default {
           this.logining = true
           // 请求参数
           let para = Object.assign({}, this.modifyPwdModel)
-          modifyPwd(para).then(res => {
-            if (res) {
+          setTimeout(() => {
+            modifyPwd(para).then(res => {
               this.$Message.success(res.msg)
               this.$emit('close', false)
-            }
-            this.logining = false
-          })
+              this.logining = false
+            }).catch(() => {
+              this.logining = false
+            })
+          }, 500)
         }
       })
     }
