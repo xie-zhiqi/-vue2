@@ -70,14 +70,14 @@ export default {
           let para = Object.assign({}, this.loginModel)
           setTimeout(() => {
             login(para).then(res => {
-              // 返回数据
-              if (res) {
-                localStorage.setItem('user', JSON.stringify(res.data))
-              }
-              this.logining = false
+              // 响应数据
+              localStorage.setItem('user', JSON.stringify(res.data))
               // 配置默认TOKEN
               // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token
               this.$router.push('/') // 路由跳转首页
+              this.logining = false
+            }).catch(() => {
+              this.logining = false
             })
           }, 500)
         }
