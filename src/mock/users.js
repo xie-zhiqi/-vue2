@@ -40,7 +40,7 @@ export default(Mock, qs) => {
     mockUsers = mockUsers.filter((u, index) => index < 10 * page && index >= 10 * (page - 1))
     return {
       code: 200,
-      msg: 'get users success.',
+      msg: 'get users success',
       data: {
         total: total,
         users: mockUsers
@@ -52,7 +52,7 @@ export default(Mock, qs) => {
   Mock.mock(/\/user-delete/, config => {
     let {id} = qs.parse(config.body)
     Users = Users.filter(u => u.id !== parseInt(id))
-    return {code: 200, msg: 'delete success.'}
+    return {code: 200, msg: 'delete success'}
   })
 
   // 编辑用户
@@ -81,7 +81,7 @@ export default(Mock, qs) => {
         return true
       }
     })
-    return {code: 200, msg: 'update success.'}
+    return {code: 200, msg: 'update success'}
   })
 
   // 新增用户
@@ -107,6 +107,6 @@ export default(Mock, qs) => {
       birth: birth,
       desc: desc
     })
-    return {code: 200, msg: 'create success.'}
+    return {code: 200, msg: 'create success'}
   })
 }

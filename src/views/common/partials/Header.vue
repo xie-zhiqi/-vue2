@@ -17,7 +17,7 @@
   <Modal v-model="modalProps.visible" :title="modalProps.title" footer-hide>
     <ComModifyPwd :key="modalProps.visible" @close="handleClose" />
   </Modal>
-  <!-- ComModifyPwd -->
+  <!-- Modal -->
 </div>
 </template>
 <script>
@@ -37,7 +37,7 @@ export default {
         visible: false,
         title: 'Modify Pwd'
       },
-      // 下拉菜单元素对象
+      // 下拉菜单元素数组
       dropdownItems: [{
         label: 'Modify Pwd',
         name: 'modifyPwd'
@@ -53,7 +53,7 @@ export default {
     this.userName = user.real_name || ''
   },
   methods: {
-    // 点击下拉菜单项
+    // 下拉菜单
     handleDropdown(name) {
       // 修改密码
       if (name === 'modifyPwd') {

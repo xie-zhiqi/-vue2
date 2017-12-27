@@ -31,7 +31,7 @@ export default {
   mounted() {
     // const menu = JSON.parse(localStorage.getItem('menu'))
     // if (!menu) {
-    // 获取菜单信息
+    // 获取菜单
     this.$store.dispatch('handleMenu')
     // }
   },

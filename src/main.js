@@ -5,8 +5,6 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-// mock 数据引入
-import Mock from './mock'
 // vue-axios 插件引入
 import VueAxios from 'vue-axios'
 import axios from './config/axios'
@@ -15,11 +13,18 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 // 自定义组件引入
 import vCom from './components'
+// 工具函数引入
+import Utils from './utils'
 
+// mock 数据引入
+import Mock from './mock'
 Mock()
+
 Vue.use(VueAxios, axios)
 Vue.use(iView)
 Vue.use(vCom)
+
+Object.defineProperty(Vue.prototype, '$Utils', {value: Utils})
 
 Vue.config.productionTip = false
 

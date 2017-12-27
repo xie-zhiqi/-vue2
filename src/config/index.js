@@ -5,6 +5,7 @@ const domain = process.env.NODE_ENV === 'production'
   : process.env.NODE_ENV === 'release'
     ? 'api.r.xx.com'
     : 'api.d.xx.com'
+
 export default {
   // headers: {
   //   Accept: `application/vnd.xx.${version}+json`

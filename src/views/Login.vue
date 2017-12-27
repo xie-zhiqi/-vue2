@@ -32,12 +32,7 @@ export default {
     return {
       // 加载状态
       logining: false,
-      // 表单数据对象
-      loginModel: {
-        user: 'admin',
-        pwd: 'wasd@007'
-      },
-      // 表单元素对象
+      // 表单元素数组
       loginItems: [{
         prop: 'user',
         placeholder: 'Username'
@@ -46,16 +41,21 @@ export default {
         type: 'password',
         placeholder: 'Password'
       }],
+      // 表单数据对象
+      loginModel: {
+        user: 'admin',
+        pwd: 'wasd@007'
+      },
       // 表单验证规则
       loginRules: {
         user: [{
           required: true,
-          message: 'Please fill in the user name.',
+          message: 'Please fill in the user name',
           trigger: 'blur'
         }],
         pwd: [{
           required: true,
-          message: 'Please fill in the password.',
+          message: 'Please fill in the password',
           trigger: 'blur'
         }]
       }
@@ -71,9 +71,11 @@ export default {
           setTimeout(() => {
             login(para).then(res => {
               // 响应数据
-              localStorage.setItem('user', JSON.stringify(res.data))
-              // 配置默认TOKEN
-              // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token
+              if (res) {
+                localStorage.setItem('user', JSON.stringify(res.data))
+              }
+              // 配置用户TOKEN
+              // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token
               this.$router.push('/') // 路由跳转首页
               this.logining = false
             }).catch(() => {

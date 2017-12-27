@@ -41,13 +41,7 @@ export default {
     return {
       // 加载状态
       logining: false,
-      // 表单数据对象
-      modifyPwdModel: {
-        oldPwd: '',
-        newPwd: '',
-        pwdCheck: ''
-      },
-      // 表单元素对象
+      // 表单元素数组
       modifyPwdItems: [{
         label: 'Old password',
         prop: 'oldPwd',
@@ -61,6 +55,12 @@ export default {
         prop: 'pwdCheck',
         placeholder: 'Password check'
       }],
+      // 表单数据对象
+      modifyPwdModel: {
+        oldPwd: '',
+        newPwd: '',
+        pwdCheck: ''
+      },
       // 表单验证规则
       modifyPwdRules: {
         oldPwd: [{

@@ -112,7 +112,6 @@
 
 ```javascript
 import users from './users'
-// Mock 数据模拟
 export default() => {
   // 用户管理
   users(Mock, qs)
@@ -128,7 +127,7 @@ export default() => {
 克隆项目文件:
 
 ```bash
-git clone https://github.com/yun8797/vue-admin-block.git
+git clone https://gitee.com/cssui/vue-admin-block.git
 ```
 
 进入项目安装依赖:

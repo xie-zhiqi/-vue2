@@ -5,20 +5,20 @@ export default(Mock, qs) => {
     if (para.user === 'admin' && para.pwd === 'wasd@007') {
       return {
         code: 200,
-        msg: 'login success.',
+        msg: 'login success',
         data: {
           user_id: 1,
           real_name: 'Admin'
         }
       }
     }
-    return {code: 500, msg: 'Your account username or password is incorrect.'}
+    return {code: 500, msg: 'Your account username or password is incorrect'}
   })
 
   // 菜单获取
   Mock.mock(/\/menu/, {
     code: 200,
-    msg: 'get menu success.',
+    msg: 'get menu success',
     data: [
       {
         name: 'Dashboard',
@@ -49,8 +49,8 @@ export default(Mock, qs) => {
   Mock.mock(/\/modify-pwd/, config => {
     const para = qs.parse(config.body)
     if (para.oldPwd === 'wasd@007') {
-      return {code: 200, msg: 'password modify success.'}
+      return {code: 200, msg: 'password modify success'}
     }
-    return {code: 500, msg: 'Your old password is incorrect.'}
+    return {code: 500, msg: 'Your old password is incorrect'}
   })
 }

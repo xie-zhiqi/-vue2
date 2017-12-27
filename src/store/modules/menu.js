@@ -17,7 +17,7 @@ const mutations = {
   // 激活菜单
   MENU_SELECT: (state, data) => {
     const open = `/${data.split('/')[1]}`
-    router.push(data) // 路由指向
+    router.push(data) // 路由跳转
     state.menuActive = data // 激活菜单
     state.menuOpened = open // 展开菜单
     localStorage.setItem('menuActive', data)

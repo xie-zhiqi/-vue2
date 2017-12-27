@@ -297,7 +297,7 @@ export default {
       this.btnLoading = true
       let para = Object.assign({}, this.userModel)
       para.birth = para.birth ? this.$Utils.formatDate.format(new Date(para.birth), 'yyyy-MM-dd') : ''
-      // 模拟异步请求(编辑 and 新增)
+      // 模拟异步请求(编辑 or 新增)
       setTimeout(() => {
         editUser(para).then(res => {
           this.$Message.success(res.msg)
