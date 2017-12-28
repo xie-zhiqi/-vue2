@@ -2,8 +2,8 @@
 // const version = 'v1'
 const domain = process.env.NODE_ENV === 'production'
   ? 'api.xx.com'
-  : process.env.NODE_ENV === 'release'
-    ? 'api.r.xx.com'
+  : process.env.NODE_ENV === 'testing'
+    ? 'api.t.xx.com'
     : 'api.d.xx.com'
 
 export default {
