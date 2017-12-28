@@ -151,11 +151,8 @@ npm run dev
 构建：
 
 ```bash
-# 构建测试
+# 构建最小测试
 npm run test
-
-# 构建预发布
-npm run release
 
 # 构建最小生产
 npm run build
