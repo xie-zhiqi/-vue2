@@ -112,10 +112,9 @@
 
 ```javascript
 import users from './users'
-export default() => {
-  // 用户管理
-  users(Mock, qs)
-}
+
+// 用户管理
+users(Mock, qs)
 ```
 
 具体阅读 mock/index.js 源码
