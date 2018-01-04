@@ -1,6 +1,7 @@
 <template>
 <div id="com-form" @keyup.enter="handleClick(cRef, 'submit')">
   <Form :ref="cRef" :model="cModel" :rules="cRules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition" :key="cKey">
+    <slot> </slot>
     <FormItem :prop="item.prop" :label="item.label" :label-width="item.labelWidth" v-for="(item, index) in cItems" :key="index">
       <!-- 输入框 -->
       <Input v-if="item.element === 'input'" :type="item.type" v-model="cModel[item.prop]" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :icon="item.icon" :rows="item.rows" :autosize="item.autosize" :number="item.number"
@@ -26,7 +27,7 @@
         <Button v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.loading ? btnLoading : false" :icon="item.icon" @click="handleClick(cRef, item.name)" :style="index === 0 ? '' : 'margin-left:8px'">{{ item.text }}</Button>
       </template>
     </FormItem>
-    <slot> </slot>
+    <slot name="foot"> </slot>
   </Form>
   <Spin size="large" fix v-if="loading"></Spin>
 </div>
