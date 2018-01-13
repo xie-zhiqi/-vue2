@@ -10,7 +10,7 @@
       <Input :type="item.type" v-model="loginModel[item.prop]" :placeholder="item.placeholder"></Input>
     </FormItem>
     <FormItem>
-      <Button :loading="logining" @click="handleLogin('loginForm')" type="primary" class="submit">Sign in</Button>
+      <Button :loading="loading" @click="handleLogin('loginForm')" type="primary" class="submit">Sign in</Button>
     </FormItem>
   </Form>
   <!-- form -->
@@ -23,15 +23,21 @@
 </template>
 <script>
 import {
+  mapGetters
+} from 'vuex'
+import {
   login
 } from '@/services/app'
 
 export default {
   name: 'login',
+  computed: {
+    ...mapGetters({
+      loading: 'getLoading'
+    })
+  },
   data() {
     return {
-      // 加载状态
-      logining: false,
       // 表单元素数组
       loginItems: [{
         prop: 'user',
@@ -65,7 +71,7 @@ export default {
     handleLogin(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.logining = true
+          this.$store.commit('LOADING', true)
           // 请求参数
           let para = Object.assign({}, this.loginModel)
           setTimeout(() => {
@@ -76,10 +82,10 @@ export default {
               }
               // 配置用户TOKEN
               // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token
-              this.$router.push('/') // 路由跳转首页
-              this.logining = false
+              // 获取菜单信息
+              this.$store.dispatch('handleMenu')
             }).catch(() => {
-              this.logining = false
+              this.$store.commit('LOADING', false)
             })
           }, 500)
         }

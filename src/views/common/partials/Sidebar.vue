@@ -28,13 +28,13 @@ export default {
       menuOpened: 'getMenuOpened'
     })
   },
-  mounted() {
-    // const menu = JSON.parse(localStorage.getItem('menu'))
-    // if (!menu) {
-    // 获取菜单
-    this.$store.dispatch('handleMenu')
-    // }
-  },
+  // mounted() {
+  //   const menu = JSON.parse(localStorage.getItem('menu'))
+  //   if (!menu) {
+  //     // 获取菜单
+  //     this.$store.dispatch('handleMenu')
+  //   }
+  // },
   methods: {
     // ...mapActions(['handleMenuSelect'])
     handleMenuSelect(name) {

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import qs from 'qs'
-import {Message} from 'iview'
 import config from '@/config'
 import router from '@/router'
 import store from '@/store'
@@ -26,6 +25,7 @@ axios.defaults.timeout = 12000
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
+  store.commit('RES_ERROR', '') // 清空响应错误数据
   // 参数序列化
   config.data = qs.stringify(config.data)
   return config
@@ -36,7 +36,7 @@ axios.interceptors.request.use(config => {
 // 添加响应拦截器
 axios.interceptors.response.use(response => {
   console.log(response.data)
-  const {code, msg} = response.data
+  const {code} = response.data
   if (code === 200) {
     return response.data
   }
@@ -45,10 +45,10 @@ axios.interceptors.response.use(response => {
     router.push('/login') // 路由跳转登录页
     store.commit('MENU_RESET') // 重置菜单
   } else {
-    Message.error(msg)
+    store.commit('RES_ERROR', response) // 响应错误数据
   }
 }, error => {
-  console.log(`Error Status: ${error.response.status}`)
+  store.commit('RES_ERROR', error.response) // 响应错误数据
   return Promise.reject(error)
 })
 

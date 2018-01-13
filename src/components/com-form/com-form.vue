@@ -54,6 +54,10 @@ export default {
     } // 按钮加载状态
   },
   methods: {
+    validateField(name) {
+      // 对第二个密码框单独验证
+      this.$refs[this.cRef].validateField(name)
+    },
     handleClick(name, type) {
       // 表单提交
       if (type === 'submit') {

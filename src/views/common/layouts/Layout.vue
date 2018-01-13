@@ -1,5 +1,7 @@
 <template>
 <div id="layout">
+  <ComError/>
+  <!-- ComError -->
   <ComHeader/>
   <!-- ComHeader -->
   <ComSidebar/>
@@ -23,6 +25,7 @@
 </template>
 <script>
 // import ComFooter from '../partials/Footer'
+import ComError from '../partials/Error'
 import ComHeader from '../partials/Header'
 import ComSidebar from '../partials/Sidebar'
 
@@ -30,6 +33,7 @@ export default {
   name: 'layout',
   components: {
     // ComFooter,
+    ComError,
     ComHeader,
     ComSidebar
   }

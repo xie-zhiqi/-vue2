@@ -9,7 +9,9 @@
     <Dropdown trigger="click" @on-click="handleDropdown">
       <strong class="user"> {{ userName }} </strong>
       <DropdownMenu slot="list">
-        <DropdownItem :name="item.name" v-for="(item, key) in dropdownItems" :key="key"> {{ item.label }} </DropdownItem>
+        <DropdownItem :name="item.name" v-for="(item, key) in dropdownItems" :key="key">
+          <Icon type="power" v-if="item.name === 'signout'"></Icon> {{ item.label }}
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   </div>
