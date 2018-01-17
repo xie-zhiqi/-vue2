@@ -37,7 +37,7 @@ axios.interceptors.request.use(config => {
 // 添加响应拦截器
 axios.interceptors.response.use(response => {
   console.log(response.data)
-  const {code} = response.data
+  const {code, msg} = response.data
   if (code === 200) {
     return response.data
   }
@@ -45,9 +45,10 @@ axios.interceptors.response.use(response => {
   if (code === 5000) {
     router.push('/login') // 路由跳转登录页
     store.commit('MENU_RESET') // 重置菜单
-  } else {
-    // store.commit('RES_ERROR', response) // 响应错误数据
-    Message.error(response.data.msg)
+  }
+  Message.error(msg)
+  if (process.env.NODE_ENV !== 'production') {
+    store.commit('RES_ERROR', response) // 响应错误数据
   }
 }, error => {
   const {status, timeout} = error.request
