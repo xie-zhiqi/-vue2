@@ -1,6 +1,6 @@
 # Vuejs Admin Block
 
-**Demo:** [http://vab.cssue.com/](http://vab.cssue.com/?_blank)
+**Demo:** <http://vab.cssue.com/>
 
 ## 特性
 
