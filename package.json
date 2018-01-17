@@ -1,8 +1,9 @@
 {
-  "name": "vue-admin",
+  "name": "vue-admin-block",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "A Vue.js admin project. Typical templates for enterprise applications.",
   "author": "liudanyun <yun1297@icloud.com>",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
