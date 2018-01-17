@@ -1,30 +1,35 @@
 <template>
-<div id="login">
-  <div class="logo-info">
-    <img class="logo" src="../assets/logo.png">
-    <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
+<div id="main">
+  <ComError/>
+  <!-- ComError -->
+  <div id="login">
+    <div class="logo-info">
+      <img class="logo" src="../assets/logo.png">
+      <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
+    </div>
+    <!-- .logo-info -->
+    <Form ref="loginForm" :model="loginModel" :rules="loginRules" @keyup.enter.native="handleLogin('loginForm')">
+      <FormItem :prop="item.prop" v-for="(item, key) in loginItems" :key="key">
+        <Input :type="item.type" v-model="loginModel[item.prop]" :placeholder="item.placeholder"></Input>
+      </FormItem>
+      <FormItem>
+        <Button :loading="loading" @click="handleLogin('loginForm')" type="primary" class="submit">Sign in</Button>
+      </FormItem>
+    </Form>
+    <!-- Form -->
+    <p class="prompt">
+      <span class="span">Username：admin</span>
+      <span class="span">Password：wasd@007</span>
+    </p>
+    <!-- .prompt -->
   </div>
-  <!-- .logo-info -->
-  <Form ref="loginForm" :model="loginModel" :rules="loginRules" @keyup.enter.native="handleLogin('loginForm')">
-    <FormItem :prop="item.prop" v-for="(item, key) in loginItems" :key="key">
-      <Input :type="item.type" v-model="loginModel[item.prop]" :placeholder="item.placeholder"></Input>
-    </FormItem>
-    <FormItem>
-      <Button :loading="loading" @click="handleLogin('loginForm')" type="primary" class="submit">Sign in</Button>
-    </FormItem>
-  </Form>
-  <!-- form -->
-  <p class="prompt">
-    <span class="span">Username：admin</span>
-    <span class="span">Password：wasd@007</span>
-  </p>
-  <!-- .prompt -->
 </div>
 </template>
 <script>
 import {
   mapGetters
 } from 'vuex'
+import ComError from './common/partials/Error'
 import {
   login
 } from '@/services/app'
@@ -35,6 +40,9 @@ export default {
     ...mapGetters({
       loading: 'getLoading'
     })
+  },
+  components: {
+    ComError
   },
   data() {
     return {
@@ -87,7 +95,7 @@ export default {
             }).catch(() => {
               this.$store.commit('LOADING', false)
             })
-          }, 500)
+          }, 800)
         }
       })
     }
@@ -101,8 +109,8 @@ export default {
     left: 50%;
     width: 360px;
     height: 360px;
-    margin: -180px 0 0 -180px;
     padding: 36px;
+    transform: translate(-50%, -50%);
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
     .logo-info {
         height: 64px;
