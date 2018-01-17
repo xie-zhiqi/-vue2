@@ -1,8 +1,10 @@
 # Vuejs Admin Block
 
+Demo: <http://vab.cssue.com/>
+
 ## 特性
 
-基于 Vue, iView, Axios, Mock 企业级后台管理系统最佳实践。
+基于 Vue, Vue-Router, Vuex, iView, Axios, Mock 企业级后台管理系统典型模板
 
 ### 技术栈
 
