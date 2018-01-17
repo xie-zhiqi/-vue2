@@ -27,6 +27,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 #error {
+    z-index: 9;
     margin: 6px 0;
     border-style: solid none;
     .title {

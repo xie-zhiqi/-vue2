@@ -46,7 +46,8 @@ axios.interceptors.response.use(response => {
     router.push('/login') // 路由跳转登录页
     store.commit('MENU_RESET') // 重置菜单
   } else {
-    store.commit('RES_ERROR', response) // 响应错误数据
+    // store.commit('RES_ERROR', response) // 响应错误数据
+    Message.error(response.data.msg)
   }
 }, error => {
   const {status, timeout} = error.request

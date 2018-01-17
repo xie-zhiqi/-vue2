@@ -87,11 +87,12 @@ export default {
               // 响应数据
               if (res) {
                 localStorage.setItem('user', JSON.stringify(res.data))
+                // 配置用户TOKEN
+                // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token
+                // 获取菜单信息
+                this.$store.dispatch('handleMenu')
               }
-              // 配置用户TOKEN
-              // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token
-              // 获取菜单信息
-              this.$store.dispatch('handleMenu')
+              this.$store.commit('LOADING', false)
             }).catch(() => {
               this.$store.commit('LOADING', false)
             })
@@ -105,6 +106,7 @@ export default {
 <style lang="scss" scoped>
 #login {
     position: fixed;
+    z-index: 8;
     top: 50%;
     left: 50%;
     width: 360px;
