@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import {Message} from 'iview'
 import config from '@/config'
 import router from '@/router'
 import store from '@/store'
@@ -7,7 +8,7 @@ import store from '@/store'
 // 配置默认接口地址
 axios.defaults.baseURL = config.url
 // 配置默认请求超时
-axios.defaults.timeout = 12000
+axios.defaults.timeout = config.timeout
 // 配置默认跨域访问凭证(Cookie)
 // axios.defaults.withCredentials = true
 // 配置默认请求头
@@ -48,7 +49,12 @@ axios.interceptors.response.use(response => {
     store.commit('RES_ERROR', response) // 响应错误数据
   }
 }, error => {
-  store.commit('RES_ERROR', error.response) // 响应错误数据
+  const {status, timeout} = error.request
+  if (status === 0 && timeout === config.timeout) {
+    Message.error({content: '请求超时 或 服务器断开连接 请检查网络状态', duration: 8})
+  } else {
+    store.commit('RES_ERROR', error.response) // 响应错误数据
+  }
   return Promise.reject(error)
 })
 

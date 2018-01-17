@@ -10,5 +10,6 @@ export default {
   // headers: {
   //   Accept: `application/vnd.xx.${version}+json`
   // },
-  url: `http://${domain}` // 接口地址
+  url: `http://${domain}`, // 接口地址
+  timeout: 12000 // 请求超时
 }
