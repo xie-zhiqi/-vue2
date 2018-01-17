@@ -1,15 +1,15 @@
 <template>
 <div id="users">
-  <ComForm c-ref="searchUser" :c-items="searchItems" :c-model="searchModel" @on-submit="getUsers" @on-reset="handleReset" inline></ComForm>
+  <ComForm c-ref="search" :c-items="searchItems" :c-model="searchModel" @on-submit="getUsers" @on-reset="handleReset" inline></ComForm>
   <div class="toolbar">
     <Button type="ghost" @click="handleCreate">Create</Button>
   </div>
   <Table border :loading="listLoading" :columns="columns" :data="data"></Table>
   <div class="footbar">
-    <Page show-elevator show-total :total="total" @on-change="handleChange"></Page>
+    <Page show-elevator show-total :current="page" :total="total" @on-change="handleChange"></Page>
   </div>
   <Modal v-model="modalProps.visible" :title="modalProps.title" footer-hide>
-    <ComForm c-ref="editUser" :c-items="userItems" :c-model="userModel" :c-rules="userRules" :c-key="modalProps.visible" :loading="formLoading" :btn-loading="btnLoading" @on-submit="handleSubmit" :label-width="80"></ComForm>
+    <ComForm c-ref="edit" :c-items="userItems" :c-model="userModel" :c-rules="userRules" :c-key="modalProps.visible" :loading="formLoading" :btn-loading="btnLoading" @on-submit="handleSubmit" :label-width="80"></ComForm>
   </Modal>
 </div>
 </template>
@@ -19,11 +19,11 @@ import {
   delUser,
   editUser
 } from '@/services/manage/users'
-import formItems from './usersForm'
+import usersData from './UsersData'
 
 export default {
   data() {
-    // 自定义验证
+    // 自定义验证(年龄)
     const validAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('Age cannot be empty'))
@@ -32,17 +32,15 @@ export default {
       setTimeout(() => {
         if (!Number.isInteger(value)) {
           callback(new Error('Please enter a numeric value'))
+        } else if (value < 18) {
+          callback(new Error('Must be over 18 years of age'))
         } else {
-          if (value < 18) {
-            callback(new Error('Must be over 18 years of age'))
-          } else {
-            callback()
-          }
+          callback()
         }
       }, 500)
     }
     return {
-      ...formItems,
+      ...usersData,
       // 列表描述数据对象数组(用户)
       columns: [{
         title: 'Name',
@@ -96,16 +94,14 @@ export default {
           }, 'Delete')
         ])
       }],
-      // 表单数据对象(搜索)
-      searchModel: {
-        name: ''
-      },
       // 列表数据
       data: [],
       // 数据总数
       total: 0,
       // 分页页码
       page: 1,
+      // 补丁总数
+      patchTotal: 0,
       // 列表加载状态
       listLoading: false,
       // 表单加载状态
@@ -116,6 +112,10 @@ export default {
       modalProps: {
         visible: false,
         title: ''
+      },
+      // 表单数据对象(搜索)
+      searchModel: {
+        name: ''
       },
       // 新增数据对象(用户)
       createModel: {},
@@ -198,15 +198,17 @@ export default {
   },
   methods: {
     // 获取用户列表
-    getUsers() {
-      let para = {
-        page: this.page,
+    getUsers(name) {
+      this.listLoading = true
+      const page = name ? 1 : this.page
+      const para = {
+        page: page,
         name: this.searchModel.name
       }
-      this.listLoading = true
       // 模拟异步请求(获取列表)
       setTimeout(() => {
         getUserList(para).then(res => {
+          this.page = page
           this.total = res.data.total
           this.data = res.data.users
           this.listLoading = false
@@ -226,7 +228,7 @@ export default {
         okText: 'OK',
         cancelText: 'Cancel',
         onOk: () => {
-          let para = {
+          const para = {
             id: row.id
           }
           this.listLoading = true
@@ -242,29 +244,46 @@ export default {
     },
     // 编辑界面
     handleEdit(row) {
-      this.handleModal('Edit')
+      this.handleModal('edit')
       // 模拟异步请求(获取详情)
       setTimeout(() => {
         this.userModel = Object.assign({}, row)
         this.handlePatch() // 获取补丁数据
-        // this.formLoading = false // 表单加载状态
-      }, 500)
+      }, 800)
     },
     // 新增界面
     handleCreate() {
-      this.handleModal('Create')
+      this.handleModal('create')
       this.handlePatch() // 获取补丁数据
-      // this.formLoading = false // 表单加载状态
     },
     // 显示模态框
     handleModal(name) {
-      this.userModel = Object.assign({}, this.createModel)
-      this.modalProps.title = name
+      this.modalProps.title = name === 'edit' ? 'Edit' : 'Create'
       this.modalProps.visible = true
       this.formLoading = true // 表单加载状态
+      this.userModel = Object.assign({}, this.createModel)
     },
     // 获取补丁数据
     handlePatch() {
+      const city = [{
+        label: 'BeiJing',
+        value: 'beijing'
+      }, {
+        label: 'ShangHai',
+        value: 'shanghai'
+      }, {
+        label: 'ShenZhen',
+        value: 'shenzhen'
+      }, {
+        label: 'GuangZhou',
+        value: 'guangzhou'
+      }, {
+        label: 'HangZhou',
+        value: 'hangzhou'
+      }, {
+        label: 'NingBo',
+        value: 'ningbo'
+      }]
       const hobby = [{
         label: 'Eat',
         value: 'eat'
@@ -278,24 +297,43 @@ export default {
         label: 'Movie',
         value: 'movie'
       }]
+      const patch = ['city', 'hobby']
       this.userItems.filter(n => {
-        if (n.prop === 'hobby') {
-          if (n.option.length === 0) {
-            // 模拟异步请求(获取 hobby 多选框列表)
-            setTimeout(() => {
-              n.option = hobby
+        patch.map(item => {
+          if (n.prop === item) {
+            if (n.option.length === 0) {
+              if (item === 'city') {
+                // 模拟异步请求(获取补丁数据-城市)
+                setTimeout(() => {
+                  n.option = city
+                  this.patchFinish(patch.length) // 完成补丁数据
+                }, 1200)
+              }
+              if (item === 'hobby') {
+                // 模拟异步请求(获取补丁数据-爱好)
+                setTimeout(() => {
+                  n.option = hobby
+                  this.patchFinish(patch.length) // 完成补丁数据
+                }, 400)
+              }
+            } else {
               this.formLoading = false // 表单加载状态
-            }, 1000)
-            return
+            }
           }
-          this.formLoading = false // 表单加载状态
-        }
+        })
       })
     },
+    // 完成补丁数据
+    patchFinish(name) {
+      this.patchTotal += 1
+      if (this.patchTotal === name) {
+        this.formLoading = false // 表单加载状态
+      }
+    },
     // 表单提交
-    handleSubmit(name) {
+    handleSubmit() {
       this.btnLoading = true
-      let para = Object.assign({}, this.userModel)
+      const para = Object.assign({}, this.userModel)
       para.birth = para.birth ? this.$Utils.formatDate.format(new Date(para.birth), 'yyyy-MM-dd') : ''
       // 模拟异步请求(编辑 or 新增)
       setTimeout(() => {
@@ -309,7 +347,7 @@ export default {
     },
     // 表单重置
     handleReset(name) {
-      this.getUsers()
+      this.getUsers(name)
     }
   }
 }

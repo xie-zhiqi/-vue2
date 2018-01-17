@@ -44,27 +44,7 @@ export default {
       label: 'City',
       prop: 'city',
       placeholder: 'Select your city',
-      option: [
-        {
-          label: 'BeiJing',
-          value: 'beijing'
-        }, {
-          label: 'ShangHai',
-          value: 'shanghai'
-        }, {
-          label: 'ShenZhen',
-          value: 'shenzhen'
-        }, {
-          label: 'GuangZhou',
-          value: 'guangzhou'
-        }, {
-          label: 'HangZhou',
-          value: 'hangzhou'
-        }, {
-          label: 'NingBo',
-          value: 'ningbo'
-        }
-      ]
+      option: []
     }, {
       element: 'date',
       label: 'Birth',
