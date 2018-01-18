@@ -106,13 +106,12 @@ export default {
 <style lang="scss" scoped>
 #login {
     position: fixed;
-    z-index: 8;
     top: 50%;
     left: 50%;
     width: 360px;
     height: 360px;
+    margin: -180px 0 0 -180px;
     padding: 36px;
-    transform: translate(-50%, -50%);
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
     .logo-info {
         height: 64px;
