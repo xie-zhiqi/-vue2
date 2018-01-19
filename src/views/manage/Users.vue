@@ -1,6 +1,6 @@
 <template>
 <div id="users">
-  <ComForm c-ref="search" :c-items="searchItems" :c-model="searchModel" @on-submit="getUsers" @on-reset="handleReset" inline></ComForm>
+  <ComForm ref="search" :c-items="searchItems" :c-model="searchModel" @on-submit="getUsers('search')" @on-reset="handleReset('search')" inline></ComForm>
   <div class="toolbar">
     <Button type="ghost" @click="handleCreate">Create</Button>
   </div>
@@ -9,7 +9,7 @@
     <Page show-elevator show-total :current="page" :total="total" @on-change="handleChange"></Page>
   </div>
   <Modal v-model="modalProps.visible" :title="modalProps.title" footer-hide>
-    <ComForm c-ref="edit" :c-items="userItems" :c-model="userModel" :c-rules="userRules" :c-key="modalProps.visible" :loading="formLoading" :btn-loading="btnLoading" @on-submit="handleSubmit" :label-width="80"></ComForm>
+    <ComForm :key="modalProps.visible" ref="edit" :c-items="userItems" :c-model="userModel" :c-rules="userRules" :loading="formLoading" :btn-loading="btnLoading" :label-width="80" @on-submit="handleSubmit('edit')"></ComForm>
   </Modal>
 </div>
 </template>
@@ -208,10 +208,18 @@ export default {
       // 模拟异步请求(获取列表)
       setTimeout(() => {
         getUserList(para).then(res => {
-          this.page = page
-          this.total = res.data.total
-          this.data = res.data.users
-          this.listLoading = false
+          const {
+            total,
+            users
+          } = res.data
+          if (total > 0 && users.length === 0) {
+            this.getUsers(1)
+          } else {
+            this.page = page
+            this.total = res.data.total
+            this.data = res.data.users
+            this.listLoading = false
+          }
         })
       }, 500)
     },
@@ -331,7 +339,7 @@ export default {
       }
     },
     // 表单提交
-    handleSubmit() {
+    handleSubmit(name) {
       this.btnLoading = true
       const para = Object.assign({}, this.userModel)
       para.birth = para.birth ? this.$Utils.formatDate.format(new Date(para.birth), 'yyyy-MM-dd') : ''

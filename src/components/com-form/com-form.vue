@@ -1,6 +1,6 @@
 <template>
-<div id="com-form" @keyup.enter="handleClick(cRef, 'submit')">
-  <Form :ref="cRef" :model="cModel" :rules="cRules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition" :key="cKey">
+<div id="com-form" @keyup.enter="handleClick('submit')">
+  <Form ref="comForm" :model="cModel" :rules="cRules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition">
     <slot> </slot>
     <FormItem :prop="item.prop" :label="item.label" :label-width="item.labelWidth" v-for="(item, index) in cItems" :key="index">
       <!-- 输入框 -->
@@ -24,7 +24,7 @@
       </CheckboxGroup>
       <!-- 按钮 -->
       <template v-if="item.element === 'button'">
-        <Button v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.loading ? btnLoading : false" :icon="item.icon" @click="handleClick(cRef, item.name)" :style="index === 0 ? '' : 'margin-left:8px'">{{ item.text }}</Button>
+        <Button v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.loading ? btnLoading : false" :icon="item.icon" @click="handleClick(item.name)" :style="index === 0 ? '' : 'margin-left:8px'">{{ item.text }}</Button>
       </template>
     </FormItem>
     <slot name="foot"> </slot>
@@ -39,43 +39,43 @@ export default {
     inline: Boolean, // 行内表单模式
     labelWidth: Number, // 表单域标签宽度
     labelPosition: String, // 表单域标签位置
-    cRef: String, // 表单 ref 值
-    cKey: Boolean, // 表单 key 值
     cItems: Array, // 表单元素数组
     cModel: Object, // 表单数据对象
     cRules: Object, // 表单验证对象
+    // 表单加载状态
     loading: {
       type: Boolean,
       default: false
-    }, // 表单加载状态
+    },
+    // 按钮加载状态
     btnLoading: {
       type: Boolean,
       default: false
-    } // 按钮加载状态
+    }
   },
   methods: {
     validateField(name) {
-      // 对第二个密码框单独验证
-      this.$refs[this.cRef].validateField(name)
+      // 对部分表单字段进行校验的方法
+      this.$refs['comForm'].validateField(name)
     },
-    handleClick(name, type) {
-      // 表单提交
-      if (type === 'submit') {
-        this.$refs[name].validate(valid => {
+    resetFields() {
+      // 对整个表单进行重置
+      this.$refs['comForm'].resetFields()
+    },
+    handleClick(name) {
+      if (name === 'submit') {
+        // 对整个表单进行校验
+        this.$refs['comForm'].validate(valid => {
           if (valid) {
-            this.$emit('on-submit', name)
+            this.$emit('on-submit')
           }
         })
-        return
+      } else if (name === 'reset') {
+        this.resetFields()
+        this.$emit('on-reset')
+      } else {
+        this.$emit('on-click')
       }
-      // 表单重置
-      if (type === 'reset') {
-        this.$refs[name].resetFields()
-        this.$emit('on-reset', name)
-        return
-      }
-      // 表单按钮
-      this.$emit('on-click', name)
     }
   }
 }
