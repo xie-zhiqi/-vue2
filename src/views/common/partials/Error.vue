@@ -6,7 +6,7 @@
         {{ resError.statusCode }}
       </span>
     </h3>
-  <div slot="desc" class="desc">
+  <div slot="desc" :class="['desc', resError.status === 200 ? '' : 'error']">
     <pre>{{ resError.error }}</pre>
   </div>
 </Alert>
@@ -37,6 +37,8 @@ export default {
     top: 0;
     right: 0;
     left: 0;
+    min-height: 100%;
+    margin-bottom: 0;
     border-style: none;
     background-color: rgba(253, 236, 232, 0.8);
     .title {
@@ -44,8 +46,11 @@ export default {
     }
     .desc {
         padding: 0 24px;
-        color: #f33;
-        border: 1px dashed #bbb;
+        border: 1px dashed #093;
+        &.error {
+            color: #f33;
+            border-color: #f33;
+        }
     }
 }
 </style>
