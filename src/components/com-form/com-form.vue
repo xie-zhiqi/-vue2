@@ -1,25 +1,25 @@
 <template>
 <div id="com-form" @keyup.enter="handleClick('submit')">
-  <Form ref="comForm" :model="cModel" :rules="cRules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition">
+  <Form ref="comForm" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition">
     <slot> </slot>
-    <FormItem :prop="item.prop" :label="item.label" :label-width="item.labelWidth" v-for="(item, index) in cItems" :key="index">
+    <FormItem :prop="item.prop" :label="item.label" :label-width="item.labelWidth" v-for="(item, index) in items" :key="index">
       <!-- 输入框 -->
-      <Input v-if="item.element === 'input'" :type="item.type" v-model="cModel[item.prop]" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :icon="item.icon" :rows="item.rows" :autosize="item.autosize" :number="item.number"
+      <Input v-if="item.element === 'input' || !item.element" :type="item.type" v-model="model[item.prop]" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :icon="item.icon" :rows="item.rows" :autosize="item.autosize" :number="item.number"
         :autofocus="item.autofocus"></Input>
       <!-- 选择器 -->
-      <Select v-if="item.element === 'select'" v-model="cModel[item.prop]" :multiple="item.multiple" :disabled="item.disabled" :filterable="item.filterable" :placeholder="item.placeholder" :not-found-text="item.notFoundText" :transfer="item.transfer">
+      <Select v-if="item.element === 'select'" v-model="model[item.prop]" :multiple="item.multiple" :disabled="item.disabled" :filterable="item.filterable" :placeholder="item.placeholder" :not-found-text="item.notFoundText" :transfer="item.transfer">
         <Option v-for="(opt, index) in item.option" :key="index" :value="opt.value" :disabled="opt.disabled">{{ opt.label }}</Option>
       </Select>
       <!-- 日期选择器 -->
-      <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="cModel[item.prop]" :format="item.format" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :transfer="item.transfer"></DatePicker>
+      <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :transfer="item.transfer"></DatePicker>
       <!-- 时间选择器 -->
-      <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="cModel[item.prop]" :format="item.format" :steps="item.steps" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :transfer="item.transfer"></TimePicker>
+      <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="model[item.prop]" :format="item.format" :steps="item.steps" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :transfer="item.transfer"></TimePicker>
       <!-- 单选框 -->
-      <RadioGroup v-if="item.element === 'radio'" v-model="cModel[item.prop]" :type="item.type" :vertical="item.vertical">
+      <RadioGroup v-if="item.element === 'radio'" v-model="model[item.prop]" :type="item.type" :vertical="item.vertical">
         <Radio v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled">{{ opt.label }}</Radio>
       </RadioGroup>
       <!-- 多选框 -->
-      <CheckboxGroup v-if="item.element === 'checkbox'" v-model="cModel[item.prop]">
+      <CheckboxGroup v-if="item.element === 'checkbox'" v-model="model[item.prop]">
         <Checkbox v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled">{{ opt.label }}</Checkbox>
       </CheckboxGroup>
       <!-- 按钮 -->
@@ -39,9 +39,9 @@ export default {
     inline: Boolean, // 行内表单模式
     labelWidth: Number, // 表单域标签宽度
     labelPosition: String, // 表单域标签位置
-    cItems: Array, // 表单元素数组
-    cModel: Object, // 表单数据对象
-    cRules: Object, // 表单验证对象
+    items: Array, // 表单元素数组
+    model: Object, // 表单数据对象
+    rules: Object, // 表单验证对象
     // 表单加载状态
     loading: {
       type: Boolean,

@@ -1,6 +1,6 @@
 <template>
 <div id="users">
-  <ComForm ref="search" :c-items="searchItems" :c-model="searchModel" @on-submit="getUsers('search')" @on-reset="handleReset('search')" inline></ComForm>
+  <ComForm ref="search" :items="searchItems" :model="searchModel" @on-submit="getUsers('search')" @on-reset="handleReset('search')" inline></ComForm>
   <div class="toolbar">
     <Button type="ghost" @click="handleCreate">Create</Button>
   </div>
@@ -9,7 +9,7 @@
     <Page show-elevator show-total :current="page" :total="total" @on-change="handleChange"></Page>
   </div>
   <Modal v-model="modalProps.visible" :title="modalProps.title" footer-hide>
-    <ComForm :key="modalProps.visible" ref="edit" :c-items="userItems" :c-model="userModel" :c-rules="userRules" :loading="formLoading" :btn-loading="btnLoading" :label-width="80" @on-submit="handleSubmit('edit')"></ComForm>
+    <ComForm :key="modalProps.visible" ref="edit" :items="userItems" :model="userModel" :rules="userRules" :loading="formLoading" :btn-loading="btnLoading" :label-width="80" @on-submit="handleSubmit('edit')"></ComForm>
   </Modal>
 </div>
 </template>
