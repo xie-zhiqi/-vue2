@@ -13,7 +13,7 @@
         <Input :type="item.type" v-model="loginModel[item.prop]" :placeholder="item.placeholder"></Input>
       </FormItem>
       <FormItem>
-        <Button :loading="loading" @click="handleLogin('loginForm')" type="primary" class="submit">Sign in</Button>
+        <Button :loading="loading" @click="handleLogin('loginForm')" type="primary" long>Sign in</Button>
       </FormItem>
     </Form>
     <!-- Form -->
@@ -133,9 +133,6 @@ export default {
         span {
             font-size: 12px;
         }
-    }
-    .submit {
-        width: 100%;
     }
     .prompt {
         text-align: center;
