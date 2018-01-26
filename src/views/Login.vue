@@ -36,13 +36,13 @@ import {
 
 export default {
   name: 'login',
+  components: {
+    ComError
+  },
   computed: {
     ...mapGetters({
       loading: 'getLoading'
     })
-  },
-  components: {
-    ComError
   },
   data() {
     return {
