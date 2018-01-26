@@ -2,12 +2,10 @@ export default {
   // 表单元素对象数组(搜索)
   searchItems: [
     {
-      element: 'input',
       prop: 'name',
       icon: 'ios-search-strong',
       placeholder: 'Search Name'
     }, {
-      element: 'button',
       button: [
         {
           name: 'submit',
@@ -24,18 +22,15 @@ export default {
   // 表单元素对象数组(用户)
   userItems: [
     {
-      element: 'input',
       label: 'Name',
       prop: 'name',
       placeholder: 'Enter your name'
     }, {
-      element: 'input',
       number: true,
       label: 'Age',
       prop: 'age',
       placeholder: 'Enter your age'
     }, {
-      element: 'input',
       label: 'E-mail',
       prop: 'email',
       placeholder: 'Enter your e-mail'
@@ -69,13 +64,11 @@ export default {
       prop: 'hobby',
       option: []
     }, {
-      element: 'input',
       type: 'textarea',
       label: 'Desc',
       prop: 'desc',
       placeholder: 'Enter something...'
     }, {
-      element: 'button',
       button: [
         {
           name: 'submit',
