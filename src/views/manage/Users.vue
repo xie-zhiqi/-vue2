@@ -1,17 +1,19 @@
 <template>
 <div id="users">
   <Card>
-    <strong slot="title">
+    <div slot="title">
       <Icon type="ios-search-strong"></Icon> Search
-    </strong>
+    </div>
     <ComForm ref="search" :items="searchItems" :model="search" @on-submit="getUsers('search')" @on-reset="getUsers('search')" inline></ComForm>
   </Card>
   <br>
   <Card>
-    <strong slot="title">
+    <div slot="title">
       <Icon type="ios-list-outline"></Icon> User List
-    </strong>
-    <a href="#" slot="extra" @click.prevent="handleCreate"> Create </a>
+    </div>
+    <div slot="extra">
+      <a href="#" @click.prevent="handleCreate"> Create </a>
+    </div>
     <Table border :loading="loading.list" :columns="columns" :data="data"></Table>
     <br>
     <Page show-elevator show-total :current="page" :total="total" @on-change="handleChange"></Page>

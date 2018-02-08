@@ -2,6 +2,8 @@ export default {
   // 表单元素对象数组(搜索)
   searchItems: [
     {
+      label: 'Name',
+      labelWidth: 60,
       prop: 'name',
       placeholder: 'Search Name',
       icon: 'ios-search-strong'
