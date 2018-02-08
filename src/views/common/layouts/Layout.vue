@@ -1,10 +1,10 @@
 <template>
 <div id="layout">
-  <ComError/>
+  <ComError></ComError>
   <!-- ComError -->
-  <ComHeader/>
+  <ComHeader></ComHeader>
   <!-- ComHeader -->
-  <ComSidebar/>
+  <ComSidebar></ComSidebar>
   <!-- ComSidebar -->
   <div id="content">
     <!-- <Breadcrumb class="layout-breadcrumb">
@@ -14,12 +14,12 @@
     </Breadcrumb> -->
     <!-- .layout-breadcrumb -->
     <div class="layout-content">
-      <router-view/>
+      <router-view></router-view>
     </div>
     <!-- .layout-content -->
   </div>
   <!-- #content -->
-  <!-- <ComFooter/> -->
+  <!-- <ComFooter></ComFooter> -->
   <!-- ComFooter -->
 </div>
 </template>

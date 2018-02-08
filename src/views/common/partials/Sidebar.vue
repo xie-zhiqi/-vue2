@@ -1,14 +1,14 @@
 <template>
 <div id="sidebar">
   <Menu :active-name="menuActive" :open-names="[menuOpened]" accordion @on-select="handleMenuSelect">
-    <template v-for="(item, key) in menu">
-    <!-- 二级菜单 -->
-    <Submenu :name="item.path" :key="key" v-if="item.children">
-    <template slot="title">{{ item.name }}</template>
-    <MenuItem :name="child.path" v-for="(child, childKey) in item.children" :key="childKey"> {{ child.name }} </MenuItem>
-    </Submenu>
+    <template v-for="(item, index) in menu">
     <!-- 一级菜单 -->
-    <MenuItem :name="item.path" :key="key" v-else>{{ item.name }}</MenuItem>
+    <MenuItem v-if="!item.children" :name="item.path" :key="index">{{ item.name }}</MenuItem>
+    <!-- 二级菜单 -->
+    <Submenu v-else :name="item.path" :key="index">
+    <template slot="title">{{ item.name }}</template>
+    <MenuItem :name="child.path" v-for="(child, index) in item.children" :key="index"> {{ child.name }} </MenuItem>
+    </Submenu>
     </template>
   </Menu>
 </div>
@@ -28,13 +28,6 @@ export default {
       menuOpened: 'getMenuOpened'
     })
   },
-  // mounted() {
-  //   const menu = JSON.parse(localStorage.getItem('menu'))
-  //   if (!menu) {
-  //     // 获取菜单
-  //     this.$store.dispatch('handleMenu')
-  //   }
-  // },
   methods: {
     // ...mapActions(['handleMenuSelect'])
     handleMenuSelect(name) {

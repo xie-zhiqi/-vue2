@@ -1,32 +1,34 @@
 <template>
-<div id="com-form" @keyup.enter="handleClick('submit')">
+<div id="com-form" @keyup.enter="handleSubmit('submit')">
   <Form ref="comForm" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition">
     <slot> </slot>
     <FormItem :prop="item.prop" :label="item.label" :label-width="item.labelWidth" v-for="(item, index) in items" :key="index">
       <template v-if="!item.button">
         <!-- 输入框 -->
-        <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :icon="item.icon" :rows="item.rows" :autosize="item.autosize" :number="item.number"
-          :autofocus="item.autofocus"></Input>
+        <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :size="item.size" :placeholder="item.placeholder" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize"></Input>
+        <!-- 数字输入框 -->
+        <InputNumber v-if="item.element === 'number'" :max="item.max" :min="item.min" v-model="model[item.prop]" :size="item.size" :disabled="item.disabled"></InputNumber>
         <!-- 选择器 -->
-        <Select v-if="item.element === 'select'" v-model="model[item.prop]" :multiple="item.multiple" :disabled="item.disabled" :filterable="item.filterable" :placeholder="item.placeholder" :not-found-text="item.notFoundText" :transfer="item.transfer" :style="{width: item.width + 'px'}">
+        <Select v-if="item.element === 'select'" v-model="model[item.prop]" :multiple="item.multiple" :disabled="item.disabled" :filterable="item.filterable" :size="item.size" :placeholder="item.placeholder" :style="{width: item.width + 'px'}">
           <Option v-for="(opt, index) in item.option" :key="index" :value="opt.value" :disabled="opt.disabled">{{ opt.label }}</Option>
         </Select>
         <!-- 日期选择器 -->
-        <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :transfer="item.transfer"></DatePicker>
+        <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled"></DatePicker>
         <!-- 时间选择器 -->
-        <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="model[item.prop]" :format="item.format" :steps="item.steps" :placeholder="item.placeholder" :disabled="item.disabled" :readonly="item.readonly" :transfer="item.transfer"></TimePicker>
+        <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled"></TimePicker>
         <!-- 单选框 -->
-        <RadioGroup v-if="item.element === 'radio'" v-model="model[item.prop]" :type="item.type" :vertical="item.vertical">
-          <Radio v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled">{{ opt.label }}</Radio>
+        <RadioGroup v-if="item.element === 'radio'" v-model="model[item.prop]" :type="item.type" :size="item.size" :vertical="item.vertical">
+          <Radio v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled" :size="item.size">{{ opt.label }}</Radio>
         </RadioGroup>
         <!-- 多选框 -->
-        <CheckboxGroup v-if="item.element === 'checkbox'" v-model="model[item.prop]">
-          <Checkbox v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled">{{ opt.label }}</Checkbox>
+        <CheckboxGroup v-if="item.element === 'checkbox'" v-model="model[item.prop]" :size="item.size">
+          <Checkbox v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled" :size="item.size">{{ opt.label }}</Checkbox>
         </CheckboxGroup>
       </template>
       <template v-else>
         <!-- 按钮 -->
-        <Button v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.loading ? btnLoading : false" :icon="item.icon" @click="handleClick(item.name)" style="margin-right: 8px;">{{ item.text }}</Button>
+        <Button class="button" v-for="(item, index) in item.button" :key="index" :type="item.type" :size="item.size" :long="item.long" :disabled="item.disabled"
+          :loading="item.name === 'submit' ? btnLoading : false" :icon="item.icon" @click="handleSubmit(item.name)">{{ item.text }}</Button>
       </template>
     </FormItem>
     <slot name="foot"> </slot>
@@ -56,6 +58,14 @@ export default {
     }
   },
   methods: {
+    validate() {
+      let validate = false
+      // 对整个表单进行校验
+      this.$refs['comForm'].validate(valid => {
+        validate = valid
+      })
+      return validate
+    },
     validateField(name) {
       // 对部分表单字段进行校验的方法
       this.$refs['comForm'].validateField(name)
@@ -64,7 +74,7 @@ export default {
       // 对整个表单进行重置
       this.$refs['comForm'].resetFields()
     },
-    handleClick(name) {
+    handleSubmit(name) {
       if (name === 'submit') {
         // 对整个表单进行校验
         this.$refs['comForm'].validate(valid => {
@@ -85,5 +95,11 @@ export default {
 <style lang="scss" scoped>
 #com-form {
     position: relative;
+    .button {
+        margin-right: 8px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }
 </style>

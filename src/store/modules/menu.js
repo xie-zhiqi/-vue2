@@ -1,28 +1,21 @@
-import {getMenus} from '@/services/app'
 import router from '@/router'
+import {getMenus} from '@/services/app'
 
 const state = {
-  loading: false, // 加载状态
   menu: JSON.parse(localStorage.getItem('menu')) || [],
   menuActive: localStorage.getItem('menuActive') || '/',
   menuOpened: localStorage.getItem('menuOpened') || ''
 }
 
 const getters = {
-  getLoading: state => state.loading,
   getMenu: state => state.menu,
   getMenuActive: state => state.menuActive,
   getMenuOpened: state => state.menuOpened
 }
 
 const mutations = {
-  // 更新加载状态
-  LOADING: (state, data) => {
-    state.loading = data
-  },
   // 获取菜单
   MENU: (state, data) => {
-    state.loading = false
     state.menu = data
     localStorage.setItem('menu', JSON.stringify(data))
   },

@@ -1,15 +1,17 @@
 <template>
-<Alert v-if="resError" id='error' type="error" banner closable @on-close="handleClose">
-  <h3 class="title">Status Code:
+<div v-if="resError" id="error">
+  <Alert :type="resError.status === 200 ? 'warning' : 'error'" banner closable @on-close="handleClose">
+    <h3 class="title">Status Code:
       <span :style="{color: resError.status === 200 ? '#093' : '#f33'}">
         <Icon :type="resError.status === 200 ? 'checkmark-circled' : 'close-circled'"></Icon>
         {{ resError.statusCode }}
       </span>
     </h3>
-  <div slot="desc" :class="['desc', resError.status === 200 ? '' : 'error']">
-    <pre>{{ resError.error }}</pre>
-  </div>
-</Alert>
+    <div slot="desc" class="desc">
+      <pre>{{ resError.error }}</pre>
+    </div>
+  </Alert>
+</div>
 </template>
 <script>
 import {
@@ -36,20 +38,31 @@ export default {
     z-index: 999;
     top: 0;
     right: 0;
+    bottom: 0;
     left: 0;
-    min-height: 100%;
-    margin-bottom: 0;
-    border-style: none;
-    background-color: rgba(253, 236, 232, 0.8);
+    .ivu-alert {
+        min-height: 100%;
+        margin-bottom: 0;
+        border-style: none;
+    }
     .title {
         margin-bottom: 12px;
     }
     .desc {
         padding: 0 24px;
-        border: 1px dashed #093;
-        &.error {
+    }
+    .ivu-alert-warning {
+        background-color: rgba(255, 255, 204, 0.8);
+        .desc {
+            color: #c90;
+            border: 1px dashed #c90;
+        }
+    }
+    .ivu-alert-error {
+        background-color: rgba(253, 236, 232, 0.8);
+        .desc {
             color: #f33;
-            border-color: #f33;
+            border: 1px dashed #f33;
         }
     }
 }

@@ -1,13 +1,6 @@
 <template>
-<div id="modify-pwd">
-  <Form ref="modifyPwdForm" :model="modifyPwdModel" :rules="modifyPwdRules" :label-width="110" @keyup.enter.native="handleModifyPwd('modifyPwdForm')">
-    <FormItem :label="item.label" :prop="item.prop" v-for="(item, key) in modifyPwdItems" :key="key">
-      <Input type="password" v-model="modifyPwdModel[item.prop]" :placeholder="item.placeholder"></Input>
-    </FormItem>
-    <FormItem>
-      <Button :loading="logining" @click="handleModifyPwd('modifyPwdForm')" type="primary">Submit</Button>
-    </FormItem>
-  </Form>
+<div id="modify-pwd" style="width: 400px;">
+  <ComForm ref="modifyPwd" :items="modifyPwdItems" :model="modifyPwd" :rules="modifyPwdRule" :btn-loading="loading" :label-width="110" @on-submit="handleSubmit('modifyPwd')" @on-click="handleCancel"></ComForm>
 </div>
 </template>
 <script>
@@ -20,11 +13,11 @@ export default {
   data() {
     const validPwd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('Please enter your password'))
+        callback(new Error('Please enter your new password'))
       } else {
-        if (this.modifyPwdModel.pwdCheck) {
+        if (this.modifyPwd.pwdAgain) {
           // 对第二个密码框单独验证
-          this.$refs['modifyPwdForm'].validateField('pwdCheck')
+          this.$refs['modifyPwd'].validateField('pwdAgain')
         }
         callback()
       }
@@ -32,37 +25,49 @@ export default {
     const validPwdCheck = (rule, value, callback) => {
       if (!value) {
         callback(new Error('Please enter your password again'))
-      } else if (value !== this.modifyPwdModel.newPwd) {
-        callback(new Error('The two input passwords do not match!'))
+      } else if (value !== this.modifyPwd.newPwd) {
+        callback(new Error('The two input password do not match!'))
       } else {
         callback()
       }
     }
     return {
       // 加载状态
-      logining: false,
+      loading: false,
       // 表单元素数组
       modifyPwdItems: [{
         label: 'Old password',
         prop: 'oldPwd',
-        placeholder: 'Old password'
+        placeholder: 'Enter your old password',
+        type: 'password'
       }, {
         label: 'New password',
         prop: 'newPwd',
-        placeholder: 'New password'
+        placeholder: 'Enter your new password',
+        type: 'password'
       }, {
-        label: 'Password check',
-        prop: 'pwdCheck',
-        placeholder: 'Password check'
+        label: 'Password again',
+        prop: 'pwdAgain',
+        placeholder: 'Enter your password again',
+        type: 'password'
+      }, {
+        button: [{
+          name: 'submit',
+          type: 'primary',
+          text: 'Submit'
+        }, {
+          type: 'ghost',
+          text: 'Cancel'
+        }]
       }],
       // 表单数据对象
-      modifyPwdModel: {
+      modifyPwd: {
         oldPwd: '',
         newPwd: '',
-        pwdCheck: ''
+        pwdAgain: ''
       },
       // 表单验证规则
-      modifyPwdRules: {
+      modifyPwdRule: {
         oldPwd: [{
           required: true,
           message: 'Please enter your old password',
@@ -73,7 +78,7 @@ export default {
           validator: validPwd,
           trigger: 'blur'
         }],
-        pwdCheck: [{
+        pwdAgain: [{
           required: true,
           validator: validPwdCheck,
           trigger: 'blur'
@@ -82,23 +87,22 @@ export default {
     }
   },
   methods: {
-    handleModifyPwd(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.logining = true
-          // 请求参数
-          let para = Object.assign({}, this.modifyPwdModel)
-          setTimeout(() => {
-            modifyPwd(para).then(res => {
-              this.$Message.success(res.msg)
-              this.$emit('close', false)
-              this.logining = false
-            }).catch(() => {
-              this.logining = false
-            })
-          }, 500)
-        }
-      })
+    handleSubmit(name) {
+      // 请求参数
+      let para = Object.assign({}, this.modifyPwd)
+      this.loading = true
+      setTimeout(() => {
+        modifyPwd(para).then(res => {
+          this.$Message.success(res.msg)
+          this.handleCancel()
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      }, 500)
+    },
+    handleCancel() {
+      this.$emit('on-click')
     }
   }
 }

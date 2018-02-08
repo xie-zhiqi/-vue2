@@ -11,11 +11,6 @@ axios.defaults.baseURL = config.url
 axios.defaults.timeout = config.timeout
 // 配置默认跨域访问凭证(Cookie)
 // axios.defaults.withCredentials = true
-// 配置默认请求头
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-// 配置版本号
-// axios.defaults.headers.post['Accept'] = config.headers.Accept
-// axios.defaults.headers.common['Accept'] = config.headers.Accept
 
 // 获取用户TOKEN
 // const user = JSON.parse(localStorage.getItem('user'))
@@ -23,6 +18,11 @@ axios.defaults.timeout = config.timeout
 // 配置用户TOKEN
 // axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
 // }
+// 配置默认请求头
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// 配置版本号
+// axios.defaults.headers.common['Accept'] = config.headers.Accept
+// axios.defaults.headers.post['Accept'] = config.headers.Accept
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {

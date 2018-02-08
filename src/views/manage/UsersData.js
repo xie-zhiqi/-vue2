@@ -3,8 +3,8 @@ export default {
   searchItems: [
     {
       prop: 'name',
-      icon: 'ios-search-strong',
-      placeholder: 'Search Name'
+      placeholder: 'Search Name',
+      icon: 'ios-search-strong'
     }, {
       button: [
         {
@@ -26,29 +26,29 @@ export default {
       prop: 'name',
       placeholder: 'Enter your name'
     }, {
-      number: true,
       label: 'Age',
       prop: 'age',
-      placeholder: 'Enter your age'
+      placeholder: 'Enter your age',
+      number: true
     }, {
       label: 'E-mail',
       prop: 'email',
       placeholder: 'Enter your e-mail'
     }, {
-      element: 'select',
       label: 'City',
       prop: 'city',
       placeholder: 'Select your city',
+      element: 'select',
       option: []
     }, {
-      element: 'date',
       label: 'Birth',
       prop: 'birth',
-      placeholder: 'Select your birth'
+      placeholder: 'Select your birth',
+      element: 'date'
     }, {
-      element: 'radio',
       label: 'Gender',
       prop: 'gender',
+      element: 'radio',
       option: [
         {
           label: 'Male',
@@ -59,28 +59,65 @@ export default {
         }
       ]
     }, {
-      element: 'checkbox',
       label: 'Hobby',
       prop: 'hobby',
+      element: 'checkbox',
       option: []
     }, {
-      type: 'textarea',
       label: 'Desc',
       prop: 'desc',
-      placeholder: 'Enter something...'
+      placeholder: 'Enter something...',
+      type: 'textarea'
     }, {
       button: [
         {
           name: 'submit',
           type: 'primary',
-          text: 'Submit',
-          loading: true
+          text: 'Submit'
         }, {
           name: 'reset',
           type: 'ghost',
           text: 'Reset'
         }
       ]
+    }
+  ],
+  // 补丁数据(城市)
+  city: [
+    {
+      label: 'BeiJing',
+      value: 'beijing'
+    }, {
+      label: 'ShangHai',
+      value: 'shanghai'
+    }, {
+      label: 'ShenZhen',
+      value: 'shenzhen'
+    }, {
+      label: 'GuangZhou',
+      value: 'guangzhou'
+    }, {
+      label: 'HangZhou',
+      value: 'hangzhou'
+    }, {
+      label: 'NingBo',
+      value: 'ningbo'
+    }
+  ],
+  // 补丁数据(爱好)
+  hobby: [
+    {
+      label: 'Eat',
+      value: 'eat'
+    }, {
+      label: 'Sleep',
+      value: 'sleep'
+    }, {
+      label: 'Run',
+      value: 'run'
+    }, {
+      label: 'Movie',
+      value: 'movie'
     }
   ]
 }

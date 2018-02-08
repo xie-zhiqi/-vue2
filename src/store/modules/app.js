@@ -1,17 +1,22 @@
 import qs from 'qs'
 
 const state = {
+  loading: false, // 加载状态
   resError: '' // 错误数据
 }
 
 const getters = {
+  getLoading: state => state.loading,
   getResError: state => state.resError
 }
 
 const mutations = {
-  // 响应错误数据
+  // 更新加载状态
+  LOADING: (state, data) => {
+    state.loading = data
+  },
+  // 更新错误数据
   RES_ERROR: (state, data) => {
-    // console.log(data)
     state.resError = data
       ? {
         status: data.status,

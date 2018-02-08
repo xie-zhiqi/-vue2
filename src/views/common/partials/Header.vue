@@ -5,19 +5,22 @@
     <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
   </div>
   <!-- .logo-info -->
-  <div class="login-info"> {{ welcome }},
+  <div class="login-info">
     <Dropdown trigger="click" @on-click="handleDropdown">
-      <strong class="user"> {{ userName }} </strong>
+      <strong class="user">
+        <Avatar style="background-color: #3c3" icon="person" size="small"></Avatar>
+        {{ userName }}
+      </strong>
       <DropdownMenu slot="list">
         <DropdownItem :name="item.name" v-for="(item, key) in dropdownItems" :key="key">
-          <Icon type="power" v-if="item.name === 'signout'"></Icon> {{ item.label }}
+          <Icon :type="item.icon"></Icon> {{ item.label }}
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   </div>
   <!-- .login-info -->
-  <Modal v-model="modalProps.visible" :title="modalProps.title" footer-hide>
-    <ComModifyPwd :key="modalProps.visible" @close="handleClose" />
+  <Modal v-model="modal.visible" :title="modal.title" footer-hide>
+    <ComModifyPwd :key="modal.visible" @on-click="modal.visible = false"></ComModifyPwd>
   </Modal>
   <!-- Modal -->
 </div>
@@ -32,34 +35,39 @@ export default {
   },
   data() {
     return {
-      welcome: 'Welcome',
+      // 用户名
       userName: '',
       // 模态框属性对象
-      modalProps: {
-        visible: false,
-        title: 'Modify Pwd'
+      modal: {
+        title: '',
+        visible: false
       },
       // 下拉菜单元素数组
       dropdownItems: [{
         label: 'Modify Pwd',
-        name: 'modifyPwd'
+        name: 'modifyPwd',
+        icon: 'unlocked'
       }, {
         label: 'Sign out',
-        name: 'signout'
+        name: 'signout',
+        icon: 'log-out'
       }]
     }
   },
   mounted() {
     // 获取用户信息
     const user = JSON.parse(localStorage.getItem('user'))
-    this.userName = user.real_name || ''
+    this.userName = user.real_name || 'Null'
   },
   methods: {
     // 下拉菜单
     handleDropdown(name) {
       // 修改密码
       if (name === 'modifyPwd') {
-        this.modalProps.visible = true
+        this.modal = {
+          title: 'Modify Pwd',
+          visible: true
+        }
       }
       // 退出系统
       if (name === 'signout') {
@@ -74,10 +82,6 @@ export default {
           }
         })
       }
-    },
-    // 关闭模态框
-    handleClose(state) {
-      this.modalProps.visible = state
     }
   }
 }
