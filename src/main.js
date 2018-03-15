@@ -6,9 +6,6 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-// vue-axios 插件引入
-import VueAxios from 'vue-axios'
-import axios from './config/axios'
 // iView 完整引入
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
@@ -20,7 +17,6 @@ import Utils from './utils'
 // mock 数据引入
 import './mock'
 
-Vue.use(VueAxios, axios)
 Vue.use(iView)
 Vue.use(vCom)
 

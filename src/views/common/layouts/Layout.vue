@@ -8,7 +8,7 @@
   <!-- ComSidebar -->
   <div id="content">
     <!-- <Breadcrumb class="layout-breadcrumb">
-      <BreadcrumbItem :to="item.path" v-for="(item, key) in $route.matched" :key="key">
+      <BreadcrumbItem v-for="(item, index) in $route.matched" :key="index" :to="item.path">
         {{ item.name }}
       </BreadcrumbItem>
     </Breadcrumb> -->

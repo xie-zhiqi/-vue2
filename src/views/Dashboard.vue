@@ -28,6 +28,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 #dashboard {
+    img {
+        float: left;
+        margin-right: 32px;
+    }
     h1 {
         margin-bottom: 10px;
         font-size: 20px;
@@ -38,10 +42,6 @@ export default {
         a {
             color: #42b983;
         }
-    }
-    img {
-        float: left;
-        margin-right: 16px;
     }
 }
 </style>

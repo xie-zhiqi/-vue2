@@ -1,13 +1,13 @@
 <template>
 <div id="sidebar">
-  <Menu :active-name="menuActive" :open-names="[menuOpened]" accordion @on-select="handleMenuSelect">
+  <Menu accordion :active-name="menuActive" :open-names="[menuOpened]" @on-select="handleMenuSelect">
     <template v-for="(item, index) in menu">
     <!-- 一级菜单 -->
-    <MenuItem v-if="!item.children" :name="item.path" :key="index">{{ item.name }}</MenuItem>
+    <MenuItem v-if="!item.children" :key="index" :name="item.path">{{ item.name }}</MenuItem>
     <!-- 二级菜单 -->
-    <Submenu v-else :name="item.path" :key="index">
+    <Submenu v-else :key="index" :name="item.path">
     <template slot="title">{{ item.name }}</template>
-    <MenuItem :name="child.path" v-for="(child, index) in item.children" :key="index"> {{ child.name }} </MenuItem>
+    <MenuItem v-for="(child, index) in item.children" :key="index" :name="child.path"> {{ child.name }} </MenuItem>
     </Submenu>
     </template>
   </Menu>

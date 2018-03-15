@@ -55,6 +55,7 @@ export default {
         background-color: rgba(255, 255, 204, 0.8);
         .desc {
             color: #c90;
+            color: #333;
             border: 1px dashed #c90;
         }
     }

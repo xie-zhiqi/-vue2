@@ -1,8 +1,8 @@
 <template>
-<div id="header">
+<div id="com-header">
   <div class="logo-info">
     <img class="logo" src="../../../assets/logo.png">
-    <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
+    <p class="name">XX管理系统 <br> <span class="sub">http://www.xx.com/</span></p>
   </div>
   <!-- .logo-info -->
   <div class="login-info">
@@ -12,7 +12,7 @@
         {{ userName }}
       </strong>
       <DropdownMenu slot="list">
-        <DropdownItem :name="item.name" v-for="(item, key) in dropdownItems" :key="key">
+        <DropdownItem v-for="(item, index) in dropdownItems" :key="index" :name="item.name">
           <Icon :type="item.icon"></Icon> {{ item.label }}
         </DropdownItem>
       </DropdownMenu>
@@ -20,18 +20,18 @@
   </div>
   <!-- .login-info -->
   <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComModifyPwd :key="modal.visible" @on-click="modal.visible = false"></ComModifyPwd>
+    <ModifyPwd :key="modal.visible" @on-click="modal.visible = false"></ModifyPwd>
   </Modal>
   <!-- Modal -->
 </div>
 </template>
 <script>
-import ComModifyPwd from '@/views/common/pages/ModifyPwd'
+import ModifyPwd from '@/views/common/pages/ModifyPwd'
 
 export default {
-  name: 'header',
+  name: 'com-header',
   components: {
-    ComModifyPwd
+    ModifyPwd
   },
   data() {
     return {
@@ -60,7 +60,7 @@ export default {
     this.userName = user.real_name || 'Null'
   },
   methods: {
-    // 下拉菜单
+    // 下拉菜单项
     handleDropdown(name) {
       // 修改密码
       if (name === 'modifyPwd') {
@@ -87,7 +87,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#header {
+#com-header {
     overflow: hidden;
     color: #fff;
     background-color: #3f525a;
@@ -107,7 +107,7 @@ export default {
             font-size: 18px;
             line-height: 20px;
         }
-        span {
+        .sub {
             font-size: 12px;
         }
     }

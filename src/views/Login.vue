@@ -5,7 +5,7 @@
   <div id="login">
     <div class="logo-info">
       <img class="logo" src="../assets/logo.png">
-      <p class="name">XX管理系统 <br> <span>http://www.xx.com/</span></p>
+      <p class="name">XX管理系统 <br> <span class="sub">http://www.xx.com/</span></p>
     </div>
     <!-- .logo-info -->
     <Form ref="login" :model="login" :rules="loginRule" @keyup.enter.native="handleLogin('login')">
@@ -13,23 +13,37 @@
         <Input :type="item.type" v-model="login[item.prop]" :placeholder="item.placeholder"></Input>
       </FormItem>
       <FormItem>
-        <Button type="primary" long :loading="this.$store.state.app.loading" @click="handleLogin('login')">Sign in</Button>
+        <Button long type="primary" :loading="this.$store.state.app.loading" @click="handleLogin('login')">Sign in</Button>
       </FormItem>
     </Form>
     <!-- Form -->
-    <p class="prompt">
-      <span class="span">Username：admin</span>
-      <span class="span">Password：wasd@007</span>
-    </p>
-    <!-- .prompt -->
+    <p class="version">Version: {{ remote.version }}</p>
+    <!-- .version -->
+    <div v-if="remote.visible" class="remote">
+      <p class="address"> Remote Address: {{ remote.baseURL }} </p>
+      <Form inline ref="remote" :model="remote" :rules="remoteRule" @keyup.enter.native="handleSave('remote')">
+        <FormItem prop="host">
+          <Input v-model="remote.host" placeholder="Remote Address" style="width: 240px;"></Input>
+        </FormItem>
+        <FormItem>
+          <Button type="primary" @click="handleSave('remote')">Save</Button>
+          <Button type="ghost" @click="handleReset('remote')" style="margin-left: 8px">R</Button>
+        </FormItem>
+      </Form>
+    </div>
+    <!-- .remote -->
   </div>
 </div>
 </template>
 <script>
-import ComError from './common/partials/Error'
+import {
+  ax,
+  config
+} from '@/config/axios'
 import {
   login
 } from '@/services/app'
+import ComError from './common/partials/Error'
 
 export default {
   name: 'login',
@@ -38,7 +52,7 @@ export default {
   },
   data() {
     return {
-      // 表单元素数组
+      // 表单元素数组(登录)
       loginItems: [{
         prop: 'user',
         placeholder: 'Username'
@@ -47,12 +61,12 @@ export default {
         placeholder: 'Password',
         type: 'password'
       }],
-      // 表单数据对象
+      // 表单数据对象(登录)
       login: {
-        user: 'admin',
-        pwd: 'wasd@007'
+        user: '',
+        pwd: ''
       },
-      // 表单验证规则
+      // 表单验证规则(登录)
       loginRule: {
         user: [{
           required: true,
@@ -64,23 +78,68 @@ export default {
           message: 'Please fill in the password',
           trigger: 'blur'
         }]
+      },
+      // 表单数据对象(接口域名)
+      remote: {
+        visible: false,
+        version: '',
+        host: '',
+        baseURL: ''
+      },
+      // 表单验证规则(接口域名)
+      remoteRule: {
+        host: [{
+          required: true,
+          message: 'Please fill in the Remote Address',
+          trigger: 'blur'
+        }]
       }
+    }
+  },
+  mounted() {
+    const env = process.env.NODE_ENV
+    const version = config.version
+    switch (env) {
+      case 'production':
+        this.remote.version = `${version} Production`
+        break
+      case 'release':
+        this.remote.version = `${version} Release`
+        break
+      default:
+        this.remote = {
+          visible: true,
+          version: env === 'testing' ? `${version} Test` : `${version} Develop`,
+          host: sessionStorage.getItem('host') || config.baseURL,
+          baseURL: config.baseURL
+        }
+        this.login = {
+          user: 'admin',
+          pwd: 'wasd@007'
+        }
     }
   },
   methods: {
     handleLogin(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
+          const env = process.env.NODE_ENV
+          if (env !== 'production' && env !== 'release') {
+            // 配置默认接口地址
+            ax.defaults.baseURL = sessionStorage.getItem('host') || config.baseURL
+          }
+
+          this.$store.commit('LOADING', true)
           // 请求参数
           let para = Object.assign({}, this.login)
-          this.$store.commit('LOADING', true)
           // 模拟异步请求
           setTimeout(() => {
             login(para).then(res => {
+              // 响应数据
               if (res) {
                 localStorage.setItem('user', JSON.stringify(res.data))
                 // 配置用户TOKEN
-                // this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token
+                // ax.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token
                 // 获取菜单信息
                 this.$store.dispatch('handleMenu')
               }
@@ -91,6 +150,21 @@ export default {
           }, 800)
         }
       })
+    },
+    handleSave(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          sessionStorage.setItem('host', this.remote.host)
+          this.$Message.success('Save Success!')
+        } else {
+          this.$Message.error('Save Fail!')
+        }
+      })
+    },
+    handleReset(name) {
+      this.remote.host = this.remote.baseURL
+      sessionStorage.setItem('host', this.remote.baseURL)
+      this.$Message.success('Reset Success!')
     }
   }
 }
@@ -101,8 +175,8 @@ export default {
     top: 50%;
     left: 50%;
     width: 360px;
-    height: 360px;
-    margin: -180px 0 0 -180px;
+    height: 350px;
+    margin: -175px 0 0 -180px;
     padding: 36px;
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
     .logo-info {
@@ -122,14 +196,24 @@ export default {
             font-size: 18px;
             line-height: 20px;
         }
-        span {
+        .sub {
             font-size: 12px;
         }
     }
-    .prompt {
+    .version {
         text-align: center;
-        .span {
-            margin: 0 10px;
+        color: #ccc;
+    }
+    .remote {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        padding: 10px;
+        border: 1px dashed #ccc;
+        background-color: #fff;
+        .address {
+            margin-bottom: 6px;
+            text-align: left;
             color: #ccc;
         }
     }

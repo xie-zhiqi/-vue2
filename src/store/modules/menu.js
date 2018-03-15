@@ -1,10 +1,10 @@
 import router from '@/router'
-import {getMenus} from '@/services/app'
+import {getMenuList} from '@/services/app'
 
 const state = {
-  menu: JSON.parse(localStorage.getItem('menu')) || [],
-  menuActive: localStorage.getItem('menuActive') || '/',
-  menuOpened: localStorage.getItem('menuOpened') || ''
+  menu: JSON.parse(localStorage.getItem('menu')) || [], // 主菜单
+  menuActive: localStorage.getItem('menuActive') || '/', // 激活主菜单
+  menuOpened: localStorage.getItem('menuOpened') || '' // 展开子菜单
 }
 
 const getters = {
@@ -40,7 +40,7 @@ const mutations = {
 const actions = {
   // 获取菜单
   handleMenu: ({commit}) => {
-    getMenus().then(res => {
+    getMenuList().then(res => {
       commit('MENU', res.data)
       router.push('/') // 路由跳转首页
     })

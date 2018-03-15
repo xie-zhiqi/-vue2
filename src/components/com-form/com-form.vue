@@ -2,7 +2,7 @@
 <div id="com-form" @keyup.enter="handleSubmit('submit')">
   <Form ref="comForm" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition">
     <slot> </slot>
-    <FormItem :prop="item.prop" :label="item.label" :label-width="item.labelWidth" v-for="(item, index) in items" :key="index">
+    <FormItem v-for="(item, index) in items" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth">
       <template v-if="!item.button">
         <!-- 输入框 -->
         <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :size="item.size" :placeholder="item.placeholder" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize"></Input>
@@ -27,13 +27,12 @@
       </template>
       <template v-else>
         <!-- 按钮 -->
-        <Button class="button" v-for="(item, index) in item.button" :key="index" :type="item.type" :size="item.size" :long="item.long" :disabled="item.disabled"
-          :loading="item.name === 'submit' ? btnLoading : false" :icon="item.icon" @click="handleSubmit(item.name)">{{ item.text }}</Button>
+        <Button v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.name === 'submit' ? btnLoading : false" :icon="item.icon" @click="handleSubmit(item.name)" class="button">{{ item.text }}</Button>
       </template>
     </FormItem>
     <slot name="foot"> </slot>
   </Form>
-  <Spin size="large" fix v-if="loading"></Spin>
+  <Spin v-if="loading" size="large" fix></Spin>
 </div>
 </template>
 <script>

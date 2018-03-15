@@ -3,10 +3,10 @@ export default {
   searchItems: [
     {
       label: 'Name',
-      labelWidth: 60,
       prop: 'name',
       placeholder: 'Search Name',
-      icon: 'ios-search-strong'
+      icon: 'ios-search-strong',
+      labelWidth: 60
     }, {
       button: [
         {
@@ -77,9 +77,8 @@ export default {
           type: 'primary',
           text: 'Submit'
         }, {
-          name: 'reset',
           type: 'ghost',
-          text: 'Reset'
+          text: 'Cancel'
         }
       ]
     }

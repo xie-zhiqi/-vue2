@@ -29,7 +29,7 @@ export default(Mock, qs) => {
 
   // 用户列表
   Mock.mock(/\/user-list/, config => {
-    let {page, name} = qs.parse(config.url.split('?')[1])
+    let {page, pageSize, name} = qs.parse(config.url.split('?')[1])
     let mockUsers = Users.filter(u => {
       if (name && u.name.indexOf(name) === -1) {
         return false
@@ -37,12 +37,17 @@ export default(Mock, qs) => {
       return true
     })
     let total = mockUsers.length
-    mockUsers = mockUsers.filter((u, index) => index < 10 * page && index >= 10 * (page - 1))
+    let pageMax = Math.ceil(total / pageSize)
+    page = page > pageMax
+      ? pageMax
+      : page
+    mockUsers = mockUsers.filter((u, index) => index < pageSize * page && index >= pageSize * (page - 1))
     return {
       code: 200,
       msg: 'get users success',
       data: {
         total: total,
+        page: parseInt(page),
         users: mockUsers
       }
     }

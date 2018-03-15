@@ -2,20 +2,23 @@
 
 **Demo:** <http://vab.cssue.com/>
 
+> -   Username: admin
+> -   Password: wasd@007
+
 ## 特性
 
-基于 Vue, Vue-Router, Vuex, iView, Axios, Mock 企业级后台管理系统典型模板
+基于 Vue, iView, Axios, Mock 企业级后台管理系统最佳实践。
 
 ### 技术栈
 
-- Axios @0.x
-- iView @2.x
-- Mockjs @1.x
-- Vue @2.5.x
-- Vue-Router @3.x
-- Vuex @3.x
-- ES6
-- SCSS
+-   Axios @0.x
+-   iView @2.x
+-   Mockjs @1.x
+-   Vue @2.5.x
+-   Vue-Router @3.x
+-   Vuex @3.x
+-   ES6
+-   SCSS
 
 ## 开发构建
 
@@ -154,6 +157,9 @@ npm run dev
 ```bash
 # 构建最小测试
 npm run test
+
+# 构建最小预发布
+npm run release
 
 # 构建最小生产
 npm run build
