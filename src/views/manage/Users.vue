@@ -4,7 +4,7 @@
     <div slot="title">
       <Icon type="ios-search-strong"></Icon> Search
     </div>
-    <ComForm inline ref="search" :items="searchItems" :model="search" @on-submit="handleDataList()" @on-reset="handleDataList()"></ComForm>
+    <ComForm inline ref="search" :items="searchItems" :model="search" @on-submit="handleDataList('search')" @on-reset="handleDataList('search')"></ComForm>
   </Card>
   <br>
   <Card>
@@ -227,10 +227,11 @@ export default {
   },
   methods: {
     // 获取用户列表
-    handleDataList() {
+    handleDataList(type) {
+      let page = type ? 1 : this.page
       let para = {
         name: this.search.name,
-        page: this.page,
+        page: page,
         pageSize: this.pageSize
       }
       this.loading.list = true
@@ -239,11 +240,11 @@ export default {
         getUserList(para).then(res => {
           let {
             users,
-            page,
+            rpage,
             total
           } = res.data
           this.data = users
-          this.page = page
+          this.page = rpage ? res.data.rpage : page
           this.total = total
           this.loading.list = false
         }).catch(() => {

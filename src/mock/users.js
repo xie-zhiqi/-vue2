@@ -39,7 +39,7 @@ export default(Mock, qs) => {
     let total = mockUsers.length
     let pageMax = Math.ceil(total / pageSize)
     page = page > pageMax
-      ? pageMax
+      ? 1
       : page
     mockUsers = mockUsers.filter((u, index) => index < pageSize * page && index >= pageSize * (page - 1))
     return {
@@ -47,7 +47,7 @@ export default(Mock, qs) => {
       msg: 'get users success',
       data: {
         total: total,
-        page: parseInt(page),
+        rpage: parseInt(page),
         users: mockUsers
       }
     }
