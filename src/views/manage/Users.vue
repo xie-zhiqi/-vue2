@@ -4,7 +4,7 @@
     <div slot="title">
       <Icon type="ios-search-strong"></Icon> Search
     </div>
-    <ComForm inline ref="search" :items="searchItems" :model="search" @on-submit="handleDataList('search')" @on-reset="handleDataList('search')"></ComForm>
+    <ComForm inline ref="search" :items="searchItems" :model="search" @on-submit="handleDataList(true)" @on-reset="handleDataList(true)"></ComForm>
   </Card>
   <br>
   <Card>
@@ -105,7 +105,7 @@ export default {
             },
             on: {
               'on-ok': () => {
-                this.handleDel(params.row)
+                this.handleDelete(params.row)
               }
             }
           }, [
@@ -123,14 +123,12 @@ export default {
       }],
       // 列表数据
       data: [],
-      // 数据总数
-      total: 0,
       // 当页页码
       page: 1,
       // 每页条数
       pageSize: 10,
-      // 补丁总数
-      patchTotal: 0,
+      // 数据总数
+      total: 0,
       // 加载状态
       loading: {
         list: false, // 列表
@@ -226,25 +224,26 @@ export default {
     this.handleDataList() // 获取用户列表
   },
   methods: {
-    // 获取用户列表
+    /**
+     * 获取用户列表
+     * @param  {boolean} type 是否使用搜索, 默认值, false
+     */
     handleDataList(type) {
-      let page = type ? 1 : this.page
+      this.loading.list = true
+      this.page = type ? 1 : this.page
       let para = {
         name: this.search.name,
-        page: page,
+        page: this.page,
         pageSize: this.pageSize
       }
-      this.loading.list = true
       // 模拟异步请求(查询)
       setTimeout(() => {
         getUserList(para).then(res => {
           let {
             users,
-            rpage,
             total
           } = res.data
           this.data = users
-          this.page = rpage ? res.data.rpage : page
           this.total = total
           this.loading.list = false
         }).catch(() => {
@@ -252,22 +251,31 @@ export default {
         })
       }, 500)
     },
-    // 改变页码
+    /**
+     * 改变页码
+     * @param  {number} page 改变后的页码
+     */
     handlePageChange(page) {
       this.page = page
       this.handleDataList()
     },
-    // 切换每页条数
+    /**
+     * 切换每页条数
+     * @param  {number} page 切换后的每页条数
+     */
     handlePageSizeChange(page) {
       this.pageSize = page
       this.handleDataList()
     },
-    // 删除用户
-    handleDel(row) {
+    /**
+     * 删除用户
+     * @param  {object} row 当前行数据
+     */
+    handleDelete(row) {
+      this.loading.list = true
       let para = {
         id: row.id
       }
-      this.loading.list = true
       // 模拟异步请求(删除)
       setTimeout(() => {
         delUser(para).then(res => {
@@ -278,9 +286,12 @@ export default {
         })
       }, 500)
     },
-    // 编辑界面
+    /**
+     * 编辑界面
+     * @param  {object} row 当前行数据
+     */
     handleEdit(row) {
-      this.handleModal('edit')
+      this.handleModal(true)
       // 模拟异步请求(获取详情)
       setTimeout(() => {
         this.user = Object.assign({}, row)
@@ -292,59 +303,57 @@ export default {
       this.handleModal() // 显示模态框
       this.handlePatch() // 获取补丁数据
     },
-    // 显示模态框
-    handleModal(name) {
+    /**
+     * 模态框显示
+     * @param  {boolean} type 是否显示编辑界面, 默认值, false
+     */
+    handleModal(type) {
       this.loading.form = true // 表单加载状态
       this.modal = {
         title: 'Edit',
         visible: true
       }
-      if (!name) {
+      if (!type) {
         this.modal.title = 'Create'
         this.user = Object.assign({}, this.initUser)
       }
     },
     // 获取补丁数据
     handlePatch() {
-      const patch = this.userItems.filter(n => n.option && n.option.length === 0)
-      this.patchTotal = patch.length === 0 ? this.patchTotal : 0
-      if (patch.length === 0) {
-        this.loading.form = false
-        return false
+      let {
+        patch,
+        total
+      } = this.$Utils.patchData(this.userItems) // 返回补丁对象数据和对象总数
+      let _false = false
+      if (total === 0) {
+        this.loading.form = _false // 表单加载状态
+        return _false
       }
-      patch.map(val => {
-        if (val.prop === 'city') {
+      patch.map(obj => {
+        if (obj.prop === 'city') {
           // 模拟异步请求(获取补丁数据-城市)
           setTimeout(() => {
-            val.option = this.city
-            this.handlePatchState(patch.length) // 补丁状态
+            obj.option = this.city
+            total--
+            this.loading.form = total === 0 ? _false : true // 补丁完成状态
           }, 800)
         }
-        if (val.prop === 'hobby') {
+        if (obj.prop === 'hobby') {
           // 模拟异步请求(获取补丁数据-爱好)
           setTimeout(() => {
-            val.option = this.hobby
-            this.handlePatchState(patch.length) // 补丁状态
+            obj.option = this.hobby
+            total--
+            this.loading.form = total === 0 ? _false : true // 补丁完成状态
           }, 400)
         }
       })
     },
-    // 补丁完成状态
-    handlePatchState(state) {
-      this.patchTotal += 1
-      if (this.patchTotal === state) {
-        this.loading.form = false // 表单加载状态
-      }
-    },
     // 表单提交
-    handleSubmit(name) {
-      let para = Object.assign({}, this.user)
-      para = {
-        ...para,
-        birth: para.birth ? this.$Utils.formatDate.format(new Date(para.birth), 'yyyy-MM-dd') : ''
-      }
+    handleSubmit() {
       this.loading.btn = true
-      // 模拟异步请求(编辑 or 新增)
+      let para = Object.assign({}, this.user)
+      para.birth = para.birth ? this.$Utils.formatDate.format(new Date(para.birth), 'yyyy-MM-dd') : ''
+      // 模拟异步请求(编辑 Or 新增)
       setTimeout(() => {
         editUser(para).then(res => {
           this.$Message.success(res.msg)

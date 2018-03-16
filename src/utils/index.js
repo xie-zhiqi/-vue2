@@ -9,6 +9,7 @@ function padding(s, len) {
 }
 
 export default {
+  // 日期格式
   formatDate: {
     format: function(date, pattern) {
       pattern = pattern || DEFAULT_PATTERN
@@ -63,6 +64,16 @@ export default {
         return _date
       }
       return null
+    }
+  },
+  /**
+   * 补丁对象数据和对象总数
+   * @param  {[type]} obj 表单元素对象
+   */
+  patchData: obj => {
+    let data = obj.filter(n => n.option && n.option.length === 0) // 补丁对象数据
+    return {
+      patch: data, total: data.length // 补丁对象总数
     }
   }
 }
