@@ -1,8 +1,10 @@
 // 自定义组件
 import ComForm from './com-form'
+import ComTablePage from './com-table-page'
 
 const components = {
-  ComForm
+  ComForm,
+  ComTablePage
 }
 
 export default(Vue) => {

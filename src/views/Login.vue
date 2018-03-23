@@ -1,22 +1,15 @@
 <template>
 <div id="main">
-  <ComError></ComError>
-  <!-- ComError -->
+  <SysError></SysError>
+  <!-- SysError -->
   <div id="login">
     <div class="logo-info">
       <img class="logo" src="../assets/logo.png">
       <p class="name">XX管理系统 <br> <span class="sub">http://www.xx.com/</span></p>
     </div>
     <!-- .logo-info -->
-    <Form ref="login" :model="login" :rules="loginRule" @keyup.enter.native="handleLogin('login')">
-      <FormItem v-for="(item, index) in loginItems" :key="index" :prop="item.prop">
-        <Input :type="item.type" v-model="login[item.prop]" :placeholder="item.placeholder"></Input>
-      </FormItem>
-      <FormItem>
-        <Button long type="primary" :loading="this.$store.state.app.loading" @click="handleLogin('login')">Sign in</Button>
-      </FormItem>
-    </Form>
-    <!-- Form -->
+    <ComForm ref="login" :items="loginItems" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin('login')"></ComForm>
+    <!-- ComForm -->
     <p class="version">Version: {{ remote.version }}</p>
     <!-- .version -->
     <div v-if="remote.visible" class="remote">
@@ -27,7 +20,7 @@
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSave('remote')">Save</Button>
-          <Button type="ghost" @click="handleReset('remote')" style="margin-left: 8px">R</Button>
+          <Button type="ghost" @click="handleReset('remote')" style="margin-left: 8px">Reset</Button>
         </FormItem>
       </Form>
     </div>
@@ -43,12 +36,12 @@ import {
 import {
   login
 } from '@/services/app'
-import ComError from './common/partials/Error'
+import SysError from './common/partials/Error'
 
 export default {
-  name: 'login',
+  name: 'Login',
   components: {
-    ComError
+    SysError
   },
   data() {
     return {
@@ -60,6 +53,13 @@ export default {
         prop: 'pwd',
         placeholder: 'Password',
         type: 'password'
+      }, {
+        button: [{
+          long: true,
+          name: 'submit',
+          type: 'primary',
+          text: 'Sign in'
+        }]
       }],
       // 表单数据对象(登录)
       login: {
@@ -124,7 +124,7 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           const env = process.env.NODE_ENV
-          if (env !== 'production' && env !== 'release') {
+          if (env === 'development' || env === 'testing') {
             // 配置默认接口地址
             ax.defaults.baseURL = sessionStorage.getItem('host') || config.baseURL
           }

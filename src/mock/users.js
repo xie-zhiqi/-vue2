@@ -1,53 +1,69 @@
 export default(Mock, qs) => {
+  let citys = {
+    '110100': 'BeiJing',
+    '310100': 'ShangHai',
+    '440100': 'GuangZhou',
+    '330100': 'HangZhou',
+    '330200': 'NingBo'
+  }
+  let hobbys = {
+    'eat': 'Eat',
+    'sleep': 'Sleep',
+    'run': 'Run',
+    'movie': 'Movie'
+  }
   let data = Mock.mock({
-    'users|87': [
+    'users|11-87': [
       {
-        'id|+1': 1,
-        'name': '@name',
-        'age|18-50': 1,
-        'gender|1': [
-          '0', '1'
-        ],
-        'email': '@email',
-        'city|1': [
-          'beijing',
-          'shanghai',
-          'shenzhen',
-          'guangzhou',
-          'hangzhou',
-          'ningbo'
-        ],
-        'birth': '@date',
-        'hobby': [
-          'eat', 'sleep'
-        ],
-        'desc': '@paragraph'
+        id: '@guid',
+        name: '@name',
+        'age|18-55': 1,
+        'gender|0-1': 1,
+        email: '@email',
+        'city|1': citys,
+        birth: '@date',
+        'hobby|1-3': hobbys,
+        desc: '@paragraph'
       }
     ]
   })
-  let Users = data.users
+  let users = data.users
+
+  // 参数函数
+  let params = (cityStr, hobbyArr) => {
+    let city = {}
+    city[cityStr] = citys[cityStr]
+    let hobby = {}
+    let len = hobbyArr.length
+    for (let i = 0; i < len; i++) {
+      let k = hobbyArr[i]
+      hobby[k] = hobbys[k]
+    }
+    return {city, hobby}
+  }
 
   // 用户列表
   Mock.mock(/\/user-list/, config => {
-    let {page, pageSize, name} = qs.parse(config.url.split('?')[1])
-    let mockUsers = Users.filter(u => {
+    let {pagePara, name} = qs.parse(config.url.split('?')[1])
+    let {current, pageSize} = JSON.parse(pagePara)
+    let _users = users.filter(u => {
       if (name && u.name.indexOf(name) === -1) {
         return false
       }
       return true
     })
-    let total = mockUsers.length
+    let total = _users.length
     let pageMax = Math.ceil(total / pageSize)
-    page = page > pageMax
+    current = current > pageMax
       ? pageMax
-      : page
-    mockUsers = mockUsers.filter((u, index) => index < pageSize * page && index >= pageSize * (page - 1))
+      : current
+    _users = _users.filter((u, index) => index < pageSize * current && index >= pageSize * (current - 1))
     return {
       code: 200,
       msg: 'get users success',
       data: {
         total: total,
-        users: mockUsers
+        users: _users
       }
     }
   })
@@ -55,7 +71,7 @@ export default(Mock, qs) => {
   // 删除用户
   Mock.mock(/\/user-delete/, config => {
     let {id} = qs.parse(config.body)
-    Users = Users.filter(u => u.id !== parseInt(id))
+    users = users.filter(u => u.id !== id)
     return {code: 200, msg: 'delete success'}
   })
 
@@ -72,17 +88,17 @@ export default(Mock, qs) => {
       birth,
       desc
     } = qs.parse(config.body)
-    Users.some(u => {
-      if (u.id === parseInt(id)) {
+    let _params = params(city, hobby)
+    users.some(u => {
+      if (u.id === id) {
         u.name = name
         u.age = parseInt(age)
-        u.gender = gender
+        u.gender = parseInt(gender)
         u.email = email
-        u.city = city
-        u.hobby = hobby
+        u.city = _params.city
+        u.hobby = _params.hobby
         u.birth = birth
         u.desc = desc
-        return true
       }
     })
     return {code: 200, msg: 'update success'}
@@ -100,14 +116,15 @@ export default(Mock, qs) => {
       birth,
       desc
     } = qs.parse(config.body)
-    Users.unshift({
-      id: Users.length + 1,
+    let _params = params(city, hobby)
+    users.unshift({
+      id: Mock.mock('@guid'),
       name: name,
       age: parseInt(age),
-      gender: gender,
+      gender: parseInt(gender),
       email: email,
-      city: city,
-      hobby: hobby,
+      city: _params.city,
+      hobby: _params.hobby,
       birth: birth,
       desc: desc
     })

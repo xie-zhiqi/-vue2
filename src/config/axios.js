@@ -36,7 +36,7 @@ ax.interceptors.request.use(config => {
 ax.interceptors.response.use(response => {
   const env = process.env.NODE_ENV
   // 控制台输出响应数据
-  if (env !== 'production' && env !== 'release') {
+  if (env === 'development' || env === 'testing') {
     console.log(response.data)
   }
   // 返回正确响应数据
@@ -50,7 +50,7 @@ ax.interceptors.response.use(response => {
     store.commit('MENU_RESET') // 重置菜单
   }
   // 错误数据显示方式
-  if (env !== 'production' && env !== 'release') {
+  if (env === 'development' || env === 'testing') {
     store.commit('RES_ERROR', response) // 响应错误数据
   } else {
     Message.error(msg) // 提示错误信息

@@ -1,13 +1,13 @@
 export default(Mock, qs) => {
   // 用户登录
   Mock.mock(/\/login/, config => {
-    const para = qs.parse(config.body)
-    if (para.user === 'admin' && para.pwd === 'wasd@007') {
+    let {user, pwd} = qs.parse(config.body)
+    if (user === 'admin' && pwd === 'wasd@007') {
       return {
         code: 200,
         msg: 'login success',
         data: {
-          user_id: 1,
+          user_id: Mock.mock('@guid'),
           real_name: 'Admin'
         }
       }
@@ -47,8 +47,8 @@ export default(Mock, qs) => {
 
   // 密码修改
   Mock.mock(/\/modify-pwd/, config => {
-    const para = qs.parse(config.body)
-    if (para.oldPwd === 'wasd@007') {
+    let {oldPwd} = qs.parse(config.body)
+    if (oldPwd === 'wasd@007') {
       return {code: 200, msg: 'password modify success'}
     }
     return {code: 500, msg: 'Your old password is incorrect'}

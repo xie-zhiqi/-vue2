@@ -1,11 +1,11 @@
 <template>
-<div id="layout">
-  <ComError></ComError>
-  <!-- ComError -->
-  <ComHeader></ComHeader>
-  <!-- ComHeader -->
-  <ComSidebar></ComSidebar>
-  <!-- ComSidebar -->
+<div id="sys-layout">
+  <SysError></SysError>
+  <!-- SysError -->
+  <SysHeader></SysHeader>
+  <!-- SysHeader -->
+  <SysSidebar></SysSidebar>
+  <!-- SysSidebar -->
   <div id="content">
     <!-- <Breadcrumb class="layout-breadcrumb">
       <BreadcrumbItem v-for="(item, index) in $route.matched" :key="index" :to="item.path">
@@ -19,23 +19,23 @@
     <!-- .layout-content -->
   </div>
   <!-- #content -->
-  <!-- <ComFooter></ComFooter> -->
-  <!-- ComFooter -->
+  <!-- <SysFooter></SysFooter> -->
+  <!-- SysFooter -->
 </div>
 </template>
 <script>
-// import ComFooter from '../partials/Footer'
-import ComError from '../partials/Error'
-import ComHeader from '../partials/Header'
-import ComSidebar from '../partials/Sidebar'
+// import SysFooter from '../partials/Footer'
+import SysError from '../partials/Error'
+import SysHeader from '../partials/Header'
+import SysSidebar from '../partials/Sidebar'
 
 export default {
-  name: 'layout',
+  name: 'SysLayout',
   components: {
-    // ComFooter,
-    ComError,
-    ComHeader,
-    ComSidebar
+    // SysFooter,
+    SysError,
+    SysHeader,
+    SysSidebar
   }
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
-<div id="sidebar">
+<div id="sys-sidebar">
   <Menu accordion :active-name="menuActive" :open-names="[menuOpened]" @on-select="handleMenuSelect">
     <template v-for="(item, index) in menu">
-    <!-- 一级菜单 -->
     <MenuItem v-if="!item.children" :key="index" :name="item.path">{{ item.name }}</MenuItem>
-    <!-- 二级菜单 -->
+    <!-- 一级菜单 -->
     <Submenu v-else :key="index" :name="item.path">
     <template slot="title">{{ item.name }}</template>
     <MenuItem v-for="(child, index) in item.children" :key="index" :name="child.path"> {{ child.name }} </MenuItem>
     </Submenu>
+    <!-- 二级菜单 -->
     </template>
   </Menu>
 </div>
@@ -20,7 +20,7 @@ import {
 } from 'vuex'
 
 export default {
-  name: 'sidebar',
+  name: 'SysSidebar',
   computed: {
     ...mapGetters({
       menu: 'getMenu',
@@ -37,7 +37,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#sidebar {
+#sys-sidebar {
     float: left;
     overflow: auto;
     width: 240px;

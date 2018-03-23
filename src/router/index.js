@@ -7,7 +7,7 @@ Vue.use(Router)
 // 路由配置
 const RouterConfig = {
   // mode: 'history',
-  routes: routes
+  routes
 }
 
 const router = new Router(RouterConfig)

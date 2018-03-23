@@ -17,7 +17,7 @@
 </template>
 <script>
 export default {
-  name: 'dashboard',
+  name: 'Dashboard',
   data() {
     return {
       msg: 'XX管理系统'

@@ -1,15 +1,15 @@
 <template>
-<div id="com-footer">
+<div id="sys-footer">
   <p class="copyright"> Copyright &copy; 2017-2020 </p>
 </div>
 </template>
 <script>
 export default {
-  name: 'com-footer'
+  name: 'SysFooter'
 }
 </script>
 <style lang="scss" scoped>
-#com-footer {
+#sys-footer {
     overflow: hidden;
     text-align: center;
     color: #999;

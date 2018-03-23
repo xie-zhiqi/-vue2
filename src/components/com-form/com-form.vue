@@ -1,33 +1,33 @@
 <template>
 <div id="com-form" @keyup.enter="handleSubmit('submit')">
-  <Form ref="comForm" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition">
+  <Form ref="form" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition" :style="formWidth">
     <slot> </slot>
-    <FormItem v-for="(item, index) in items" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth">
+    <FormItem v-for="(item, index) in items" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth" :style="item.width">
       <template v-if="!item.button">
+        <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize"></Input>
         <!-- 输入框 -->
-        <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :size="item.size" :placeholder="item.placeholder" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize"></Input>
-        <!-- 数字输入框 -->
         <InputNumber v-if="item.element === 'number'" :max="item.max" :min="item.min" v-model="model[item.prop]" :size="item.size" :disabled="item.disabled"></InputNumber>
-        <!-- 选择器 -->
-        <Select v-if="item.element === 'select'" v-model="model[item.prop]" :multiple="item.multiple" :disabled="item.disabled" :filterable="item.filterable" :size="item.size" :placeholder="item.placeholder" :style="{width: item.width + 'px'}">
+        <!-- 数字输入框 -->
+        <Select v-if="item.element === 'select'" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :filterable="item.filterable" :multiple="item.multiple" :style="item.selectWidth">
           <Option v-for="(opt, index) in item.option" :key="index" :value="opt.value" :disabled="opt.disabled">{{ opt.label }}</Option>
         </Select>
-        <!-- 日期选择器 -->
+        <!-- 选择器 -->
         <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled"></DatePicker>
-        <!-- 时间选择器 -->
+        <!-- 日期选择器 -->
         <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled"></TimePicker>
-        <!-- 单选框 -->
-        <RadioGroup v-if="item.element === 'radio'" v-model="model[item.prop]" :type="item.type" :size="item.size" :vertical="item.vertical">
-          <Radio v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled" :size="item.size">{{ opt.label }}</Radio>
+        <!-- 时间选择器 -->
+        <RadioGroup v-if="item.element === 'radio'" :type="item.type" v-model="model[item.prop]" :size="item.size" :vertical="item.vertical">
+          <Radio v-for="(opt, index) in item.option" :key="index" :label="opt.value" :size="item.size" :disabled="opt.disabled">{{ opt.label }}</Radio>
         </RadioGroup>
-        <!-- 多选框 -->
+        <!-- 单选框 -->
         <CheckboxGroup v-if="item.element === 'checkbox'" v-model="model[item.prop]" :size="item.size">
-          <Checkbox v-for="(opt, index) in item.option" :key="index" :label="opt.value" :disabled="opt.disabled" :size="item.size">{{ opt.label }}</Checkbox>
+          <Checkbox v-for="(opt, index) in item.option" :key="index" :label="opt.value" :size="item.size" :disabled="opt.disabled">{{ opt.label }}</Checkbox>
         </CheckboxGroup>
+        <!-- 多选框 -->
       </template>
       <template v-else>
+        <Button class="button" v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.name === 'submit' ? btnLoading : false" :icon="item.icon" @click="handleSubmit(item.name)">{{ item.text }}</Button>
         <!-- 按钮 -->
-        <Button v-for="(item, index) in item.button" :key="index" :type="item.type" :long="item.long" :disabled="item.disabled" :loading="item.name === 'submit' ? btnLoading : false" :icon="item.icon" @click="handleSubmit(item.name)" class="button">{{ item.text }}</Button>
       </template>
     </FormItem>
     <slot name="foot"> </slot>
@@ -37,9 +37,10 @@
 </template>
 <script>
 export default {
-  name: 'com-form',
+  name: 'ComForm',
   props: {
     inline: Boolean, // 行内表单模式
+    width: Number, // 表单宽度
     labelWidth: Number, // 表单域标签宽度
     labelPosition: String, // 表单域标签位置
     items: Array, // 表单元素数组
@@ -56,36 +57,61 @@ export default {
       default: false
     }
   },
+  computed: {
+    formWidth() {
+      let style = {}
+      if (this.width) {
+        style.width = `${this.width}px`
+      }
+      return style
+    }
+  },
+  mounted() {
+    this.items.map(val => {
+      if (val.width) {
+        val.width = {
+          width: `${val.width}px`
+        }
+      }
+      if (val.selectWidth) {
+        val.selectWidth = {
+          width: `${val.selectWidth}px`
+        }
+      }
+    })
+  },
   methods: {
-    validate() {
-      let validate = false
+    validate(callback) {
+      let validate = true
       // 对整个表单进行校验
-      this.$refs['comForm'].validate(valid => {
-        validate = valid
-      })
-      return validate
+      this.$refs['form'].validate(valid => (validate = valid))
+      callback(validate)
     },
-    validateField(name) {
+    validateField(prop) {
       // 对部分表单字段进行校验的方法
-      this.$refs['comForm'].validateField(name)
+      this.$refs['form'].validateField(prop)
     },
     resetFields() {
       // 对整个表单进行重置
-      this.$refs['comForm'].resetFields()
+      this.$refs['form'].resetFields()
     },
     handleSubmit(name) {
-      if (name === 'submit') {
-        // 对整个表单进行校验
-        this.$refs['comForm'].validate(valid => {
-          if (valid) {
-            this.$emit('on-submit')
-          }
-        })
-      } else if (name === 'reset') {
-        this.resetFields()
-        this.$emit('on-reset')
-      } else {
-        this.$emit('on-click')
+      switch (name) {
+        case 'submit':
+          // 对整个表单进行校验
+          this.$refs['form'].validate(valid => {
+            if (valid) {
+              this.$emit('on-submit')
+            }
+          })
+          break
+        case 'reset':
+          // 对整个表单进行重置
+          this.resetFields()
+          this.$emit('on-reset')
+          break
+        default:
+          this.$emit('on-click')
       }
     }
   }

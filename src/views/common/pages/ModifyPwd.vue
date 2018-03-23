@@ -1,6 +1,8 @@
 <template>
 <div id="modify-pwd" style="width: 400px;">
-  <ComForm ref="modifyPwd" :items="modifyPwdItems" :model="modifyPwd" :rules="modifyPwdRule" :btn-loading="loading" :label-width="110" @on-submit="handleSubmit('modifyPwd')" @on-click="handleCancel"></ComForm>
+  <Modal v-model="modal.visible" :title="modal.title" footer-hide>
+    <ComForm :key="modal.visible" ref="modifyPwd" :items="modifyPwdItems" :model="modifyPwd" :rules="modifyPwdRule" :btn-loading="loading" @on-submit="handleSubmit('modifyPwd')" @on-click="modal.visible = false" :width="360" :label-width="110"></ComForm>
+  </Modal>
 </div>
 </template>
 <script>
@@ -9,7 +11,7 @@ import {
 } from '@/services/app'
 
 export default {
-  name: 'modify-pwd',
+  name: 'ModifyPwd',
   data() {
     const validPwd = (rule, value, callback) => {
       if (!value) {
@@ -25,15 +27,22 @@ export default {
     const validPwdCheck = (rule, value, callback) => {
       if (!value) {
         callback(new Error('Please enter your password again'))
-      } else if (value !== this.modifyPwd.newPwd) {
-        callback(new Error('The two input password do not match!'))
       } else {
-        callback()
+        if (value !== this.modifyPwd.newPwd) {
+          callback(new Error('The two input password do not match!'))
+        } else {
+          callback()
+        }
       }
     }
     return {
       // 加载状态
       loading: false,
+      // 模态框属性
+      modal: {
+        title: '',
+        visible: false
+      },
       // 表单元素数组
       modifyPwdItems: [{
         label: 'Old password',
@@ -87,6 +96,12 @@ export default {
     }
   },
   methods: {
+    showModal() {
+      this.modal = {
+        title: 'Modify Pwd',
+        visible: true
+      }
+    },
     handleSubmit(name) {
       // 请求参数
       let para = Object.assign({}, this.modifyPwd)
@@ -94,15 +109,12 @@ export default {
       setTimeout(() => {
         modifyPwd(para).then(res => {
           this.$Message.success(res.msg)
-          this.handleCancel()
+          this.modal.visible = false
           this.loading = false
         }).catch(() => {
           this.loading = false
         })
       }, 500)
-    },
-    handleCancel() {
-      this.$emit('on-click')
     }
   }
 }

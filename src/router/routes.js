@@ -9,7 +9,7 @@ export default[
   }, {
     path: '/',
     redirect: '/',
-    name: 'Layout',
+    name: 'SysLayout',
     component: resolve => {
       require(['@/views/common/layouts/Layout'], resolve)
     },
@@ -24,7 +24,7 @@ export default[
         path: '/hello/hello-world',
         name: 'HelloWorld',
         component: resolve => {
-          require(['@/components/HelloWorld'], resolve)
+          require(['@/views/hello/HelloWorld'], resolve)
         }
       }, {
         path: '/manage/users',
@@ -36,7 +36,7 @@ export default[
     ]
   }, {
     path: '*',
-    name: '404',
+    name: 'NotFound',
     component: resolve => {
       require(['@/views/common/pages/NotFound'], resolve)
     }

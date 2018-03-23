@@ -1,5 +1,5 @@
 <template>
-<div id="com-header">
+<div id="sys-header">
   <div class="logo-info">
     <img class="logo" src="../../../assets/logo.png">
     <p class="name">XX管理系统 <br> <span class="sub">http://www.xx.com/</span></p>
@@ -19,17 +19,15 @@
     </Dropdown>
   </div>
   <!-- .login-info -->
-  <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ModifyPwd :key="modal.visible" @on-click="modal.visible = false"></ModifyPwd>
-  </Modal>
-  <!-- Modal -->
+  <ModifyPwd ref="modifyPwd"></ModifyPwd>
+  <!-- ModifyPwd -->
 </div>
 </template>
 <script>
 import ModifyPwd from '@/views/common/pages/ModifyPwd'
 
 export default {
-  name: 'com-header',
+  name: 'SysHeader',
   components: {
     ModifyPwd
   },
@@ -37,11 +35,6 @@ export default {
     return {
       // 用户名
       userName: '',
-      // 模态框属性对象
-      modal: {
-        title: '',
-        visible: false
-      },
       // 下拉菜单元素数组
       dropdownItems: [{
         label: 'Modify Pwd',
@@ -64,10 +57,7 @@ export default {
     handleDropdown(name) {
       // 修改密码
       if (name === 'modifyPwd') {
-        this.modal = {
-          title: 'Modify Pwd',
-          visible: true
-        }
+        this.$refs[name].showModal()
       }
       // 退出系统
       if (name === 'signout') {
@@ -87,7 +77,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#com-header {
+#sys-header {
     overflow: hidden;
     color: #fff;
     background-color: #3f525a;

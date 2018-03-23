@@ -1,57 +1,63 @@
 <template>
 <div id="users">
-  <Card>
-    <div slot="title">
-      <Icon type="ios-search-strong"></Icon> Search
-    </div>
-    <ComForm inline ref="search" :items="searchItems" :model="search" @on-submit="handleDataList(true)" @on-reset="handleDataList(true)"></ComForm>
-  </Card>
-  <br>
+  <Search :model="search" :btn-loading="list.loading" @on-search="handleGetList"></Search>
+  <!-- Search -->
   <Card>
     <div slot="title">
       <Icon type="ios-list-outline"></Icon> User List
     </div>
+    <!-- title -->
     <div slot="extra">
-      <a href="#" @click.prevent="handleCreate"> Create </a>
+      <a href="#" @click.prevent="handleCreate('edit')"> Create </a>
     </div>
-    <Table border :loading="loading.list" :columns="columns" :data="data"></Table>
-    <br>
-    <Page v-if="data.length" show-elevator show-total show-sizer placement="top" :current="page" :total="total" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
+    <!-- extra -->
+    <ComTablePage ref="list" :columns="columns" :loading="list.loading" :data="list.data" :total="list.total" @on-page-change="handleGetList"></ComTablePage>
+    <!-- ComTablePage -->
   </Card>
-  <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComForm :key="modal.visible" ref="user" :items="userItems" :model="user" :rules="userRule" :loading="loading.form" :btn-loading="loading.btn" :label-width="80" @on-submit="handleSubmit('user')" @on-click="modal.visible = false" style="width: 360px;"></ComForm>
-  </Modal>
+  <Edit ref="edit" :model="edit" @on-update="handleGetList"></Edit>
+  <!-- Edit -->
 </div>
 </template>
 <script>
 import {
-  getUserList,
   delUser,
-  editUser
+  getUserList
 } from '@/services/manage/users'
-import usersData from './UsersData'
+import Edit from './UserEdit'
+import Search from './UserSearch'
 
 export default {
+  name: 'Users',
+  components: {
+    Edit,
+    Search
+  },
   data() {
-    // 自定义验证(年龄)
-    const validAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('Age cannot be empty'))
-      }
-      // 模拟异步验证
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error('Please enter a numeric value'))
-        } else if (value < 18) {
-          callback(new Error('Must be over 18 years of age'))
-        } else {
-          callback()
-        }
-      }, 500)
-    }
     return {
-      ...usersData,
-      // 列表描述数据对象数组(用户)
+      // 表单数据(用户)
+      edit: {
+        name: '',
+        age: '',
+        gender: '',
+        email: '',
+        city: '',
+        hobby: [],
+        birth: '',
+        desc: ''
+      },
+      // 初始表单数据(用户)
+      init: '',
+      // 表单数据(搜索)
+      search: {
+        name: ''
+      },
+      // 列表属性
+      list: {
+        data: [], // 结构化数据
+        total: 0, // 数据总数
+        loading: false // 加载状态
+      },
+      // 表格列的配置描述(用户)
       columns: [{
         title: 'Name',
         key: 'name'
@@ -61,16 +67,34 @@ export default {
       }, {
         title: 'Gender',
         key: 'gender',
-        render: (h, params) => h('span', params.row.gender === '1' ? 'Male' : 'Female')
+        render: (h, params) => h('span', params.row.gender === 1 ? 'Male' : 'Female')
       }, {
         title: 'E-mail',
         key: 'email'
       }, {
         title: 'City',
-        key: 'city'
+        key: 'city',
+        render: (h, params) => {
+          let city = params.row.city
+          for (let key in city) {
+            city = city[key]
+          }
+          return h('span', city)
+        }
       }, {
         title: 'Birth',
         key: 'birth'
+      }, {
+        title: 'Hobby',
+        key: 'hobby',
+        render: (h, params) => {
+          let hobby = params.row.hobby
+          let hobbys = []
+          for (let key in hobby) {
+            hobbys.unshift(hobby[key])
+          }
+          return h('span', hobbys.join())
+        }
       }, {
         title: 'Operation',
         key: 'operation',
@@ -120,121 +144,33 @@ export default {
             }), 'Delete'])
           ])
         ])
-      }],
-      // 列表数据
-      data: [],
-      // 当页页码
-      page: 1,
-      // 每页条数
-      pageSize: 10,
-      // 数据总数
-      total: 0,
-      // 加载状态
-      loading: {
-        list: false, // 列表
-        form: false, // 表单
-        btn: false // 按钮
-      },
-      // 模态框属性对象
-      modal: {
-        title: '',
-        visible: false
-      },
-      // 表单数据对象(搜索)
-      search: {
-        name: ''
-      },
-      // 表单数据对象(用户)
-      user: {
-        name: '',
-        age: '',
-        gender: '',
-        email: '',
-        city: '',
-        hobby: [],
-        birth: '',
-        desc: ''
-      },
-      // 初始表单数据对象(用户)
-      initUser: {},
-      // 表单验证对象(用户)
-      userRule: {
-        name: [{
-          required: true,
-          message: 'The name cannot be empty',
-          trigger: 'blur'
-        }],
-        age: [{
-          required: true,
-          validator: validAge,
-          trigger: 'blur'
-        }],
-        email: [{
-          required: true,
-          message: 'Mailbox cannot be empty',
-          trigger: 'blur'
-        }, {
-          message: 'Incorrect email format',
-          trigger: 'blur',
-          type: 'email'
-        }],
-        city: [{
-          required: true,
-          message: 'Please select the city',
-          trigger: 'change'
-        }],
-        birth: [{
-          required: true,
-          message: 'Please select the date',
-          trigger: 'change',
-          type: 'date'
-        }],
-        gender: [{
-          required: true,
-          message: 'Please select gender',
-          trigger: 'change'
-        }],
-        hobby: [{
-          required: true,
-          message: 'Choose at least one hobby',
-          trigger: 'change',
-          type: 'array',
-          min: 1
-        }, {
-          message: 'Choose three hobbies at best',
-          trigger: 'change',
-          type: 'array',
-          max: 3
-        }],
-        desc: [{
-          required: true,
-          message: 'Please enter a personal introduction',
-          trigger: 'blur'
-        }, {
-          message: 'Introduce no less than 20 words',
-          trigger: 'blur',
-          type: 'string',
-          min: 20
-        }]
-      }
+      }]
     }
   },
   mounted() {
-    this.initUser = Object.assign({}, this.user) // 复制初始表单数据对象
-    this.handleDataList() // 获取用户列表
+    this.init = Object.assign({}, this.edit) // 复制初始表单数据对象
+    this.handleGetList() // 获取列表数据
   },
   methods: {
     /**
      * 获取用户列表
-     * @param  {boolean} type 是否使用搜索, 默认值, false
+     * @param  {boolean} type 是否使用搜索, 默认值, undefined
      */
-    handleDataList(type) {
-      this.loading.list = true
-      this.page = type ? 1 : this.page
-      let para = {
-        name: this.search.name,
-        page: this.page,
-        pageSize: this.pageSize
+    handleGetList(type) {
+      this.list.loading = true
+      let page = this.$refs['list'].getPage()
+      if (type) {
+        page.current = 1
+        this.$refs['list'].resetCurrent()
+      }
+      let para = this.search
+      // 请求参数
+      para = {
+        ...para,
+        pagePara: {
+          current: page.current,
+          pageSize: page.pageSize
+        }
       }
       // 模拟异步请求(查询)
       setTimeout(() => {
@@ -243,36 +179,22 @@ export default {
             users,
             total
           } = res.data
-          this.data = users
-          this.total = total
-          this.loading.list = false
+          this.list = {
+            data: users,
+            total: total,
+            loading: false
+          }
         }).catch(() => {
-          this.loading.list = false
+          this.list.loading = false
         })
       }, 500)
-    },
-    /**
-     * 改变页码
-     * @param  {number} page 改变后的页码
-     */
-    handlePageChange(page) {
-      this.page = page
-      this.handleDataList()
-    },
-    /**
-     * 切换每页条数
-     * @param  {number} page 切换后的每页条数
-     */
-    handlePageSizeChange(page) {
-      this.pageSize = page
-      this.handleDataList()
     },
     /**
      * 删除用户
      * @param  {object} row 当前行数据
      */
     handleDelete(row) {
-      this.loading.list = true
+      this.list.loading = true
       let para = {
         id: row.id
       }
@@ -280,9 +202,9 @@ export default {
       setTimeout(() => {
         delUser(para).then(res => {
           this.$Message.success(res.msg)
-          this.handleDataList()
+          this.handleGetList()
         }).catch(() => {
-          this.loading.list = false
+          this.list.loading = false
         })
       }, 500)
     },
@@ -291,79 +213,33 @@ export default {
      * @param  {object} row 当前行数据
      */
     handleEdit(row) {
-      this.handleModal(true)
+      this.$refs['edit'].showModal('edit')
       // 模拟异步请求(获取详情)
       setTimeout(() => {
-        this.user = Object.assign({}, row)
-        this.handlePatch() // 获取补丁数据
+        let edit = Object.assign({}, row)
+        let birth = row.birth ? this.$Utils.formatDate.parse(row.birth, 'yyyy-MM-dd') : ''
+        let city
+        for (let key in row.city) {
+          city = key
+        }
+        let hobby = []
+        for (let key in row.hobby) {
+          hobby.push(key)
+        }
+        this.edit = {
+          ...edit,
+          city,
+          birth,
+          hobby
+        }
+        this.$refs['edit'].getPatch() // 获取补丁数据
       }, 800)
     },
     // 新增界面
-    handleCreate() {
-      this.handleModal() // 显示模态框
-      this.handlePatch() // 获取补丁数据
-    },
-    /**
-     * 模态框显示
-     * @param  {boolean} type 是否显示编辑界面, 默认值, false
-     */
-    handleModal(type) {
-      this.loading.form = true // 表单加载状态
-      this.modal = {
-        title: 'Edit',
-        visible: true
-      }
-      if (!type) {
-        this.modal.title = 'Create'
-        this.user = Object.assign({}, this.initUser)
-      }
-    },
-    // 获取补丁数据
-    handlePatch() {
-      let {
-        patch,
-        total
-      } = this.$Utils.patchData(this.userItems) // 返回补丁对象数据和对象总数
-      let _false = false
-      if (total === 0) {
-        this.loading.form = _false // 表单加载状态
-        return _false
-      }
-      patch.map(obj => {
-        if (obj.prop === 'city') {
-          // 模拟异步请求(获取补丁数据-城市)
-          setTimeout(() => {
-            obj.option = this.city
-            total--
-            this.loading.form = total === 0 ? _false : true // 补丁完成状态
-          }, 800)
-        }
-        if (obj.prop === 'hobby') {
-          // 模拟异步请求(获取补丁数据-爱好)
-          setTimeout(() => {
-            obj.option = this.hobby
-            total--
-            this.loading.form = total === 0 ? _false : true // 补丁完成状态
-          }, 400)
-        }
-      })
-    },
-    // 表单提交
-    handleSubmit() {
-      this.loading.btn = true
-      let para = Object.assign({}, this.user)
-      para.birth = para.birth ? this.$Utils.formatDate.format(new Date(para.birth), 'yyyy-MM-dd') : ''
-      // 模拟异步请求(编辑 Or 新增)
-      setTimeout(() => {
-        editUser(para).then(res => {
-          this.$Message.success(res.msg)
-          this.handleDataList()
-          this.loading.btn = false
-          this.modal.visible = false
-        }).catch(() => {
-          this.loading.btn = false
-        })
-      }, 500)
+    handleCreate(name) {
+      this.edit = this.init
+      this.$refs[name].showModal() // 显示模态框
+      this.$refs[name].getPatch() // 获取补丁数据
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-<div v-if="resError" id="error">
+<div v-if="resError" id="sys-error">
   <Alert :type="resError.status === 200 ? 'warning' : 'error'" banner closable @on-close="handleClose">
     <h3 class="title">Status Code:
       <span :style="{color: resError.status === 200 ? '#093' : '#f33'}">
@@ -19,7 +19,7 @@ import {
 } from 'vuex'
 
 export default {
-  name: 'error',
+  name: 'SysError',
   computed: {
     ...mapGetters({
       resError: 'getResError'
@@ -33,7 +33,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#error {
+#sys-error {
     position: absolute;
     z-index: 999;
     top: 0;
