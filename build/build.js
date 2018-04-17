@@ -1,7 +1,22 @@
 'use strict'
 require('./check-versions')()
 
-process.env.NODE_ENV = 'production'
+// process.env.NODE_ENV = 'production'
+let msg
+const TARGET = process.env.npm_lifecycle_event
+switch (TARGET) {
+  case 'test':
+    process.env.NODE_ENV = 'test'
+    msg = 'building for test...'
+    break;
+  case 'release':
+    process.env.NODE_ENV = 'release'
+    msg = 'building for release...'
+    break;
+  default:
+    process.env.NODE_ENV = 'production'
+    msg = 'building for production...'
+}
 
 const ora = require('ora')
 const rm = require('rimraf')
@@ -11,7 +26,7 @@ const webpack = require('webpack')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
 
-const spinner = ora('building for production...')
+const spinner = ora(msg)
 spinner.start()
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {

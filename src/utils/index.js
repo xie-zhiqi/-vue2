@@ -9,7 +9,6 @@ function padding(s, len) {
 }
 
 export default {
-  // 日期格式
   formatDate: {
     format: function(date, pattern) {
       pattern = pattern || DEFAULT_PATTERN

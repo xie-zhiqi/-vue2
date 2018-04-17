@@ -1,42 +1,63 @@
 <template>
 <div id="not-found">
-  <h1 class="title">404</h1>
-  <h2>抱歉，您所访问的页面不存在！</h2>
-  <h3 class="content"> 系统将在
-    <span class="count">{{ count }}</span>
-    秒后为您跳转
-  </h3>
+  <div class="head">
+    <h1> What have you done? </h1>
+    <h5> Now Go Back Using Below LInk </h5>
+    <span class="status-code">
+      <ICountUp :startVal="startVal" :endVal="endVal" :decimals="decimals" :duration="duration" :options="options" @ready="onReady"></ICountUp>
+    </span>
+    <h2>! ERROR DECETED !</h2>
+  </div>
+  <h3 class="icon"> <Icon type="ios-lightbulb-outline" :size="100"></Icon> </h3>
+  <Button type="primary"> <a href="/" style="color:#fff;">GO TO HOME PAGE</a> </Button>
 </div>
 </template>
 <script>
+import ICountUp from 'vue-countup-v2'
 export default {
   name: 'NotFound',
+  components: {
+    ICountUp
+  },
   data: () => ({
-    count: 3
+    startVal: 100,
+    endVal: 404,
+    decimals: 0,
+    duration: 2.5,
+    options: {
+      useEasing: true,
+      useGrouping: true,
+      separator: ',',
+      decimal: '.',
+      prefix: '',
+      suffix: ''
+    }
   }),
-  mounted() {
-    setInterval(() => {
-      this.count -= 1
-    }, 1000)
-    setTimeout(() => {
-      const url = localStorage.getItem('menuActive') || '/'
-      this.$router.push(url) // 路由跳转
-    }, 3000)
+  methods: {
+    onReady(instance, CountUp) {
+      const that = this
+      instance.update(that.endVal)
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
 #not-found {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
     text-align: center;
-    .title {
-        color: coral;
+    color: #fff;
+    background-color: #B396FF;
+    .head {
+        padding-top: 60px;
     }
-    .content {
-        color: green;
+    .status-code {
+        color: #5066BF;
+        font-size: 150px;
     }
-    .count {
-        color: red;
-        font-size: 24px;
+    .icon {
+        padding: 20px 0 16px;
     }
 }
 </style>

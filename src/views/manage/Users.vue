@@ -25,7 +25,6 @@ import {
 } from '@/services/manage/users'
 import Edit from './UserEdit'
 import Search from './UserSearch'
-
 export default {
   name: 'Users',
   components: {
@@ -201,7 +200,7 @@ export default {
       // 模拟异步请求(删除)
       setTimeout(() => {
         delUser(para).then(res => {
-          this.$Message.success(res.msg)
+          this.$Message.success(res.error.msg)
           this.handleGetList()
         }).catch(() => {
           this.list.loading = false
@@ -237,7 +236,7 @@ export default {
     },
     // 新增界面
     handleCreate(name) {
-      this.edit = this.init
+      this.edit = Object.assign({}, this.init)
       this.$refs[name].showModal() // 显示模态框
       this.$refs[name].getPatch() // 获取补丁数据
     }

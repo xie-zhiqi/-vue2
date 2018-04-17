@@ -1,4 +1,4 @@
-import {ax} from '@/config/axios'
+import ax from '@/config/axios'
 
 export const getUserList = params => ax.get('/user-list', {params: params}) // 列表
 export const delUser = params => ax.post('/user-delete', params) // 删除

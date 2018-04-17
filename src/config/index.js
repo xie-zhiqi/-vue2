@@ -1,25 +1,32 @@
 // 系统参数配置
-// const version = 'v1'
-let host
-switch (process.env.NODE_ENV) {
+let url = {
+  production: 'https://api.prod.xx.com',
+  release: 'https://api.release.xx.com',
+  test: 'https://api.test.xx.com',
+  development: 'http://api.dev.xx.com'
+}
+let baseURL
+let env = process.env.NODE_ENV
+switch (env) {
   case 'production':
-    host = 'https://api.xx.com'
+    baseURL = url[env]
     break
   case 'release':
-    host = 'https://api.r.xx.com'
+    baseURL = url[env]
     break
-  case 'testing':
-    host = 'https://api.t.xx.com'
+  case 'test':
+    baseURL = url[env]
     break
   default:
-    host = 'http://api.d.xx.com'
+    baseURL = url[env]
 }
 
 export default {
+  url: url, // 接口地址
+  baseURL: baseURL, // 基础地址
   // headers: {
-  //   Accept: `application/vnd.xx.${version}+json`
+  //   ContentType: 'application/x-www-form-urlencoded'
   // },
-  baseURL: host, // 接口地址
-  timeout: 60000, // 请求超时
-  version: '1.0.0' // 应用版本
+  timeout: 10000, // 请求超时
+  version: '0.0.1' // 应用版本
 }

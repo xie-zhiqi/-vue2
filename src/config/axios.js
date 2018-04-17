@@ -2,70 +2,77 @@ import axios from 'axios'
 import qs from 'qs'
 import {Message} from 'iview'
 import config from '@/config'
-import router from '@/router'
 import store from '@/store'
 
+// 创建 axios 实例
+const {baseURL, timeout} = config
 const ax = axios.create({
-  // withCredentials: true,  配置默认跨域访问凭证(Cookie)
-  baseURL: sessionStorage.getItem('host') || config.baseURL, // 配置默认接口地址
-  timeout: config.timeout // 配置默认请求超时
+  // 是否跨站点访问控制请求使用凭证(Cookie)
+  withCredentials: true,
+  baseURL: localStorage.getItem('newURL') || baseURL, // 配置接口地址
+  // 修改请求的数据再发送到服务器
+  transformRequest: [
+    (data, headers) => qs.stringify(data) // 序列化请求的数据
+  ],
+  timeout: timeout // 配置请求超时
 })
 
-// 获取用户TOKEN
-// const user = JSON.parse(localStorage.getItem('user'))
-// if (user) {
-// 配置用户TOKEN
-// ax.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
-// }
 // 配置默认请求头
-// ax.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-// 配置版本号
-// ax.defaults.headers.common['Accept'] = config.headers.Accept
-// ax.defaults.headers.post['Accept'] = config.headers.Accept
+// ax.defaults.headers.post['Content-Type'] = headers.ContentType
 
-// 添加请求拦截器
-ax.interceptors.request.use(config => {
-  // 参数序列化
-  config.data = qs.stringify(config.data)
-  return config
-}, error => {
-  return Promise.reject(error)
-})
-
-// 添加响应拦截器
+// 添加 axios 实例响应拦截器
 ax.interceptors.response.use(response => {
   const env = process.env.NODE_ENV
-  // 控制台输出响应数据
-  if (env === 'development' || env === 'testing') {
-    console.log(response.data)
-  }
-  // 返回正确响应数据
-  const {code, msg} = response.data
-  if (code === 200) {
-    return response.data
-  }
-  // TOKEN 失效
-  if (code === 5000) {
-    router.push('/login') // 路由跳转登录页
-    store.commit('MENU_RESET') // 重置菜单
-  }
-  // 错误数据显示方式
-  if (env === 'development' || env === 'testing') {
+  const {data} = response
+  const {code, msg} = data['error']
+  /*
+    const AUTH_TOKEN = data['data']['auth_token'] // 获取用户 AUTH_TOKEN
+    if (AUTH_TOKEN) {
+      // 配置默认参数
+      ConfigDefaults(AUTH_TOKEN)
+    }
+    // 用户 TOKEN 失效
+    if (code === 3000) {
+      store.commit('MENU_RESET') // 重置菜单
+    }
+   */
+  // 判断开发环境
+  if (env === 'development' || env === 'test') {
+    if (code === 0) {
+      console.log(data) // 控制台输出响应数据
+      return response.data // 响应正确的数据
+    }
     store.commit('RES_ERROR', response) // 响应错误数据
+  } else if (code === 0) {
+    return response.data // 响应正确的数据
   } else {
     Message.error(msg) // 提示错误信息
   }
 }, error => {
-  const {status, timeout} = error.request
-  if (status === 0 && timeout === config.timeout) {
-    Message.error({content: '服务器断开连接 或 请求超时 请检查网络状态', duration: 8})
+  const {response, message} = error
+  if (response) {
+    store.commit('RES_ERROR', response) // 响应错误数据
   } else {
-    store.commit('RES_ERROR', error.response) // 响应错误数据
+    if (message === 'Network Error') {
+      Message.error({content: '服务器断开连接, 请检查网络状态!'})
+    } else {
+      Message.error({content: message})
+    }
   }
-  return Promise.reject(error)
 })
 
-export {
-  ax,
-  config
-}
+/*
+  // 配置默认参数
+  const ConfigDefaults = AUTH_TOKEN => {
+    // 配置用户 AUTH_TOKEN
+    ax.defaults.headers.common['Authorization'] = AUTH_TOKEN
+  }
+
+  // 刷新重新配置默认参数
+  const user = JSON.parse(sessionStorage.getItem('user'))
+  if (user) {
+    ConfigDefaults(user['auth_token'])
+  }
+ */
+
+export default ax

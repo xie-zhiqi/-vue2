@@ -1,7 +1,7 @@
 <template>
-<div id="modify-pwd" style="width: 400px;">
+<div id="modify-pwd">
   <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComForm :key="modal.visible" ref="modifyPwd" :items="modifyPwdItems" :model="modifyPwd" :rules="modifyPwdRule" :btn-loading="loading" @on-submit="handleSubmit('modifyPwd')" @on-click="modal.visible = false" :width="360" :label-width="110"></ComForm>
+    <ComForm ref="modifyPwd" :key="modal.visible" :items="modifyPwdItems" :model="modifyPwd" :rules="modifyPwdRule" :btn-loading="loading" @on-submit="handleSubmit('modifyPwd')" @on-click="modal.visible = false" :width="360" :label-width="110"></ComForm>
   </Modal>
 </div>
 </template>
@@ -9,7 +9,6 @@
 import {
   modifyPwd
 } from '@/services/app'
-
 export default {
   name: 'ModifyPwd',
   data() {
@@ -47,17 +46,17 @@ export default {
       modifyPwdItems: [{
         label: 'Old password',
         prop: 'oldPwd',
-        placeholder: 'Enter your old password',
+        placeholder: 'Please enter your old password',
         type: 'password'
       }, {
         label: 'New password',
         prop: 'newPwd',
-        placeholder: 'Enter your new password',
+        placeholder: 'Please enter your new password',
         type: 'password'
       }, {
         label: 'Password again',
         prop: 'pwdAgain',
-        placeholder: 'Enter your password again',
+        placeholder: 'Please enter your password again',
         type: 'password'
       }, {
         button: [{
@@ -103,14 +102,12 @@ export default {
       }
     },
     handleSubmit(name) {
-      // 请求参数
-      let para = Object.assign({}, this.modifyPwd)
       this.loading = true
       setTimeout(() => {
-        modifyPwd(para).then(res => {
-          this.$Message.success(res.msg)
-          this.modal.visible = false
+        modifyPwd(this.modifyPwd).then(res => {
+          this.$Message.success(res.error.msg)
           this.loading = false
+          this.modal.visible = false
         }).catch(() => {
           this.loading = false
         })

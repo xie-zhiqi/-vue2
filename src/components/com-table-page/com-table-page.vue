@@ -1,8 +1,8 @@
 <template>
 <div id="com-table-page">
-  <Table border ref="table" :loading="loading" :columns="columns" :data="data"></Table>
+  <Table border ref="table" :loading="loading" :columns="columns" :data="data" @on-selection-change="handleSelectionChange"></Table>
   <!-- Table -->
-  <Page v-if="data.length && !pageHide" class-name="page" show-elevator show-total show-sizer placement="top" :total="total" :current="current" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
+  <Page v-if="total && total > pageSize && !pageHide" class-name="page" show-elevator show-total show-sizer placement="top" :total="total" :current="current" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
   <!-- Page -->
 </div>
 </template>
@@ -47,6 +47,14 @@ export default {
       if (this.current === 1) {
         this.$emit('on-page-change')
       }
+    },
+    // 在多选模式下有效, 点击全选时触发
+    selectAll(status) {
+      this.$refs['table'].selectAll(status)
+    },
+    // 在多选模式下有效, 只要选中项发生变化时就会触发
+    handleSelectionChange(selection) {
+      this.$emit('on-selection-change', selection)
     }
   }
 }

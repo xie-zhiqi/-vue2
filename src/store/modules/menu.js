@@ -2,9 +2,9 @@ import router from '@/router'
 import {getMenuList} from '@/services/app'
 
 const state = {
-  menu: JSON.parse(localStorage.getItem('menu')) || [], // 主菜单
-  menuActive: localStorage.getItem('menuActive') || '/', // 激活主菜单
-  menuOpened: localStorage.getItem('menuOpened') || '' // 展开子菜单
+  menu: JSON.parse(sessionStorage.getItem('menu')) || [], // 主菜单
+  menuActive: sessionStorage.getItem('menuActive') || '/', // 激活主菜单
+  menuOpened: sessionStorage.getItem('menuOpened') || '' // 展开子菜单
 }
 
 const getters = {
@@ -16,24 +16,24 @@ const getters = {
 const mutations = {
   // 获取菜单
   MENU: (state, data) => {
-    state.menu = data
-    localStorage.setItem('menu', JSON.stringify(data))
+    state.menu = data // 获取菜单
+    sessionStorage.setItem('menu', JSON.stringify(data))
   },
-  // 激活菜单
+  // 选择菜单
   MENU_SELECT: (state, data) => {
-    const open = `/${data.split('/')[1]}`
     router.push(data) // 路由跳转
-    state.menuActive = data // 激活菜单
-    state.menuOpened = open // 展开菜单
-    localStorage.setItem('menuActive', data)
-    localStorage.setItem('menuOpened', open)
+    state.menuActive = data // 选择菜单
+    state.menuOpened = `/${data.split('/')[1]}` // 展开菜单
+    sessionStorage.setItem('menuActive', data)
+    sessionStorage.setItem('menuOpened', state.menuOpened)
   },
   // 重置菜单
   MENU_RESET: (state) => {
+    router.push('/login') // 路由跳转
     state.menu = []
     state.menuActive = '/'
     state.menuOpened = ''
-    localStorage.clear()
+    sessionStorage.clear()
   }
 }
 
@@ -42,7 +42,7 @@ const actions = {
   handleMenu: ({commit}) => {
     getMenuList().then(res => {
       commit('MENU', res.data)
-      router.push('/') // 路由跳转首页
+      commit('MENU_SELECT', '/')
     })
   }
   // 激活菜单

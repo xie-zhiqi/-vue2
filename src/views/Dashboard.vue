@@ -1,9 +1,9 @@
 <template>
 <div id="dashboard">
-  <img class="logo" src="../assets/logo.png">
+  <img class="logo" src="../assets/logo.png" alt="logo">
   <h1>{{ msg }}</h1>
   <h2>iView UI Componests</h2>
-  <h3>iView 组件
+  <h3>iView UI 组件库
     <a href="https://www.iviewui.com/docs/guide/install" target="_blank">https://www.iviewui.com/docs/guide/install</a>
   </h3>
   <Button type="info">Info</Button>
@@ -18,11 +18,9 @@
 <script>
 export default {
   name: 'Dashboard',
-  data() {
-    return {
-      msg: 'XX管理系统'
-    }
-  }
+  data: () => ({
+    msg: '中后台模板'
+  })
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -40,7 +38,7 @@ export default {
         margin: 20px 0;
         font-weight: 400;
         a {
-            color: #42b983;
+            color: #51b883;
         }
     }
 }

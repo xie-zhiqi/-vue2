@@ -1,10 +1,9 @@
 <template>
 <div v-if="resError" id="sys-error">
-  <Alert :type="resError.status === 200 ? 'warning' : 'error'" banner closable @on-close="handleClose">
-    <h3 class="title">Status Code:
+  <Alert banner closable :type="resError.status === 200 ? 'warning' : 'error'" @on-close="handleClose">
+    <h3 class="title"> Status Code:
       <span :style="{color: resError.status === 200 ? '#093' : '#f33'}">
-        <Icon :type="resError.status === 200 ? 'checkmark-circled' : 'close-circled'"></Icon>
-        {{ resError.statusCode }}
+        <Icon :type="resError.status === 200 ? 'checkmark-circled' : 'close-circled'"></Icon> {{ resError.statusCode }}
       </span>
     </h3>
     <div slot="desc" class="desc">
@@ -17,7 +16,6 @@
 import {
   mapGetters
 } from 'vuex'
-
 export default {
   name: 'SysError',
   computed: {
@@ -27,7 +25,7 @@ export default {
   },
   methods: {
     handleClose() {
-      this.$store.commit('RES_ERROR', '') // 清空响应错误数据
+      this.$store.commit('RES_ERROR') // 关闭错误数据
     }
   }
 }
@@ -54,7 +52,6 @@ export default {
     .ivu-alert-warning {
         background-color: rgba(255, 255, 204, 0.8);
         .desc {
-            color: #c90;
             color: #333;
             border: 1px dashed #c90;
         }

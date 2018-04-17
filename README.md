@@ -7,18 +7,23 @@
 
 ## 特性
 
-基于 Vue, iView, Axios, Mock 企业级后台管理系统最佳实践。
+1.  一个企业级中后台管理系统典型模板
+2.  基于 Vue 官方命令行工具 vue-cli 脚手架搭建
+3.  使用 Vue 官方核心插件 Vue Router, Vuex
+4.  使用 Vue 官方建议的 Axios 插件进行 HTTP 操作
+5.  采用时下热门的 UI 组件库 iView
+6.  通过 Mock.js 插件拦截 Ajax 请求并生成随机数据
 
 ### 技术栈
 
--   Axios @0.x
--   iView @2.x
--   Mockjs @1.x
--   Vue @2.5.x
--   Vue-Router @3.x
--   Vuex @3.x
--   ES6
--   SCSS
+-   axios @0.x
+-   iview @2.x
+-   mockjs @1.x
+-   vue @2.5.x
+-   vue-router @3.x
+-   vuex @3.x
+-   ECMAScript 6
+-   Scss
 
 ## 开发构建
 
@@ -131,7 +136,7 @@ users(Mock, qs)
 克隆项目文件:
 
 ```bash
-git clone https://gitee.com/cssui/vue-admin-block.git
+git clone git@gitee.com:cssui/vue-admin-block.git
 ```
 
 进入项目安装依赖:
@@ -140,7 +145,7 @@ git clone https://gitee.com/cssui/vue-admin-block.git
 # 安装依赖
 yarn
 # 或
-npm i
+npm install
 ```
 
 开发：
@@ -163,4 +168,7 @@ npm run release
 
 # 构建最小生产
 npm run build
+
+# 构建最小生产并查看包分析器报告
+npm run build --report
 ```

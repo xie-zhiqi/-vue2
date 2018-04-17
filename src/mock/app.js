@@ -4,21 +4,27 @@ export default(Mock, qs) => {
     let {user, pwd} = qs.parse(config.body)
     if (user === 'admin' && pwd === 'wasd@007') {
       return {
-        code: 200,
-        msg: 'login success',
         data: {
           user_id: Mock.mock('@guid'),
+          auth_token: Mock.mock('@guid'),
           real_name: 'Admin'
+        },
+        error: {
+          code: 0,
+          msg: 'Login success'
         }
       }
     }
-    return {code: 500, msg: 'Your account username or password is incorrect'}
+    return {
+      error: {
+        code: 4000,
+        msg: 'Your account username or password is incorrect'
+      }
+    }
   })
 
   // 菜单获取
   Mock.mock(/\/menu/, {
-    code: 200,
-    msg: 'get menu success',
     data: [
       {
         name: 'Dashboard',
@@ -42,15 +48,29 @@ export default(Mock, qs) => {
           }
         ]
       }
-    ]
+    ],
+    error: {
+      code: 0,
+      msg: 'Get menu success'
+    }
   })
 
   // 密码修改
   Mock.mock(/\/modify-pwd/, config => {
     let {oldPwd} = qs.parse(config.body)
     if (oldPwd === 'wasd@007') {
-      return {code: 200, msg: 'password modify success'}
+      return {
+        error: {
+          code: 0,
+          msg: 'Password modify success'
+        }
+      }
     }
-    return {code: 500, msg: 'Your old password is incorrect'}
+    return {
+      error: {
+        code: 4000,
+        msg: 'Your old password is incorrect'
+      }
+    }
   })
 }

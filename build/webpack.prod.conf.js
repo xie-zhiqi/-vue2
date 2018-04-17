@@ -11,7 +11,23 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const env = require('../config/prod.env')
+// const env = require('../config/prod.env')
+let env
+const TARGET = process.env.npm_lifecycle_event
+switch (TARGET) {
+  case 'test':
+    env = {
+      NODE_ENV: '"test"'
+    }
+    break;
+  case 'release':
+    env = {
+      NODE_ENV: '"release"'
+    }
+    break;
+  default:
+    env = require('../config/prod.env')
+}
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -74,7 +90,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    // keep module.id stable when vender modules does not change
+    // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),

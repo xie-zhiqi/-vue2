@@ -1,8 +1,6 @@
 .DS_Store
 node_modules/
-/dist_production/
-/dist_release/
-/dist_testing/
+/dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -14,3 +12,6 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+*.rar
+*.tar*
+*.zip

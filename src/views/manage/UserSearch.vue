@@ -15,28 +15,26 @@ export default {
     model: Object,
     btnLoading: Boolean
   },
-  data() {
-    return {
-      // 表单元素对象(搜索)
-      searchItems: [{
-        label: 'Name',
-        prop: 'name',
-        placeholder: 'Search Name',
-        icon: 'ios-search-strong',
-        labelWidth: 60
+  data: () => ({
+    // 表单元素对象(搜索)
+    searchItems: [{
+      label: 'Name',
+      prop: 'name',
+      placeholder: 'Search Name',
+      icon: 'ios-search-strong',
+      labelWidth: 60
+    }, {
+      button: [{
+        name: 'submit',
+        type: 'primary',
+        text: 'Search'
       }, {
-        button: [{
-          name: 'submit',
-          type: 'primary',
-          text: 'Search'
-        }, {
-          name: 'reset',
-          type: 'ghost',
-          text: 'Reset'
-        }]
+        name: 'reset',
+        type: 'ghost',
+        text: 'Reset'
       }]
-    }
-  },
+    }]
+  }),
   methods: {
     handleSearch() {
       this.$emit('on-search', true)

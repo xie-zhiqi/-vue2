@@ -1,12 +1,12 @@
 <template>
 <div id="sys-sidebar">
   <Menu accordion :active-name="menuActive" :open-names="[menuOpened]" @on-select="handleMenuSelect">
-    <template v-for="(item, index) in menu">
-    <MenuItem v-if="!item.children" :key="index" :name="item.path">{{ item.name }}</MenuItem>
+    <template v-for="item in menu">
+    <MenuItem v-if="!item.children" :key="item.path" :name="item.path">{{ item.name }}</MenuItem>
     <!-- 一级菜单 -->
-    <Submenu v-else :key="index" :name="item.path">
+    <Submenu v-else :key="item.path" :name="item.path">
     <template slot="title">{{ item.name }}</template>
-    <MenuItem v-for="(child, index) in item.children" :key="index" :name="child.path"> {{ child.name }} </MenuItem>
+    <MenuItem v-for="child in item.children" :key="child.path" :name="child.path"> {{ child.name }} </MenuItem>
     </Submenu>
     <!-- 二级菜单 -->
     </template>
@@ -18,7 +18,6 @@ import {
   // mapActions,
   mapGetters
 } from 'vuex'
-
 export default {
   name: 'SysSidebar',
   computed: {
@@ -31,7 +30,7 @@ export default {
   methods: {
     // ...mapActions(['handleMenuSelect'])
     handleMenuSelect(name) {
-      this.$store.commit('MENU_SELECT', name)
+      this.$store.commit('MENU_SELECT', name) // 选择菜单
     }
   }
 }
@@ -42,11 +41,14 @@ export default {
     overflow: auto;
     width: 240px;
     height: calc(100vh - 60px);
-    background-color: #efeff1;
+    background-color: #efefef;
     .ivu-menu-vertical {
-        background-color: #efeff1;
+        background-color: #efefef;
         &::after {
             display: none;
+        }
+        .ivu-menu-item-active {
+            background-color: #f3f3f3;
         }
     }
 }

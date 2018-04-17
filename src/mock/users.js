@@ -59,11 +59,13 @@ export default(Mock, qs) => {
       : current
     _users = _users.filter((u, index) => index < pageSize * current && index >= pageSize * (current - 1))
     return {
-      code: 200,
-      msg: 'get users success',
       data: {
         total: total,
         users: _users
+      },
+      error: {
+        code: 0,
+        msg: 'Get users success'
       }
     }
   })
@@ -72,7 +74,12 @@ export default(Mock, qs) => {
   Mock.mock(/\/user-delete/, config => {
     let {id} = qs.parse(config.body)
     users = users.filter(u => u.id !== id)
-    return {code: 200, msg: 'delete success'}
+    return {
+      error: {
+        code: 0,
+        msg: 'Delete success'
+      }
+    }
   })
 
   // 编辑用户
@@ -101,7 +108,12 @@ export default(Mock, qs) => {
         u.desc = desc
       }
     })
-    return {code: 200, msg: 'update success'}
+    return {
+      error: {
+        code: 0,
+        msg: 'Update success'
+      }
+    }
   })
 
   // 新增用户
@@ -128,6 +140,11 @@ export default(Mock, qs) => {
       birth: birth,
       desc: desc
     })
-    return {code: 200, msg: 'create success'}
+    return {
+      error: {
+        code: 0,
+        msg: 'Create success'
+      }
+    }
   })
 }

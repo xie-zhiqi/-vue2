@@ -9,7 +9,6 @@
 import {
   editUser
 } from '@/services/manage/users'
-
 export default {
   name: 'UserEdit',
   props: {
@@ -250,7 +249,7 @@ export default {
       // 模拟异步请求(编辑 Or 新增)
       setTimeout(() => {
         editUser(para).then(res => {
-          this.$Message.success(res.msg)
+          this.$Message.success(res.error.msg)
           this.$emit('on-update', false)
           this.loading.btn = false
           this.modal.visible = false
