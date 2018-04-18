@@ -35,19 +35,19 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #sys-sidebar {
     float: left;
     overflow: auto;
     width: 240px;
     height: calc(100vh - 60px);
     background-color: #efefef;
-    .ivu-menu-vertical {
+    & .ivu-menu-vertical {
         background-color: #efefef;
         &::after {
             display: none;
         }
-        .ivu-menu-item-active {
+        & .ivu-menu-item-active {
             background-color: #f3f3f3;
         }
     }

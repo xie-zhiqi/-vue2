@@ -32,13 +32,13 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #content {
     overflow: auto;
     height: calc(100vh - 60px);
     margin-left: 240px;
     background-color: #fff;
-    .layout-content {
+    & .layout-content {
         padding: 16px;
     }
 }

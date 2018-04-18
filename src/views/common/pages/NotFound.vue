@@ -41,7 +41,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #not-found {
     position: fixed;
     width: 100%;
@@ -49,14 +49,14 @@ export default {
     text-align: center;
     color: #fff;
     background-color: #B396FF;
-    .head {
+    & .head {
         padding-top: 60px;
     }
-    .status-code {
+    & .status-code {
         color: #5066BF;
         font-size: 150px;
     }
-    .icon {
+    & .icon {
         padding: 20px 0 16px;
     }
 }

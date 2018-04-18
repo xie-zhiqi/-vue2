@@ -73,40 +73,40 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #sys-header {
     overflow: hidden;
     color: #fff;
     background-color: #3f525a;
-    .logo,
-    .logo-info,
-    .name,
-    .nav-menu {
+    & .logo,
+    & .logo-info,
+    & .name,
+    & .nav-menu {
         float: left;
     }
-    .logo-info {
+    & .logo-info {
         width: 240px;
-        .logo {
+        & .logo {
             width: 40px;
             height: 40px;
             margin: 10px 16px 10px 24px;
         }
-        .name {
+        & .name {
             width: 160px;
             margin: 12px 0 6px;
             font-size: 18px;
             line-height: 20px;
         }
-        .sub {
+        & .sub {
             font-size: 12px;
         }
     }
-    .login-info {
+    & .login-info {
         float: right;
         height: 60px;
         padding-right: 20px;
         line-height: 60px;
-        .user {
+        & .user {
             display: block;
             margin-left: 8px;
             cursor: pointer;

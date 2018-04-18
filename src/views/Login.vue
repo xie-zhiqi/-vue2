@@ -118,7 +118,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #login {
     position: fixed;
     top: 50%;
@@ -128,16 +128,16 @@ export default {
     margin: -175px 0 0 -180px;
     padding: 36px;
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
-    .logo-info {
+    & .logo-info {
         height: 64px;
         margin-bottom: 22px;
         text-align: center;
-        .logo {
+        & .logo {
             width: 64px;
             height: 64px;
             margin-right: 10px;
         }
-        .name {
+        & .name {
             position: relative;
             bottom: 14px;
             display: inline-block;
@@ -145,11 +145,11 @@ export default {
             font-size: 18px;
             line-height: 20px;
         }
-        .sub {
+        & .sub {
             font-size: 12px;
         }
     }
-    .version {
+    & .version {
         text-align: center;
         color: #888;
     }

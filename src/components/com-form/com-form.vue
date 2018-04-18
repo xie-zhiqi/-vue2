@@ -117,10 +117,10 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #com-form {
     position: relative;
-    .button {
+    & .button {
         margin-right: 8px;
         &:last-child {
             margin-right: 0;

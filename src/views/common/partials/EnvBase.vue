@@ -91,7 +91,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #env-base {
     position: fixed;
     top: 10px;
@@ -99,11 +99,11 @@ export default {
     padding: 10px;
     border: 1px dashed #ccc;
     background-color: #fff;
-    .url {
+    & .url {
         margin-bottom: 8px;
         color: #888;
     }
-    .base-url {
+    & .base-url {
         color: #333;
     }
 }

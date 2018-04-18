@@ -8,14 +8,14 @@ export default {
   name: 'SysFooter'
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #sys-footer {
     overflow: hidden;
     text-align: center;
     color: #999;
     border-top: 1px solid #e8e8e8;
     background-color: #f0f0f0;
-    .copyright {
+    & .copyright {
         margin: 12px 0;
     }
 }

@@ -24,20 +24,20 @@ export default {
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #dashboard {
-    img {
+    & img {
         float: left;
         margin-right: 32px;
     }
-    h1 {
+    & h1 {
         margin-bottom: 10px;
         font-size: 20px;
     }
-    h3 {
+    & h3 {
         margin: 20px 0;
         font-weight: 400;
-        a {
+        & a {
             color: #51b883;
         }
     }

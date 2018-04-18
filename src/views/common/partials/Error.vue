@@ -30,7 +30,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 #sys-error {
     position: absolute;
     z-index: 999;
@@ -38,27 +38,27 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    .ivu-alert {
+    & .ivu-alert {
         min-height: 100%;
         margin-bottom: 0;
         border-style: none;
     }
-    .title {
+    & .title {
         margin-bottom: 12px;
     }
-    .desc {
+    & .desc {
         padding: 0 24px;
     }
-    .ivu-alert-warning {
+    & .ivu-alert-warning {
         background-color: rgba(255, 255, 204, 0.8);
-        .desc {
+        & .desc {
             color: #333;
             border: 1px dashed #c90;
         }
     }
-    .ivu-alert-error {
+    & .ivu-alert-error {
         background-color: rgba(253, 236, 232, 0.8);
-        .desc {
+        & .desc {
             color: #f33;
             border: 1px dashed #f33;
         }

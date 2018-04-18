@@ -12,15 +12,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 #app {
     // 过渡动画
-    .fade-enter-active,
-    .fade-leave-active {
+    & .fade-enter-active,
+    & .fade-leave-active {
         transition: opacity 0.3s;
     }
-    .fade-enter,
-    .fade-leave-active {
+    & .fade-enter,
+    & .fade-leave-active {
         opacity: 0;
     }
 }

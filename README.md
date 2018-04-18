@@ -23,7 +23,7 @@
 -   vue-router @3.x
 -   vuex @3.x
 -   ECMAScript 6
--   Scss
+-   cssnext
 
 ## 开发构建
 
