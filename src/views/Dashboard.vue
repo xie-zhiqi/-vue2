@@ -2,7 +2,7 @@
 <div id="dashboard">
   <img class="logo" src="../assets/logo.png" alt="logo">
   <h1>{{ msg }}</h1>
-  <h2>iView UI Componests</h2>
+  <h2>基于 Vue.js 的开源模板</h2>
   <h3>iView UI 组件库
     <a href="https://www.iviewui.com/docs/guide/install" target="_blank">https://www.iviewui.com/docs/guide/install</a>
   </h3>
@@ -19,7 +19,7 @@
 export default {
   name: 'Dashboard',
   data: () => ({
-    msg: '中后台模板'
+    msg: '企业级中后台模板'
   })
 }
 </script>

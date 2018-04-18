@@ -2,7 +2,7 @@
 <div id="sys-header">
   <div class="logo-info">
     <img class="logo" src="../../../assets/logo.png" alt="logo">
-    <p class="name">中后台模板 <br> <span class="sub">基于 Vue.js 的开源模板</span></p>
+    <p class="name">企业级中后台模板 <br> <span class="sub">基于 Vue.js 的开源模板</span></p>
   </div>
   <!-- .logo-info -->
   <div class="login-info">

@@ -7,7 +7,7 @@
 
 ## 特性
 
-1.  一个企业级中后台管理系统典型模板
+1.  基于 Vue.js 的企业级中后台开源模板
 2.  基于 Vue 官方命令行工具 vue-cli 脚手架搭建
 3.  使用 Vue 官方核心插件 Vue Router, Vuex
 4.  使用 Vue 官方建议的 Axios 插件进行 HTTP 操作

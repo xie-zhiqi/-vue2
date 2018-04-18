@@ -3,7 +3,7 @@
   <div id="login">
     <div class="logo-info">
       <img class="logo" src="../assets/logo.png" alt="logo">
-      <p class="name">中后台模板 <br>
+      <p class="name">企业级中后台模板 <br>
         <span class="sub">基于 Vue.js 的开源模板</span>
       </p>
     </div>
