@@ -1,33 +1,33 @@
 <template>
-<div id="modify-pwd">
+<div id="edit-password">
   <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComForm ref="modifyPwd" :key="modal.visible" :items="modifyPwdItems" :model="modifyPwd" :rules="modifyPwdRule" :btn-loading="loading" @on-submit="handleSubmit('modifyPwd')" @on-click="modal.visible = false" :width="360" :label-width="110"></ComForm>
+    <ComForm label-position="top" ref="editPassword" :key="modal.visible" :elem="editPasswordElem" :model="editPassword" :rules="editPasswordRule" :btn-loading="loading" @on-submit="handleSubmit('editPassword')" @on-click="modal.visible = false" :width="320"></ComForm>
   </Modal>
 </div>
 </template>
 <script>
 import {
-  modifyPwd
+  editPwd
 } from '@/services/app'
 export default {
-  name: 'ModifyPwd',
+  name: 'EditPassword',
   data() {
     const validPwd = (rule, value, callback) => {
       if (!value) {
         callback(new Error('Please enter your new password'))
       } else {
-        if (this.modifyPwd.pwdAgain) {
+        if (this.editPassword.passwordConfirmation) {
           // 对第二个密码框单独验证
-          this.$refs['modifyPwd'].validateField('pwdAgain')
+          this.$refs['editPassword'].validateField('passwordConfirmation')
         }
         callback()
       }
     }
     const validPwdCheck = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('Please enter your password again'))
+        callback(new Error('Please enter your password confirmation'))
       } else {
-        if (value !== this.modifyPwd.newPwd) {
+        if (value !== this.editPassword.password) {
           callback(new Error('The two input password do not match!'))
         } else {
           callback()
@@ -43,50 +43,50 @@ export default {
         visible: false
       },
       // 表单元素数组
-      modifyPwdItems: [{
-        label: 'Old password',
-        prop: 'oldPwd',
-        placeholder: 'Please enter your old password',
+      editPasswordElem: [{
+        label: 'Current password',
+        prop: 'currentPassword',
+        placeholder: 'Please enter your current password',
         type: 'password'
       }, {
         label: 'New password',
-        prop: 'newPwd',
+        prop: 'password',
         placeholder: 'Please enter your new password',
         type: 'password'
       }, {
-        label: 'Password again',
-        prop: 'pwdAgain',
-        placeholder: 'Please enter your password again',
+        label: 'Password confirmation',
+        prop: 'passwordConfirmation',
+        placeholder: 'Please enter your password confirmation',
         type: 'password'
       }, {
         button: [{
           name: 'submit',
           type: 'primary',
-          text: 'Submit'
+          text: 'Save password'
         }, {
           type: 'ghost',
           text: 'Cancel'
         }]
       }],
       // 表单数据对象
-      modifyPwd: {
-        oldPwd: '',
-        newPwd: '',
-        pwdAgain: ''
+      editPassword: {
+        currentPassword: '',
+        password: '',
+        passwordConfirmation: ''
       },
       // 表单验证规则
-      modifyPwdRule: {
-        oldPwd: [{
+      editPasswordRule: {
+        currentPassword: [{
           required: true,
-          message: 'Please enter your old password',
+          message: 'Please enter your current password',
           trigger: 'blur'
         }],
-        newPwd: [{
+        password: [{
           required: true,
           validator: validPwd,
           trigger: 'blur'
         }],
-        pwdAgain: [{
+        passwordConfirmation: [{
           required: true,
           validator: validPwdCheck,
           trigger: 'blur'
@@ -97,14 +97,19 @@ export default {
   methods: {
     showModal() {
       this.modal = {
-        title: 'Modify Pwd',
+        title: 'Edit Password',
         visible: true
+      }
+      this.editPassword = {
+        currentPassword: '',
+        password: '',
+        passwordConfirmation: ''
       }
     },
     handleSubmit(name) {
       this.loading = true
       setTimeout(() => {
-        modifyPwd(this.modifyPwd).then(res => {
+        editPwd(this.editPassword).then(res => {
           this.$Message.success(res.error.msg)
           this.loading = false
           this.modal.visible = false

@@ -1,7 +1,7 @@
 <template>
 <div id="user-edit">
   <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComForm :key="modal.visible" :items="userItems" :model="model" :rules="userRule" :loading="loading.form" :btn-loading="loading.btn" @on-submit="handleSubmit" @on-click="modal.visible = false" :width="360" :label-width="80"></ComForm>
+    <ComForm :key="modal.visible" :elem="userElem" :model="model" :rules="userRule" :loading="loading.form" :btn-loading="loading.btn" @on-submit="handleSubmit" @on-click="modal.visible = false" :width="360" :label-width="80"></ComForm>
   </Modal>
 </div>
 </template>
@@ -45,7 +45,7 @@ export default {
         form: false
       },
       // 表单元素对象数组(用户)
-      userItems: [{
+      userElem: [{
         label: 'Name',
         prop: 'name',
         placeholder: 'Enter your name'
@@ -215,7 +215,7 @@ export default {
     },
     // 获取补丁数据
     getPatch() {
-      let data = this.userItems.filter(n => n.option && n.option.length === 0)
+      let data = this.userElem.filter(n => n.option && n.option.length === 0)
       let total = data.length
       let _false = false
       if (total === 0) {

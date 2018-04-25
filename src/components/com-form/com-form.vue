@@ -2,7 +2,7 @@
 <div id="com-form" @keyup.enter="handleSubmit('submit')">
   <Form ref="form" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition" :style="formWidth">
     <slot> </slot>
-    <FormItem v-for="(item, index) in items" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth" :style="item.width">
+    <FormItem v-for="(item, index) in elem" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth" :style="item.width">
       <template v-if="!item.button">
         <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize"></Input>
         <!-- 输入框 -->
@@ -39,13 +39,27 @@
 export default {
   name: 'ComForm',
   props: {
-    inline: Boolean, // 行内表单模式
-    width: Number, // 表单宽度
-    labelWidth: Number, // 表单域标签宽度
-    labelPosition: String, // 表单域标签位置
-    items: Array, // 表单元素数组
+    elem: Array, // 表单元素数组
     model: Object, // 表单数据对象
     rules: Object, // 表单验证对象
+    width: Number, // 表单宽度
+    labelWidth: Number, // 表单域标签宽度
+    labelPosition: {
+      validator(value) {
+        let validList = ['left', 'right', 'top']
+        for (let i = 0; i < validList.length; i++) {
+          if (value === validList[i]) {
+            return true
+          }
+        }
+        return false
+      },
+      default: 'right'
+    }, // 表单域标签位置
+    inline: {
+      type: Boolean,
+      default: false
+    }, // 行内表单模式
     // 表单加载状态
     loading: {
       type: Boolean,
@@ -67,7 +81,7 @@ export default {
     }
   },
   mounted() {
-    this.items.map(val => {
+    this.elem.map(val => {
       if (val.width) {
         val.width = {
           width: `${val.width}px`

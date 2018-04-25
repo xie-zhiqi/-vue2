@@ -56,20 +56,20 @@ export default(Mock, qs) => {
   })
 
   // 密码修改
-  Mock.mock(/\/modify-pwd/, config => {
+  Mock.mock(/\/edit-password/, config => {
     let {oldPwd} = qs.parse(config.body)
     if (oldPwd === 'wasd@007') {
       return {
         error: {
           code: 0,
-          msg: 'Password modify success'
+          msg: 'Edit password success'
         }
       }
     }
     return {
       error: {
         code: 4000,
-        msg: 'Your old password is incorrect'
+        msg: 'Your current password is incorrect'
       }
     }
   })

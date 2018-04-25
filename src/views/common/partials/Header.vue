@@ -19,25 +19,25 @@
     </Dropdown>
   </div>
   <!-- .login-info -->
-  <ModifyPwd ref="modifyPwd"></ModifyPwd>
-  <!-- ModifyPwd -->
+  <EditPassword ref="editPassword"></EditPassword>
+  <!-- EditPassword -->
 </div>
 </template>
 <script>
-import ModifyPwd from '@/views/common/pages/ModifyPwd'
+import EditPassword from '@/views/common/pages/EditPassword'
 export default {
   name: 'SysHeader',
   components: {
-    ModifyPwd
+    EditPassword
   },
   data: () => ({
     // 用户名
     userName: '',
     // 下拉菜单元素数组
     dropdown: [{
-      label: 'Modify Pwd',
-      name: 'modifyPwd',
-      icon: 'unlocked'
+      label: 'Password',
+      name: 'editPassword',
+      icon: 'locked'
     }, {
       label: 'Sign out',
       name: 'signout',
@@ -53,7 +53,7 @@ export default {
     // 下拉菜单项
     handleDropdown(name) {
       switch (name) {
-        case 'modifyPwd':
+        case 'editPassword':
           // 修改密码
           this.$refs[name].showModal()
           break

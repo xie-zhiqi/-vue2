@@ -8,7 +8,7 @@
       </p>
     </div>
     <!-- .logo-info -->
-    <ComForm ref="login" :items="loginItems" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin('login')"></ComForm>
+    <ComForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin('login')"></ComForm>
     <!-- ComForm -->
     <p class="version">Version: {{ version }}</p>
     <!-- .version -->
@@ -36,7 +36,7 @@ export default {
   },
   data: () => ({
     // 表单元素数组(登录)
-    loginItems: [{
+    loginElem: [{
       prop: 'user',
       placeholder: 'Username'
     }, {

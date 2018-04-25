@@ -4,7 +4,7 @@
     <div slot="title">
       <Icon type="ios-search-strong"></Icon> Search
     </div>
-    <ComForm inline :items="searchItems" :model="model" :btn-loading="btnLoading" @on-submit="handleSearch" @on-reset="handleSearch"></ComForm>
+    <ComForm inline :elem="searchElem" :model="model" :btn-loading="btnLoading" @on-submit="handleSearch" @on-reset="handleSearch"></ComForm>
   </Card>
 </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   },
   data: () => ({
     // 表单元素对象(搜索)
-    searchItems: [{
+    searchElem: [{
       label: 'Name',
       prop: 'name',
       placeholder: 'Search Name',
