@@ -59,20 +59,25 @@ export default {
       // 表格列的配置描述(用户)
       columns: [{
         title: 'Name',
-        key: 'name'
+        key: 'name',
+        minWidth: 120
       }, {
         title: 'Age',
-        key: 'age'
+        key: 'age',
+        minWidth: 80
       }, {
         title: 'Gender',
         key: 'gender',
+        minWidth: 80,
         render: (h, params) => h('span', params.row.gender === 1 ? 'Male' : 'Female')
       }, {
         title: 'E-mail',
-        key: 'email'
+        key: 'email',
+        minWidth: 120
       }, {
         title: 'City',
         key: 'city',
+        minWidth: 100,
         render: (h, params) => {
           let city = params.row.city
           for (let key in city) {
@@ -82,10 +87,12 @@ export default {
         }
       }, {
         title: 'Birth',
-        key: 'birth'
+        key: 'birth',
+        minWidth: 100
       }, {
         title: 'Hobby',
         key: 'hobby',
+        minWidth: 100,
         render: (h, params) => {
           let hobby = params.row.hobby
           let hobbys = []
@@ -98,7 +105,7 @@ export default {
         title: 'Operation',
         key: 'operation',
         align: 'center',
-        width: 160,
+        minWidth: 150,
         render: (h, params) => h('div', [
           h('a', {
             style: {

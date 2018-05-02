@@ -75,7 +75,7 @@ export default {
     formWidth() {
       let style = {}
       if (this.width) {
-        style.width = `${this.width}px`
+        style.maxWidth = `${this.width}px`
       }
       return style
     }

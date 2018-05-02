@@ -1,6 +1,6 @@
 <template>
-<div id="sys-sidebar">
-  <Menu accordion :active-name="menuActive" :open-names="[menuOpened]" @on-select="handleMenuSelect">
+<div :id="nav ? 'sys-nav' : 'sys-sidebar'">
+  <Menu accordion ref="navigation" :active-name="menuActive" :open-names="[menuOpened]" @on-select="handleMenuSelect" :width="nav ? '240px' : 'auto'">
     <template v-for="item in menu">
     <MenuItem v-if="!item.children" :key="item.path" :name="item.path">{{ item.name }}</MenuItem>
     <!-- 一级菜单 -->
@@ -20,6 +20,9 @@ import {
 } from 'vuex'
 export default {
   name: 'SysSidebar',
+  props: {
+    nav: Boolean
+  },
   computed: {
     ...mapGetters({
       menu: 'getMenu',
@@ -27,19 +30,32 @@ export default {
       menuOpened: 'getMenuOpened'
     })
   },
+  watch: {
+    // 侦听路由变化
+    $route() {
+      // 手动更新展开的子目录
+      this.$nextTick(function() {
+        this.$refs['navigation'].updateOpened()
+      })
+    }
+  },
   methods: {
     // ...mapActions(['handleMenuSelect'])
     handleMenuSelect(name) {
+      this.$emit('on-click', false) // 关闭导航
       this.$store.commit('MENU_SELECT', name) // 选择菜单
     }
   }
 }
 </script>
 <style lang="postcss" scoped>
+#sys-nav {
+    & .ivu-menu-vertical::after {
+        display: none;
+    }
+}
 #sys-sidebar {
-    float: left;
     overflow: auto;
-    width: 240px;
     height: calc(100vh - 60px);
     background-color: #efefef;
     & .ivu-menu-vertical {

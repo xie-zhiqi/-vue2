@@ -2,15 +2,21 @@
 <div id="sys-layout">
   <SysHeader></SysHeader>
   <!-- SysHeader -->
-  <SysSidebar></SysSidebar>
-  <!-- SysSidebar -->
-  <div id="content">
-    <div class="layout-content">
-      <router-view></router-view>
+  <Row>
+    <Col :xs="0" :sm="0" :md="4" :lg="3">
+    <SysSidebar></SysSidebar>
+    <!-- SysSidebar -->
+    </Col>
+    <Col :xs="24" :sm="24" :md="20" :lg="21">
+    <div id="content">
+      <div class="layout-content">
+        <router-view></router-view>
+      </div>
+      <!-- .layout-content -->
     </div>
-    <!-- .layout-content -->
-  </div>
-  <!-- #content -->
+    <!-- #content -->
+    </Col>
+  </Row>
   <!-- <SysFooter></SysFooter> -->
   <!-- SysFooter -->
   <SysError></SysError>
@@ -36,7 +42,6 @@ export default {
 #content {
     overflow: auto;
     height: calc(100vh - 60px);
-    margin-left: 240px;
     background-color: #fff;
     & .layout-content {
         padding: 16px;

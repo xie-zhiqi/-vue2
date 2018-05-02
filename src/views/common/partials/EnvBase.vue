@@ -7,14 +7,12 @@
     <a href="#" @click.prevent="handleChange(envBase[item], envName[item])"> {{envName[item]}}URL: {{ envBase[item] }} </a>
   </p>
   <!-- .url -->
-  <Form inline ref="envBase" :model="envBase" :rules="envBaseRule" @keyup.enter.native="handleSave('envBase')">
+  <Form ref="envBase" :model="envBase" :rules="envBaseRule" @keyup.enter.native="handleSave('envBase')">
     <FormItem prop="newURL">
       <Input v-model="envBase.newURL" placeholder="You can enter newURL" style="width: 240px;"></Input>
     </FormItem>
-    <FormItem>
-      <Button type="primary" @click="handleSave('envBase')">Save</Button>
-      <Button type="ghost" @click="handleReset('envBase')" style="margin-left: 8px">Reset</Button>
-    </FormItem>
+    <Button type="primary" @click="handleSave('envBase')">Save</Button>
+    <Button type="ghost" @click="handleReset('envBase')" style="margin-left: 8px">Reset</Button>
   </Form>
   <!-- Form -->
 </div>
@@ -96,6 +94,7 @@ export default {
     position: fixed;
     top: 10px;
     left: 10px;
+    width: 300px;
     padding: 10px;
     border: 1px dashed #ccc;
     background-color: #fff;
