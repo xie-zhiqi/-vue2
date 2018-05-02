@@ -28,5 +28,5 @@ export default {
   //   ContentType: 'application/x-www-form-urlencoded'
   // },
   timeout: 10000, // 请求超时
-  version: '1.1.0' // 应用版本
+  version: '1.2.0' // 应用版本
 }
