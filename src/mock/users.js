@@ -82,6 +82,19 @@ export default(Mock, qs) => {
     }
   })
 
+  // 批量删除用户
+  Mock.mock(/\/user-batch-delete/, config => {
+    let {ids} = qs.parse(config.body)
+    ids = ids.split(',')
+    users = users.filter(u => !ids.includes(u.id))
+    return {
+      error: {
+        code: 0,
+        msg: 'Delete success'
+      }
+    }
+  })
+
   // 编辑用户
   Mock.mock(/\/user-edit/, config => {
     let {

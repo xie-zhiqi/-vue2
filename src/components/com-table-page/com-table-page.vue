@@ -1,8 +1,8 @@
 <template>
 <div id="com-table-page">
-  <Table border ref="table" :loading="loading" :columns="columns" :data="data" @on-selection-change="handleSelectionChange"></Table>
+  <Table ref="table" :border="border" :row-class-name="rowClassName" :loading="loading" :columns="columns" :data="data" @on-selection-change="handleSelectionChange"></Table>
   <!-- Table -->
-  <Page v-if="total && total > pageSize && !pageHide" class-name="page" show-elevator show-total show-sizer placement="top" :total="total" :current="current" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
+  <Page v-if="total && total > pageSize" class-name="page" show-elevator show-total show-sizer placement="top" :total="total" :current="current" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
   <!-- Page -->
 </div>
 </template>
@@ -10,7 +10,8 @@
 export default {
   name: 'ComTablePage',
   props: {
-    pageHide: Boolean,
+    border: Boolean,
+    rowClassName: Function,
     loading: Boolean,
     columns: Array,
     data: Array,
@@ -26,15 +27,12 @@ export default {
       this.$refs['table'].exportCsv(obj)
     },
     // 获取当前分页
-    getPage() {
+    getPage(type) {
+      this.current = type ? 1 : this.current
       return {
         current: this.current,
         pageSize: this.pageSize
       }
-    },
-    // 重置当前页码
-    resetCurrent() {
-      this.current = 1
     },
     // 改变页码
     handlePageChange(page) {

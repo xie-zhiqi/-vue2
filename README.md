@@ -1,4 +1,6 @@
-# Vuejs Admin Block
+![logo](/build/logo.png "logo")
+
+<!-- # Vuejs Admin Block -->
 
 **Demo:** <http://vab.cssue.com/>
 

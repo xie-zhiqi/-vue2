@@ -44,7 +44,7 @@ export default {
         btn: false,
         form: false
       },
-      // 表单元素对象数组(用户)
+      // 表单元素(用户)
       userElem: [{
         label: 'Name',
         prop: 'name',
@@ -100,7 +100,7 @@ export default {
           text: 'Cancel'
         }]
       }],
-      // 表单验证对象(用户)
+      // 表单验证(用户)
       userRule: {
         name: [{
           required: true,

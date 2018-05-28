@@ -1,6 +1,6 @@
 <template>
 <div id="users">
-  <Search :model="search" :btn-loading="list.loading" @on-search="handleGetList"></Search>
+  <Search :elem="searchElem" :model="search" :btn-loading="list.loading" :label-width="60" @on-search="handleGetList"></Search>
   <!-- Search -->
   <Card>
     <div slot="title">
@@ -11,7 +11,12 @@
       <a href="#" @click.prevent="handleCreate('edit')"> Create </a>
     </div>
     <!-- extra -->
-    <ComTablePage ref="list" :columns="columns" :loading="list.loading" :data="list.data" :total="list.total" @on-page-change="handleGetList"></ComTablePage>
+    <div v-if="toolbar.visible" class="toolbar">
+      <Button type="primary" @click="handleBatchDelete()">Delete</Button>
+      <span class="number">Selected {{ toolbar.number }} items</span>
+    </div>
+    <!-- .toolbar -->
+    <ComTablePage ref="list" :columns="columns" :loading="list.loading" :data="list.data" :total="list.total" @on-page-change="handleGetList" @on-selection-change="handleSelectionChange"></ComTablePage>
     <!-- ComTablePage -->
   </Card>
   <Edit ref="edit" :model="edit" @on-update="handleGetList"></Edit>
@@ -21,10 +26,11 @@
 <script>
 import {
   delUser,
+  batchDelUser,
   getUserList
 } from '@/services/manage/users'
+import Search from '@/views/components/Search'
 import Edit from './UserEdit'
-import Search from './UserSearch'
 export default {
   name: 'Users',
   components: {
@@ -33,6 +39,12 @@ export default {
   },
   data() {
     return {
+      // 工具条(批量删除)
+      toolbar: {
+        ids: [], // ID数组
+        visible: false, // 按钮可视状态
+        number: 0 // 选择数量
+      },
       // 表单数据(用户)
       edit: {
         name: '',
@@ -50,6 +62,24 @@ export default {
       search: {
         name: ''
       },
+      // 表单元素(搜索)
+      searchElem: [{
+        label: 'Name',
+        prop: 'name',
+        placeholder: 'Search Name',
+        icon: 'ios-search-strong'
+      }, {
+        labelWidth: 4,
+        button: [{
+          name: 'submit',
+          type: 'primary',
+          text: 'Search'
+        }, {
+          name: 'reset',
+          type: 'ghost',
+          text: 'Reset'
+        }]
+      }],
       // 列表属性
       list: {
         data: [], // 结构化数据
@@ -58,6 +88,10 @@ export default {
       },
       // 表格列的配置描述(用户)
       columns: [{
+        type: 'selection',
+        width: 60,
+        align: 'center'
+      }, {
         title: 'Name',
         key: 'name',
         minWidth: 120
@@ -154,23 +188,53 @@ export default {
     }
   },
   mounted() {
-    this.init = Object.assign({}, this.edit) // 复制初始表单数据对象
+    this.init = Object.assign({}, this.edit) // 复制初始表单数据
     this.handleGetList() // 获取列表数据
   },
   methods: {
     /**
+     * 在多选模式下有效，只要选中项发生变化时就会触发
+     * @param  {array} selection 已选项数据
+     */
+    handleSelectionChange(selection) {
+      let ids = []
+      let num = selection.length
+      let _true = true
+      for (var i = 0; i < selection.length; i++) {
+        ids.push(selection[i]['id'])
+      }
+      this.toolbar = {
+        ids: ids,
+        number: num,
+        visible: num ? _true : false
+      }
+    },
+    // 批量删除用户
+    handleBatchDelete() {
+      this.list.loading = true
+      let para = {
+        ids: this.toolbar.ids.join(',')
+      }
+      // 模拟异步请求(批量删除)
+      setTimeout(() => {
+        batchDelUser(para).then(res => {
+          this.$Message.success(res.error.msg)
+          this.handleGetList()
+        }).catch(() => {
+          this.list.loading = false
+        })
+      }, 500)
+    },
+    /**
      * 获取用户列表
-     * @param  {boolean} type 是否使用搜索, 默认值, undefined
+     * @param  {string} type 是否使用搜索, 默认值, undefined
      */
     handleGetList(type) {
-      this.list.loading = true
-      let page = this.$refs['list'].getPage()
-      if (type) {
-        page.current = 1
-        this.$refs['list'].resetCurrent()
-      }
+      this.$refs['list'].selectAll(false) // 取消全选
+      this.list.loading = true // 列表加载状态
+      let page = this.$refs['list'].getPage(type) // 获取分页信息
+      // 请求参数(搜索)
       let para = this.search
-      // 请求参数
       para = {
         ...para,
         pagePara: {
@@ -178,7 +242,7 @@ export default {
           pageSize: page.pageSize
         }
       }
-      // 模拟异步请求(查询)
+      // 模拟异步请求(搜索)
       setTimeout(() => {
         getUserList(para).then(res => {
           let {
@@ -251,4 +315,7 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
+.toolbar {
+    margin-bottom: 16px;
+}
 </style>

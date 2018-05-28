@@ -19,7 +19,7 @@
     <div class="login-info">
       <Dropdown placement="bottom-end" trigger="click" @on-click="handleDropdown">
         <strong class="user">
-        <Avatar style="background-color: #51b883" icon="person" size="small"></Avatar>
+        <Avatar style="background-color: #55b387" icon="person" size="small"></Avatar>
         {{ userName }}
         </strong>
         <DropdownMenu class="list" slot="list">
@@ -94,10 +94,16 @@ export default {
   }
 }
 </script>
-<style lang="postcss" scoped>
+<style lang="postcss">
 #sys-header {
     color: #fff;
-    background-color: #3f525a;
+    background-color: #52626a;
+    & .ivu-poptip-body {
+        padding: 8px 0;
+    }
+    & .ivu-menu-vertical .ivu-menu-submenu-title {
+        padding-right: 12px;
+    }
     & .logo {
         float: left;
         width: 40px;
