@@ -49,16 +49,15 @@ ax.interceptors.response.use(response => {
     Message.error(msg) // 提示错误信息
   }
 }, error => {
-  const {response, message} = error
+  const {response, message, config} = error
   if (response) {
     store.commit('RES_ERROR', response) // 响应错误数据
+  // } else if (request) {
+  //   console.log(request)
   } else {
-    if (message === 'Network Error') {
-      Message.error({content: '服务器断开连接, 请检查网络状态!'})
-    } else {
-      Message.error({content: message})
-    }
+    Message.error({content: message})
   }
+  console.log(config)
 })
 
 /*

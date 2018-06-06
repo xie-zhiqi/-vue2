@@ -1,21 +1,29 @@
 <template>
 <div id="main">
   <div id="login">
-    <div class="logo-info">
-      <img class="logo" src="../assets/logo.png" alt="logo">
-      <p class="name">企业级中后台模板 <br>
-        <span class="sub">基于 Vue.js 的开源模板</span>
-      </p>
-    </div>
-    <!-- .logo-info -->
-    <ComForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin('login')"></ComForm>
-    <!-- ComForm -->
-    <p class="version">Version: {{ version }}</p>
-    <!-- .version -->
+    <transition :name="settings.visible ? 'slideleft' : 'slideright'">
+      <EnvBase v-if="settings.visible" @on-click="handleSettings"></EnvBase>
+      <!-- EnvBase -->
+      <div v-else class="login">
+        <div class="logo-info">
+          <img class="logo" src="../assets/logo.png" alt="logo">
+          <p class="name">企业级中后台模板 <br>
+            <span class="sub">基于 Vue.js 的开源模板</span>
+          </p>
+        </div>
+        <!-- .logo-info -->
+        <ComForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin('login')"></ComForm>
+        <!-- ComForm -->
+        <p class="version">Version: {{ version }}</p>
+        <!-- .version -->
+      </div>
+    </transition>
+    <a v-if="settings.button" class="settings" href="#" @click.prevent="handleSettings">
+      <Icon :type="settings.visible ? 'laptop' : 'settings'" size="18" style="position: relative;top: 2px;"></Icon>
+      <strong>{{ settings.visible ? 'Login' : 'Settings'}}</strong>
+    </a>
   </div>
   <!-- #login -->
-  <EnvBase></EnvBase>
-  <!-- EnvBase -->
   <SysError></SysError>
   <!-- SysError -->
 </div>
@@ -35,6 +43,11 @@ export default {
     SysError
   },
   data: () => ({
+    // 设置属性对象
+    settings: {
+      button: true,
+      visible: false
+    },
     // 表单元素数组(登录)
     loginElem: [{
       prop: 'user',
@@ -78,6 +91,7 @@ export default {
     const env = process.env.NODE_ENV
     switch (env) {
       case 'production':
+        this.settings.button = false
         this.version = `${version} Production`
         break
       case 'release':
@@ -92,6 +106,9 @@ export default {
     }
   },
   methods: {
+    handleSettings() {
+      this.settings.visible = !this.settings.visible
+    },
     handleLogin(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
@@ -128,6 +145,36 @@ export default {
     margin: -175px 0 0 -180px;
     padding: 36px;
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
+    /* 过渡动画 */
+    & .slideleft-enter-active, & .slideright-enter-active {
+      transition: all 0.5s;
+      transform: translateX(0);
+    }
+    & .slideleft-enter, & .slideright-enter {
+      opacity: 0;
+    }
+    & .slideleft-leave-active, & .slideright-leave-active {
+      transition: all 0.5s;
+      opacity: 0;
+    }
+    & .slideleft-leave, & .slideright-leave {
+      transform: translateX(0);
+    }
+    & .slideleft-enter, & .slideright-leave-active {
+      transform: translateX(300px);
+    }
+    & .slideleft-leave-active, & .slideright-enter {
+      transform: translateX(-300px);
+    }
+    /* end */
+    & .settings {
+        position: absolute;
+        bottom: 16px;
+    }
+    & .login {
+      position: absolute;
+      width: 288px;
+    }
     & .logo-info {
         height: 64px;
         margin-bottom: 22px;

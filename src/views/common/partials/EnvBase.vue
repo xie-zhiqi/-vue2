@@ -4,15 +4,22 @@
   <!-- .base-url -->
   <p class="url" v-for="item in env" :key="item" v-if="envBase.baseURL !== envBase[item]">
     <Icon v-if="envBase.newURL === envBase[item]" type="checkmark-round" :size="14"></Icon>
-    <a href="#" @click.prevent="handleChange(envBase[item], envName[item])"> {{envName[item]}}URL: {{ envBase[item] }} </a>
+    <a href="#" @click.prevent="handleChange(envBase[item], envName[item])">
+      <strong>{{envName[item]}}URL: </strong> {{ envBase[item] }} </a>
   </p>
   <!-- .url -->
   <Form ref="envBase" :model="envBase" :rules="envBaseRule" @keyup.enter.native="handleSave('envBase')">
     <FormItem prop="newURL">
-      <Input v-model="envBase.newURL" placeholder="You can enter newURL" style="width: 240px;"></Input>
+      <Input v-model="envBase.newURL" placeholder="You can enter newURL"></Input>
     </FormItem>
-    <Button type="primary" @click="handleSave('envBase')">Save</Button>
-    <Button type="ghost" @click="handleReset('envBase')" style="margin-left: 8px">Reset</Button>
+    <Row :gutter="16">
+      <Col span="12">
+      <Button long type="primary" @click="handleSave('envBase')">Save</Button>
+      </Col>
+      <Col span="12">
+      <Button long type="ghost" @click="handleReset('envBase')">Reset</Button>
+      </Col>
+    </Row>
   </Form>
   <!-- Form -->
 </div>
@@ -66,6 +73,7 @@ export default {
         okText: 'OK',
         cancelText: 'Cancel',
         onOk: () => {
+          this.$emit('on-click', false)
           this.$Message.success('Save success!')
           this.envBase.newURL = name
           localStorage.setItem('newURL', name)
@@ -75,12 +83,14 @@ export default {
     handleSave(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
+          this.$emit('on-click', false)
           this.$Message.success('Save success!')
           localStorage.setItem('newURL', this.envBase.newURL)
         }
       })
     },
     handleReset(name) {
+      this.$emit('on-click', false)
       this.$refs[name].resetFields()
       this.$Message.success('Reset Success!')
       this.envBase.newURL = ''
@@ -91,19 +101,15 @@ export default {
 </script>
 <style lang="postcss" scoped>
 #env-base {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    width: 300px;
-    padding: 10px;
-    border: 1px dashed #ccc;
-    background-color: #fff;
+    position: absolute;
+    width: 288px;
     & .url {
-        margin-bottom: 8px;
+        margin-bottom: 16px;
         color: #888;
     }
     & .base-url {
         color: #333;
+        font-weight: 700;
     }
 }
 </style>
