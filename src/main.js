@@ -15,7 +15,8 @@ import vCom from './components'
 import Utils from './utils'
 
 // mock 数据引入
-import './mock'
+import Mock from './mock'
+Mock.mock()
 
 Vue.use(iView)
 Vue.use(vCom)

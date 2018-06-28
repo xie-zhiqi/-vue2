@@ -20,8 +20,8 @@ export default(Mock, qs) => {
         'age|18-55': 1,
         'gender|0-1': 1,
         email: '@email',
-        'city|1': citys,
         birth: '@date',
+        'city|1': citys,
         'hobby|1-3': hobbys,
         desc: '@paragraph'
       }
@@ -32,12 +32,16 @@ export default(Mock, qs) => {
   // 参数函数
   let params = (cityStr, hobbyArr) => {
     let city = {}
-    city[cityStr] = citys[cityStr]
+    if (cityStr) {
+      city[cityStr] = citys[cityStr]
+    }
     let hobby = {}
-    let len = hobbyArr.length
-    for (let i = 0; i < len; i++) {
-      let k = hobbyArr[i]
-      hobby[k] = hobbys[k]
+    if (hobbyArr) {
+      let len = hobbyArr.length
+      for (let i = 0; i < len; i++) {
+        let k = hobbyArr[i]
+        hobby[k] = hobbys[k]
+      }
     }
     return {city, hobby}
   }
@@ -103,9 +107,9 @@ export default(Mock, qs) => {
       age,
       gender,
       email,
+      birth,
       city,
       hobby,
-      birth,
       desc
     } = qs.parse(config.body)
     let _params = params(city, hobby)
@@ -115,9 +119,9 @@ export default(Mock, qs) => {
         u.age = parseInt(age)
         u.gender = parseInt(gender)
         u.email = email
+        u.birth = birth
         u.city = _params.city
         u.hobby = _params.hobby
-        u.birth = birth
         u.desc = desc
       }
     })
@@ -136,9 +140,9 @@ export default(Mock, qs) => {
       age,
       gender,
       email,
+      birth,
       city,
       hobby,
-      birth,
       desc
     } = qs.parse(config.body)
     let _params = params(city, hobby)
@@ -148,9 +152,9 @@ export default(Mock, qs) => {
       age: parseInt(age),
       gender: parseInt(gender),
       email: email,
+      birth: birth,
       city: _params.city,
       hobby: _params.hobby,
-      birth: birth,
       desc: desc
     })
     return {

@@ -81,18 +81,21 @@ export default {
     }
   },
   mounted() {
-    this.elem.map(val => {
-      if (val.width) {
-        val.width = {
-          width: `${val.width}px`
+    let elem = this.elem
+    for (var i = 0; i < elem.length; i++) {
+      let width = elem[i].width
+      let selectWidth = elem[i].selectWidth
+      if (parseInt(width)) {
+        elem[i].width = {
+          width: `${width}px`
         }
       }
-      if (val.selectWidth) {
-        val.selectWidth = {
-          width: `${val.selectWidth}px`
+      if (parseInt(selectWidth)) {
+        elem[i].selectWidth = {
+          width: `${selectWidth}px`
         }
       }
-    })
+    }
   },
   methods: {
     validate(callback) {

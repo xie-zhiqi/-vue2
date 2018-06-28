@@ -3,7 +3,11 @@ import qs from 'qs'
 import app from './app'
 import users from './users'
 
-// 登录，菜单，改密
-app(Mock, qs)
-// 用户管理
-users(Mock, qs)
+const mock = () => {
+  // 登录，菜单，改密
+  app(Mock, qs)
+  // 用户管理
+  users(Mock, qs)
+}
+
+export default {mock}

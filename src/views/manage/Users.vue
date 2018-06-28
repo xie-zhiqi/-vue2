@@ -4,15 +4,15 @@
   <!-- Search -->
   <Card>
     <div slot="title">
-      <Icon type="ios-list-outline"></Icon> User List
+      <Icon type="navicon-round"></Icon> User List
     </div>
     <!-- title -->
     <div slot="extra">
-      <a href="#" @click.prevent="handleCreate('edit')"> Create </a>
+      <a href="#" @click.prevent="handleCreate"> Create </a>
     </div>
     <!-- extra -->
     <div v-if="toolbar.visible" class="toolbar">
-      <Button type="primary" @click="handleBatchDelete()">Delete</Button>
+      <Button type="primary" @click="handleBatchDelete">Delete</Button>
       <span class="number">Selected {{ toolbar.number }} items</span>
     </div>
     <!-- .toolbar -->
@@ -29,8 +29,8 @@ import {
   batchDelUser,
   getUserList
 } from '@/services/manage/users'
-import Search from '@/views/components/Search'
 import Edit from './UserEdit'
+import Search from '@/views/components/Search'
 export default {
   name: 'Users',
   components: {
@@ -62,6 +62,12 @@ export default {
       search: {
         name: ''
       },
+      // 列表属性
+      list: {
+        data: [], // 结构化数据
+        total: 0, // 数据总数
+        loading: false // 加载状态
+      },
       // 表单元素(搜索)
       searchElem: [{
         label: 'Name',
@@ -80,12 +86,6 @@ export default {
           text: 'Reset'
         }]
       }],
-      // 列表属性
-      list: {
-        data: [], // 结构化数据
-        total: 0, // 数据总数
-        loading: false // 加载状态
-      },
       // 表格列的配置描述(用户)
       columns: [{
         type: 'selection',
@@ -146,9 +146,7 @@ export default {
               marginRight: '16px'
             },
             on: {
-              click: () => {
-                this.handleEdit(params.row)
-              }
+              click: () => this.handleEdit(params.row)
             }
           }, [h('Icon', {
             props: {
@@ -168,9 +166,7 @@ export default {
               'cancel-text': 'no'
             },
             on: {
-              'on-ok': () => {
-                this.handleDelete(params.row)
-              }
+              'on-ok': () => this.handleDelete(params.row)
             }
           }, [
             h('a', [h('Icon', {
@@ -212,12 +208,11 @@ export default {
     // 批量删除用户
     handleBatchDelete() {
       this.list.loading = true
-      let para = {
-        ids: this.toolbar.ids.join(',')
-      }
       // 模拟异步请求(批量删除)
       setTimeout(() => {
-        batchDelUser(para).then(res => {
+        batchDelUser({
+          ids: this.toolbar.ids.join(',')
+        }).then(res => {
           this.$Message.success(res.error.msg)
           this.handleGetList()
         }).catch(() => {
@@ -227,24 +222,21 @@ export default {
     },
     /**
      * 获取用户列表
-     * @param  {string} type 是否使用搜索, 默认值, undefined
+     * @param  {string} type 是否使用搜索, 默认值 undefined
      */
     handleGetList(type) {
       this.$refs['list'].selectAll(false) // 取消全选
       this.list.loading = true // 列表加载状态
       let page = this.$refs['list'].getPage(type) // 获取分页信息
-      // 请求参数(搜索)
-      let para = this.search
-      para = {
-        ...para,
-        pagePara: {
-          current: page.current,
-          pageSize: page.pageSize
-        }
-      }
       // 模拟异步请求(搜索)
       setTimeout(() => {
-        getUserList(para).then(res => {
+        getUserList({
+          ...this.search,
+          pagePara: {
+            current: page.current,
+            pageSize: page.pageSize
+          }
+        }).then(res => {
           let {
             users,
             total
@@ -265,12 +257,11 @@ export default {
      */
     handleDelete(row) {
       this.list.loading = true
-      let para = {
-        id: row.id
-      }
       // 模拟异步请求(删除)
       setTimeout(() => {
-        delUser(para).then(res => {
+        delUser({
+          id: row.id
+        }).then(res => {
           this.$Message.success(res.error.msg)
           this.handleGetList()
         }).catch(() => {
@@ -306,10 +297,10 @@ export default {
       }, 800)
     },
     // 新增界面
-    handleCreate(name) {
+    handleCreate() {
       this.edit = Object.assign({}, this.init)
-      this.$refs[name].showModal() // 显示模态框
-      this.$refs[name].getPatch() // 获取补丁数据
+      this.$refs['edit'].showModal() // 显示模态框
+      this.$refs['edit'].getPatch() // 获取补丁数据
     }
   }
 }
