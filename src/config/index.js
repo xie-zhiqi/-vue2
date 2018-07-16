@@ -1,5 +1,4 @@
-// 系统参数配置
-let url = {
+let baseAPI = {
   production: 'https://api.prod.xx.com',
   release: 'https://api.release.xx.com',
   test: 'https://api.test.xx.com',
@@ -9,21 +8,22 @@ let baseURL
 let env = process.env.NODE_ENV
 switch (env) {
   case 'production':
-    baseURL = url[env]
+    baseURL = baseAPI[env]
     break
   case 'release':
-    baseURL = url[env]
+    baseURL = baseAPI[env]
     break
   case 'test':
-    baseURL = url[env]
+    baseURL = baseAPI[env]
     break
   default:
-    baseURL = url[env]
+    baseURL = baseAPI[env]
 }
 
+// 系统参数配置
 export default {
-  url: url, // 接口地址
-  baseURL: baseURL, // 基础地址
+  baseAPI: baseAPI, // API 接口
+  baseURL: baseURL, // API 地址
   // headers: {
   //   ContentType: 'application/x-www-form-urlencoded'
   // },

@@ -1,23 +1,23 @@
 <template>
-<div id="env-base" v-if="envBase.visible">
-  <p class="url base-url"> BaseURL: {{ envBase.baseURL }} </p>
+<div id="env-config" v-if="envConfig.visible">
+  <p class="url base-url"> BaseURL : {{ envConfig.baseURL }} </p>
   <!-- .base-url -->
-  <p class="url" v-for="item in env" :key="item" v-if="envBase.baseURL !== envBase[item]">
-    <Icon v-if="envBase.newURL === envBase[item]" type="checkmark-round" :size="14"></Icon>
-    <a href="#" @click.prevent="handleChange(envBase[item], envName[item])">
-      <strong>{{envName[item]}}URL: </strong> {{ envBase[item] }} </a>
+  <p class="url" v-for="item in env" :key="item" v-if="envConfig.baseURL !== envConfig.baseAPI[item]">
+    <Icon v-if="envConfig.newURL === envConfig.baseAPI[item]" type="checkmark-round" :size="14"></Icon>
+    <a href="#" @click.prevent="handleChange(envConfig.baseAPI[item], envName[item])">
+      <strong>{{envName[item]}}URL : </strong> {{ envConfig.baseAPI[item] }} </a>
   </p>
   <!-- .url -->
-  <Form ref="envBase" :model="envBase" :rules="envBaseRule" @keyup.enter.native="handleSave('envBase')">
+  <Form ref="envConfig" :model="envConfig" :rules="envConfigRule" @keyup.enter.native="handleSave('envConfig')">
     <FormItem prop="newURL">
-      <Input v-model="envBase.newURL" placeholder="You can enter newURL"></Input>
+      <Input v-model="envConfig.newURL" placeholder="You can enter newURL"></Input>
     </FormItem>
     <Row :gutter="16">
       <Col span="12">
-      <Button long type="primary" @click="handleSave('envBase')">Save</Button>
+      <Button long type="primary" @click="handleSave('envConfig')">Save</Button>
       </Col>
       <Col span="12">
-      <Button long type="ghost" @click="handleReset('envBase')">Reset</Button>
+      <Button long type="ghost" @click="handleReset('envConfig')">Reset</Button>
       </Col>
     </Row>
   </Form>
@@ -37,13 +37,13 @@ export default {
       development: 'Development'
     },
     // 表单数据对象(接口URL)
-    envBase: {
+    envConfig: {
       baseURL: '',
       newURL: '',
       visible: false
     },
     // 表单验证规则(接口URL)
-    envBaseRule: {
+    envConfigRule: {
       newURL: [{
         required: true,
         message: 'Please enter your newURL',
@@ -53,13 +53,13 @@ export default {
   }),
   mounted() {
     const {
-      url,
+      baseAPI,
       baseURL
     } = config
     const env = process.env.NODE_ENV
     if (env === 'development' || env === 'test') {
-      this.envBase = {
-        ...url,
+      this.envConfig = {
+        baseAPI,
         baseURL,
         newURL: localStorage.getItem('newURL') || '',
         visible: true
@@ -75,7 +75,7 @@ export default {
         onOk: () => {
           this.$emit('on-click', false)
           this.$Message.success('Save success!')
-          this.envBase.newURL = name
+          this.envConfig.newURL = name
           localStorage.setItem('newURL', name)
         }
       })
@@ -85,22 +85,22 @@ export default {
         if (valid) {
           this.$emit('on-click', false)
           this.$Message.success('Save success!')
-          localStorage.setItem('newURL', this.envBase.newURL)
+          localStorage.setItem('newURL', this.envConfig.newURL)
         }
       })
     },
     handleReset(name) {
-      this.$emit('on-click', false)
       this.$refs[name].resetFields()
+      this.$emit('on-click', false)
       this.$Message.success('Reset Success!')
-      this.envBase.newURL = ''
+      this.envConfig.newURL = ''
       localStorage.removeItem('newURL')
     }
   }
 }
 </script>
 <style lang="postcss" scoped>
-#env-base {
+#env-config {
     position: absolute;
     width: 288px;
     & .url {

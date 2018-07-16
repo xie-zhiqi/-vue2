@@ -2,8 +2,8 @@
 <div id="main">
   <div id="login">
     <transition :name="settings.visible ? 'slideleft' : 'slideright'">
-      <EnvBase v-if="settings.visible" @on-click="handleSettings"></EnvBase>
-      <!-- EnvBase -->
+      <EnvConfig v-if="settings.visible" @on-click="handleSettings"></EnvConfig>
+      <!-- EnvConfig -->
       <div v-else class="login">
         <div class="logo-info">
           <img class="logo" src="../assets/logo.png" alt="logo">
@@ -34,12 +34,12 @@ import ax from '@/config/axios'
 import {
   login
 } from '@/services/app'
-import EnvBase from './common/partials/EnvBase'
+import EnvConfig from './common/partials/EnvConfig'
 import SysError from './common/partials/Error'
 export default {
   name: 'Login',
   components: {
-    EnvBase,
+    EnvConfig,
     SysError
   },
   data: () => ({
