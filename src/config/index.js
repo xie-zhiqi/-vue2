@@ -22,11 +22,9 @@ switch (env) {
 
 // 系统参数配置
 export default {
+  env: env, // 当前环境
   baseAPI: baseAPI, // API 接口
   baseURL: baseURL, // API 地址
-  // headers: {
-  //   ContentType: 'application/x-www-form-urlencoded'
-  // },
   timeout: 10000, // 请求超时
   version: '1.3.0' // 应用版本
 }

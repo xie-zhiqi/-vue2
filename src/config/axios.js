@@ -4,8 +4,8 @@ import {Message} from 'iview'
 import config from '@/config'
 import store from '@/store'
 
+const {env, baseURL, timeout} = config
 // 创建 axios 实例
-const {baseURL, timeout} = config
 const ax = axios.create({
   // 是否跨站点访问控制请求使用凭证(Cookie)
   withCredentials: true,
@@ -18,18 +18,16 @@ const ax = axios.create({
 })
 
 // 配置默认请求头
-// ax.defaults.headers.post['Content-Type'] = headers.ContentType
+// ax.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 添加 axios 实例响应拦截器
 ax.interceptors.response.use(response => {
-  const env = process.env.NODE_ENV
   const {data} = response
   const {code, msg} = data['error']
   /*
     const AUTH_TOKEN = data['data']['auth_token'] // 获取用户 AUTH_TOKEN
     if (AUTH_TOKEN) {
-      // 配置默认参数
-      ConfigDefaults(AUTH_TOKEN)
+      ConfigDefaults(AUTH_TOKEN) // 配置默认参数
     }
     // 用户 TOKEN 失效
     if (code === 3000) {
@@ -52,8 +50,6 @@ ax.interceptors.response.use(response => {
   const {response, message, config} = error
   if (response) {
     store.commit('RES_ERROR', response) // 响应错误数据
-  // } else if (request) {
-  //   console.log(request)
   } else {
     Message.error({content: message})
   }
@@ -70,7 +66,7 @@ ax.interceptors.response.use(response => {
   // 刷新重新配置默认参数
   const user = JSON.parse(sessionStorage.getItem('user'))
   if (user) {
-    ConfigDefaults(user['auth_token'])
+    ConfigDefaults(user['auth_token']) // 配置默认参数
   }
  */
 

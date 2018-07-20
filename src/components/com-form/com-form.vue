@@ -4,17 +4,17 @@
     <slot> </slot>
     <FormItem v-for="(item, index) in elem" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth" :style="item.width">
       <template v-if="!item.button">
-        <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize"></Input>
+        <Input v-if="!item.element" :type="item.type" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :icon="item.icon" :number="item.number" :rows="item.rows" :autosize="item.autosize" :style="item.elemWidth"></Input>
         <!-- 输入框 -->
-        <InputNumber v-if="item.element === 'number'" :max="item.max" :min="item.min" v-model="model[item.prop]" :size="item.size" :disabled="item.disabled"></InputNumber>
+        <InputNumber v-if="item.element === 'number'" :max="item.max" :min="item.min" v-model="model[item.prop]" :size="item.size" :disabled="item.disabled" :style="item.elemWidth"></InputNumber>
         <!-- 数字输入框 -->
-        <Select v-if="item.element === 'select'" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :filterable="item.filterable" :multiple="item.multiple" :style="item.selectWidth">
+        <Select v-if="item.element === 'select'" v-model="model[item.prop]" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :filterable="item.filterable" :multiple="item.multiple" :style="item.elemWidth">
           <Option v-for="(opt, index) in item.option" :key="index" :value="opt.value" :disabled="opt.disabled">{{ opt.label }}</Option>
         </Select>
         <!-- 选择器 -->
-        <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled"></DatePicker>
+        <DatePicker v-if="item.element === 'date'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :style="item.elemWidth"></DatePicker>
         <!-- 日期选择器 -->
-        <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled"></TimePicker>
+        <TimePicker v-if="item.element === 'time'" :type="item.type" v-model="model[item.prop]" :format="item.format" :placeholder="item.placeholder" :size="item.size" :disabled="item.disabled" :style="item.elemWidth"></TimePicker>
         <!-- 时间选择器 -->
         <RadioGroup v-if="item.element === 'radio'" :type="item.type" v-model="model[item.prop]" :size="item.size" :vertical="item.vertical">
           <Radio v-for="(opt, index) in item.option" :key="index" :label="opt.value" :size="item.size" :disabled="opt.disabled">{{ opt.label }}</Radio>
@@ -84,15 +84,15 @@ export default {
     let elem = this.elem
     for (var i = 0; i < elem.length; i++) {
       let width = elem[i].width
-      let selectWidth = elem[i].selectWidth
+      let elemWidth = elem[i].elemWidth
       if (parseInt(width)) {
         elem[i].width = {
           width: `${width}px`
         }
       }
-      if (parseInt(selectWidth)) {
-        elem[i].selectWidth = {
-          width: `${selectWidth}px`
+      if (parseInt(elemWidth)) {
+        elem[i].elemWidth = {
+          width: `${elemWidth}px`
         }
       }
     }
