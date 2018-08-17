@@ -1,14 +1,15 @@
 <template>
-<div id="com-table-page">
+<div id="v-table-page">
   <Table ref="table" :border="border" :row-class-name="rowClassName" :loading="loading" :columns="columns" :data="data" @on-selection-change="handleSelectionChange"></Table>
   <!-- Table -->
-  <Page v-if="total && total > pageSize" class-name="page" show-elevator show-total show-sizer placement="top" :total="total" :current="current" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
+  <slot> </slot>
+  <Page v-if="total > 10" class-name="page" show-elevator show-total show-sizer placement="top" :total="total" :current="current" :page-size="pageSize" @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"></Page>
   <!-- Page -->
 </div>
 </template>
 <script>
 export default {
-  name: 'ComTablePage',
+  name: 'VTablePage',
   props: {
     border: Boolean,
     rowClassName: Function,
@@ -33,6 +34,10 @@ export default {
         current: this.current,
         pageSize: this.pageSize
       }
+    },
+    // 重置当前页码
+    resetCurrent() {
+      this.current = 1
     },
     // 改变页码
     handlePageChange(page) {
@@ -59,6 +64,6 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .page {
-    margin-top: 16px;
+  margin-top: 16px;
 }
 </style>

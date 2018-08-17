@@ -50,22 +50,22 @@ export default {
 </script>
 <style lang="postcss" scoped>
 #sys-nav {
-    & .ivu-menu-vertical::after {
-        display: none;
-    }
+  & .ivu-menu-vertical::after {
+    display: none;
+  }
 }
 #sys-sidebar {
-    overflow: auto;
-    height: calc(100vh - 60px);
+  overflow: auto;
+  height: calc(100vh - 60px);
+  background-color: #efefef;
+  & .ivu-menu-vertical {
     background-color: #efefef;
-    & .ivu-menu-vertical {
-        background-color: #efefef;
-        &::after {
-            display: none;
-        }
-        & .ivu-menu-item-active {
-            background-color: #f3f3f3;
-        }
+    &::after {
+      display: none;
     }
+    & .ivu-menu-item-active {
+      background-color: #f3f3f3;
+    }
+  }
 }
 </style>

@@ -40,11 +40,11 @@ export default {
 </script>
 <style lang="postcss" scoped>
 #content {
-    overflow: auto;
-    height: calc(100vh - 60px);
-    background-color: #fff;
-    & .layout-content {
-        padding: 16px;
-    }
+  overflow: auto;
+  height: calc(100vh - 60px);
+  background-color: #fff;
+  & .layout-content {
+    padding: 16px;
+  }
 }
 </style>

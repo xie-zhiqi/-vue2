@@ -1,22 +1,9 @@
 'use strict'
 require('./check-versions')()
 
-// process.env.NODE_ENV = 'production'
-let msg
 const TARGET = process.env.npm_lifecycle_event
-switch (TARGET) {
-  case 'test':
-    process.env.NODE_ENV = 'test'
-    msg = 'building for test...'
-    break;
-  case 'release':
-    process.env.NODE_ENV = 'release'
-    msg = 'building for release...'
-    break;
-  default:
-    process.env.NODE_ENV = 'production'
-    msg = 'building for production...'
-}
+process.env.NODE_ENV = TARGET
+const msg = `building for ${TARGET}...`
 
 const ora = require('ora')
 const rm = require('rimraf')
@@ -48,9 +35,6 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     }
 
     console.log(chalk.cyan('  Build complete.\n'))
-    console.log(chalk.yellow(
-      '  Tip: built files are meant to be served over an HTTP server.\n' +
-      '  Opening index.html over file:// won\'t work.\n'
-    ))
+    console.log(chalk.yellow('  Tip: built files are meant to be served over an HTTP server.\n' + '  Opening index.html over file:// won\'t work.\n'))
   })
 })

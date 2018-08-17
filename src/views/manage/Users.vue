@@ -1,24 +1,22 @@
 <template>
 <div id="users">
-  <Search :elem="searchElem" :model="search" :btn-loading="list.loading" :label-width="60" @on-search="handleGetList"></Search>
+  <Search :label-width="80" :elem="searchElem" :model="search" :btn-loading="list.loading" @on-search="handleGetList"></Search>
   <!-- Search -->
-  <Card>
-    <div slot="title">
-      <Icon type="navicon-round"></Icon> User List
-    </div>
-    <!-- title -->
+  <List>
     <div slot="extra">
-      <a href="#" @click.prevent="handleCreate"> Create </a>
+      <a href="#" @click.prevent="handleCreate">
+        <Icon type="md-document" size="16" style="margin-top: -2px;"></Icon> Create </a>
     </div>
     <!-- extra -->
-    <div v-if="toolbar.visible" class="toolbar">
-      <Button type="primary" @click="handleBatchDelete">Delete</Button>
+    <div slot="toolbar" style="padding: 16px;border-top:1px solid #dcdee2;">
+      <Button type="primary" @click="handleBatchDelete" :disabled="!toolbar.visible" style="margin-right: 8px;">Delete</Button>
       <span class="number">Selected {{ toolbar.number }} items</span>
     </div>
-    <!-- .toolbar -->
-    <ComTablePage ref="list" :columns="columns" :loading="list.loading" :data="list.data" :total="list.total" @on-page-change="handleGetList" @on-selection-change="handleSelectionChange"></ComTablePage>
-    <!-- ComTablePage -->
-  </Card>
+    <!-- toolbar -->
+    <VTablePage ref="list" :columns="columns" :loading="list.loading" :data="list.data" :total="list.total" @on-page-change="handleGetList" @on-selection-change="handleSelectionChange"></VTablePage>
+    <!-- VTablePage -->
+  </List>
+  <!-- List -->
   <Edit ref="edit" :model="edit" @on-update="handleGetList"></Edit>
   <!-- Edit -->
 </div>
@@ -31,11 +29,13 @@ import {
 } from '@/services/manage/users'
 import Edit from './UserEdit'
 import Search from '@/views/components/Search'
+import List from '@/views/components/List'
 export default {
   name: 'Users',
   components: {
     Edit,
-    Search
+    Search,
+    List
   },
   data() {
     return {
@@ -73,18 +73,7 @@ export default {
         label: 'Name',
         prop: 'name',
         placeholder: 'Search Name',
-        icon: 'ios-search-strong'
-      }, {
-        labelWidth: 4,
-        button: [{
-          name: 'submit',
-          type: 'primary',
-          text: 'Search'
-        }, {
-          name: 'reset',
-          type: 'ghost',
-          text: 'Reset'
-        }]
+        icon: 'md-search'
       }],
       // 表格列的配置描述(用户)
       columns: [{
@@ -150,10 +139,11 @@ export default {
             }
           }, [h('Icon', {
             props: {
-              type: 'edit',
+              type: 'md-create',
               size: 16
             },
             style: {
+              marginTop: '-2px',
               marginRight: '4px'
             }
           }), 'Edit']),
@@ -171,10 +161,11 @@ export default {
           }, [
             h('a', [h('Icon', {
               props: {
-                type: 'trash-a',
+                type: 'md-trash',
                 size: 16
               },
               style: {
+                marginTop: '-2px',
                 marginRight: '4px'
               }
             }), 'Delete'])
@@ -306,7 +297,4 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
-.toolbar {
-    margin-bottom: 16px;
-}
 </style>

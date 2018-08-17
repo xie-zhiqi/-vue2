@@ -41,9 +41,10 @@ ax.interceptors.response.use(response => {
       return response.data // 响应正确的数据
     }
     store.commit('RES_ERROR', response) // 响应错误数据
-  } else if (code === 0) {
-    return response.data // 响应正确的数据
   } else {
+    if (code === 0) {
+      return response.data // 响应正确的数据
+    }
     Message.error(msg) // 提示错误信息
   }
 }, error => {

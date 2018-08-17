@@ -1,7 +1,9 @@
 <template>
 <div id="edit-password">
   <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComForm label-position="top" ref="editPassword" :key="modal.visible" :elem="editPasswordElem" :model="editPassword" :rules="editPasswordRule" :btn-loading="loading" @on-submit="handleSubmit('editPassword')" @on-click="modal.visible = false" :width="320"></ComForm>
+    <VForm label-position="top" ref="editPassword" :key="modal.visible" :width="320" :elem="editPasswordElem" :model="editPassword" :rules="editPasswordRule" :btn-loading="loading" @on-submit="handleSubmit" @on-click="modal.visible = false" submit-text="Save password"
+      button button-text="Cancel"></VForm>
+    <!-- VForm -->
   </Modal>
 </div>
 </template>
@@ -58,15 +60,6 @@ export default {
         prop: 'passwordConfirmation',
         placeholder: 'Please enter your password confirmation',
         type: 'password'
-      }, {
-        button: [{
-          name: 'submit',
-          type: 'primary',
-          text: 'Save password'
-        }, {
-          type: 'ghost',
-          text: 'Cancel'
-        }]
       }],
       // 表单数据对象
       editPassword: {

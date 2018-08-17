@@ -1,7 +1,8 @@
 <template>
 <div id="user-edit">
   <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <ComForm :key="modal.visible" :elem="userElem" :model="model" :rules="userRule" :loading="loading.form" :btn-loading="loading.btn" @on-submit="handleSubmit" @on-click="modal.visible = false" :width="360" :label-width="80"></ComForm>
+    <VForm :key="modal.visible" :width="360" :label-width="80" :elem="userElem" :model="model" :rules="userRule" :loading="loading.form" :btn-loading="loading.btn" @on-submit="handleSubmit" @on-click="modal.visible = false" button button-text="Cancel"></VForm>
+    <!-- VForm -->
   </Modal>
 </div>
 </template>
@@ -90,15 +91,6 @@ export default {
         prop: 'desc',
         placeholder: 'Enter something...',
         type: 'textarea'
-      }, {
-        button: [{
-          name: 'submit',
-          type: 'primary',
-          text: 'Submit'
-        }, {
-          type: 'ghost',
-          text: 'Cancel'
-        }]
       }],
       // 表单验证(用户)
       userRule: {

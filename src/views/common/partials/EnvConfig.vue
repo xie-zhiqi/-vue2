@@ -3,7 +3,7 @@
   <p class="url base-url"> BaseURL : {{ envConfig.baseURL }} </p>
   <!-- .base-url -->
   <p class="url" v-for="item in env" :key="item" v-if="envConfig.baseURL !== envConfig.baseAPI[item]">
-    <Icon v-if="envConfig.newURL === envConfig.baseAPI[item]" type="checkmark-round" :size="14"></Icon>
+    <Icon v-if="envConfig.newURL === envConfig.baseAPI[item]" type="md-checkmark-circle-outline" size="16" style="margin-top: -2px;"></Icon>
     <a href="#" @click.prevent="handleChange(envConfig.baseAPI[item], envName[item])">
       <strong>{{envName[item]}}URL : </strong> {{ envConfig.baseAPI[item] }} </a>
   </p>
@@ -17,7 +17,7 @@
       <Button long type="primary" @click="handleSave('envConfig')">Save</Button>
       </Col>
       <Col span="12">
-      <Button long type="ghost" @click="handleReset('envConfig')">Reset</Button>
+      <Button long @click="handleReset('envConfig')">Reset</Button>
       </Col>
     </Row>
   </Form>
@@ -69,6 +69,7 @@ export default {
   methods: {
     handleChange(name, env) {
       this.$Modal.confirm({
+        title: 'Warning',
         content: `Are you sure switch to ${env} environment?`,
         okText: 'OK',
         cancelText: 'Cancel',
@@ -101,15 +102,15 @@ export default {
 </script>
 <style lang="postcss" scoped>
 #env-config {
-    position: absolute;
-    width: 288px;
-    & .url {
-        margin-bottom: 16px;
-        color: #888;
-    }
-    & .base-url {
-        color: #333;
-        font-weight: 700;
-    }
+  position: absolute;
+  width: 288px;
+  & .url {
+    margin-bottom: 16px;
+    color: #888;
+  }
+  & .base-url {
+    color: #333;
+    font-weight: 700;
+  }
 }
 </style>

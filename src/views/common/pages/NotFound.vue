@@ -8,7 +8,7 @@
     </span>
     <h2>! ERROR DECETED !</h2>
   </div>
-  <h3 class="icon"> <Icon type="ios-lightbulb-outline" :size="100"></Icon> </h3>
+  <h3 class="icon"> <Icon type="md-bulb" size="112"></Icon> </h3>
   <Button type="primary"> <a href="/" style="color:#fff;">GO TO HOME PAGE</a> </Button>
 </div>
 </template>
@@ -43,21 +43,21 @@ export default {
 </script>
 <style lang="postcss" scoped>
 #not-found {
-    position: fixed;
-    width: 100%;
-    min-height: 100%;
-    text-align: center;
-    color: #fff;
-    background-color: #B396FF;
-    & .head {
-        padding-top: 60px;
-    }
-    & .status-code {
-        color: #5066BF;
-        font-size: 150px;
-    }
-    & .icon {
-        padding: 20px 0 16px;
-    }
+  position: fixed;
+  width: 100%;
+  min-height: 100%;
+  text-align: center;
+  color: #fff;
+  background-color: #B396FF;
+  & .head {
+    padding-top: 60px;
+  }
+  & .status-code {
+    color: #5066BF;
+    font-size: 150px;
+  }
+  & .icon {
+    padding: 20px 0 16px;
+  }
 }
 </style>

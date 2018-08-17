@@ -32,20 +32,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="postcss" scoped>
 #dashboard {
-    & img {
-      display: block;
-      margin: 0 auto;
+  & img {
+    display: block;
+    margin: 0 auto;
+  }
+  & h1 {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  & h3 {
+    margin: 20px 0;
+    font-weight: 400;
+    & a {
+      color: #51b883;
     }
-    & h1 {
-        margin-bottom: 10px;
-        font-size: 20px;
-    }
-    & h3 {
-        margin: 20px 0;
-        font-weight: 400;
-        & a {
-            color: #51b883;
-        }
-    }
+  }
 }
 </style>

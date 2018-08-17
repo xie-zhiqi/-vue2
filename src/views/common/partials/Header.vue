@@ -10,7 +10,7 @@
     </Col>
     <Col :xs="6" :sm="12" :md="0">
     <Poptip class="navigation" placement="right-start" v-model="visible">
-      <Icon type="navicon" size="32"></Icon>
+      <Icon type="md-menu" size="32"></Icon>
       <Navigation slot="content" nav @on-click="handleClose"></Navigation>
     </Poptip>
     <!-- .navigation -->
@@ -19,12 +19,12 @@
     <div class="login-info">
       <Dropdown placement="bottom-end" trigger="click" @on-click="handleDropdown">
         <strong class="user">
-        <Avatar style="background-color: #55b387" icon="person" size="small"></Avatar>
+        <Avatar style="background-color: #55b387" icon="md-person" size="small"></Avatar>
         {{ userName }}
         </strong>
         <DropdownMenu class="list" slot="list">
           <DropdownItem v-for="item in dropdown" :key="item.name" :name="item.name">
-            <Icon :type="item.icon"></Icon> {{ item.label }}
+            <Icon :type="item.icon" size="16" style="margin-top: -2px;"></Icon> {{ item.label }}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -54,11 +54,11 @@ export default {
     dropdown: [{
       label: 'Password',
       name: 'editPassword',
-      icon: 'locked'
+      icon: 'md-lock'
     }, {
       label: 'Sign out',
       name: 'signout',
-      icon: 'log-out'
+      icon: 'md-log-out'
     }]
   }),
   mounted() {
@@ -96,43 +96,43 @@ export default {
 </script>
 <style lang="postcss">
 #sys-header {
-    color: #fff;
-    background-color: #52626a;
-    & .ivu-poptip-body {
-        padding: 8px 0;
+  color: #fff;
+  background-color: #52626a;
+  & .ivu-poptip-body {
+    padding: 8px 0;
+  }
+  & .ivu-menu-vertical .ivu-menu-submenu-title {
+    padding-right: 12px;
+  }
+  & .logo {
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin: 10px 16px;
+  }
+  & .name {
+    padding: 12px 0 6px;
+    font-size: 18px;
+    line-height: 20px;
+  }
+  & .sub {
+    font-size: 12px;
+  }
+  & .navigation {
+    margin-top: 12px;
+    margin-left: 16px;
+  }
+  & .login-info {
+    margin: 18px 16px;
+    text-align: right;
+    & .list {
+      text-align: left;
     }
-    & .ivu-menu-vertical .ivu-menu-submenu-title {
-        padding-right: 12px;
+    & .user {
+      display: block;
+      cursor: pointer;
+      color: #fff;
     }
-    & .logo {
-        float: left;
-        width: 40px;
-        height: 40px;
-        margin: 10px 16px;
-    }
-    & .name {
-        padding: 12px 0 6px;
-        font-size: 18px;
-        line-height: 20px;
-    }
-    & .sub {
-        font-size: 12px;
-    }
-    & .navigation {
-        margin-top: 12px;
-        margin-left: 16px;
-    }
-    & .login-info {
-        margin: 18px 16px;
-        text-align: right;
-        & .list {
-          text-align: left;
-        }
-        & .user {
-            display: block;
-            cursor: pointer;
-            color: #fff;
-        }
-    }
+  }
 }
 </style>

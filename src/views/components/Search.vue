@@ -1,11 +1,17 @@
 <template>
 <div id="search">
-  <Card style="margin-bottom: 16px;">
-    <div slot="title">
-      <Icon type="ios-search-strong"></Icon> Search
+  <div class="head">
+    <div class="title">
+      <Icon type="md-search" size="16" style="margin-top: -2px;"></Icon> Search
     </div>
-    <ComForm inline :elem="elem" :model="model" :loading="loading" :btn-loading="btnLoading" :label-width="labelWidth" @on-submit="handleSearch" @on-reset="handleSearch"></ComForm>
-  </Card>
+    <!-- .title -->
+  </div>
+  <!-- .head -->
+  <div class="body">
+    <VForm inline :label-width="labelWidth" :elem="elem" :model="model" :loading="loading" :btn-loading="btnLoading" @on-submit="handleSearch" @on-reset="handleSearch" :btn-label-width="4" reset submit-text="Search" ok-icon="md-search"></VForm>
+    <!-- VForm -->
+  </div>
+  <!-- .body -->
 </div>
 </template>
 <script>
@@ -29,4 +35,17 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
+.head {
+  position: relative;
+  border: 1px solid #dcdee2;
+  border-bottom-style: none;
+  & .title {
+    padding: 12px 16px;
+  }
+}
+.body {
+  margin-bottom: 16px;
+  padding: 12px 16px 0;
+  border: 1px solid #dcdee2;
+}
 </style>

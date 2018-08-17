@@ -10,7 +10,7 @@
 ## 特性
 
 1.  基于 Vue.js 的企业级中后台开源模板
-2.  基于 Vue 官方命令行工具 vue-cli 脚手架搭建
+2.  基于 Vue 官方命令行工具 Vue CLI 2 脚手架搭建
 3.  使用 Vue 官方核心插件 Vue Router, Vuex
 4.  使用 Vue 官方建议的 Axios 插件进行 HTTP 操作
 5.  采用时下热门的 UI 组件库 iView
@@ -18,8 +18,8 @@
 
 ### 技术栈
 
--   axios @0.x
--   iview @2.x
+-   axios @0.18.x
+-   iview @3.x
 -   mockjs @1.x
 -   vue @2.5.x
 -   vue-router @3.x

@@ -12,14 +12,14 @@
           </p>
         </div>
         <!-- .logo-info -->
-        <ComForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin('login')"></ComForm>
-        <!-- ComForm -->
+        <VForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin" btn-long submit-text="Sign in"></VForm>
+        <!-- VForm -->
         <p class="version">Version: {{ version }}</p>
         <!-- .version -->
       </div>
     </transition>
     <a v-if="settings.button" class="settings" href="#" @click.prevent="handleSettings">
-      <Icon :type="settings.visible ? 'laptop' : 'settings'" size="18" style="position: relative;top: 2px;"></Icon>
+      <Icon :type="settings.visible ? 'md-laptop' : 'md-construct'" size="16" style="margin-top: -2px;"></Icon>
       <strong>{{ settings.visible ? 'Login' : 'Settings'}}</strong>
     </a>
   </div>
@@ -56,13 +56,6 @@ export default {
       prop: 'pwd',
       placeholder: 'Password',
       type: 'password'
-    }, {
-      button: [{
-        long: true,
-        name: 'submit',
-        type: 'primary',
-        text: 'Sign in'
-      }]
     }],
     // 表单数据对象(登录)
     login: {
@@ -110,95 +103,91 @@ export default {
       this.settings.visible = !this.settings.visible
     },
     handleLogin(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          // 配置默认接口地址
-          ax.defaults.baseURL = localStorage.getItem('newURL') || config.baseURL
-          // 用户登录
-          this.$store.commit('LOADING', true)
-          const para = Object.assign({}, this.login)
-          // 模拟异步请求
-          setTimeout(() => {
-            login(para).then(res => {
-              // 获取用户信息
-              sessionStorage.setItem('user', JSON.stringify(res.data))
-              // 获取菜单列表
-              this.$store.dispatch('handleMenu')
-              this.$store.commit('LOADING', false)
-            }).catch(() => {
-              this.$store.commit('LOADING', false)
-            })
-          }, 800)
-        }
-      })
+      // 配置默认接口地址
+      ax.defaults.baseURL = localStorage.getItem('newURL') || config.baseURL
+      // 用户登录
+      this.$store.commit('LOADING', true)
+      const para = Object.assign({}, this.login)
+      // 模拟异步请求
+      setTimeout(() => {
+        login(para).then(res => {
+          // 获取用户信息
+          sessionStorage.setItem('user', JSON.stringify(res.data))
+          // 获取菜单列表
+          this.$store.dispatch('handleMenu')
+          this.$store.commit('LOADING', false)
+        }).catch(() => {
+          this.$store.commit('LOADING', false)
+        })
+      }, 800)
     }
   }
 }
 </script>
 <style lang="postcss" scoped>
 #login {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 360px;
-    height: 350px;
-    margin: -175px 0 0 -180px;
-    padding: 36px;
-    box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
-    /* 过渡动画 */
-    & .slideleft-enter-active, & .slideright-enter-active {
-      transition: all 0.5s;
-      transform: translateX(0);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 360px;
+  height: 350px;
+  margin: -175px 0 0 -180px;
+  padding: 36px;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
+  /* 过渡动画 */
+  & .slideleft-enter-active, & .slideright-enter-active {
+    transition: all 0.5s;
+    transform: translateX(0);
+  }
+  & .slideleft-enter, & .slideright-enter {
+    opacity: 0;
+  }
+  & .slideleft-leave-active, & .slideright-leave-active {
+    transition: all 0.5s;
+    opacity: 0;
+  }
+  & .slideleft-leave, & .slideright-leave {
+    transform: translateX(0);
+  }
+  & .slideleft-enter, & .slideright-leave-active {
+    transform: translateX(300px);
+  }
+  & .slideleft-leave-active, & .slideright-enter {
+    transform: translateX(-300px);
+  }
+  /* end */
+  & .settings {
+    position: absolute;
+    bottom: 16px;
+  }
+  & .login {
+    position: absolute;
+    width: 288px;
+  }
+  & .logo-info {
+    height: 64px;
+    margin-bottom: 22px;
+    text-align: center;
+    & .logo {
+      width: 64px;
+      height: 64px;
+      margin-right: 10px;
     }
-    & .slideleft-enter, & .slideright-enter {
-      opacity: 0;
+    & .name {
+      position: relative;
+      bottom: 14px;
+      display: inline-block;
+      text-align: left;
+      font-size: 18px;
+      line-height: 20px;
     }
-    & .slideleft-leave-active, & .slideright-leave-active {
-      transition: all 0.5s;
-      opacity: 0;
+    & .sub {
+      font-size: 12px;
     }
-    & .slideleft-leave, & .slideright-leave {
-      transform: translateX(0);
-    }
-    & .slideleft-enter, & .slideright-leave-active {
-      transform: translateX(300px);
-    }
-    & .slideleft-leave-active, & .slideright-enter {
-      transform: translateX(-300px);
-    }
-    /* end */
-    & .settings {
-        position: absolute;
-        bottom: 16px;
-    }
-    & .login {
-      position: absolute;
-      width: 288px;
-    }
-    & .logo-info {
-        height: 64px;
-        margin-bottom: 22px;
-        text-align: center;
-        & .logo {
-            width: 64px;
-            height: 64px;
-            margin-right: 10px;
-        }
-        & .name {
-            position: relative;
-            bottom: 14px;
-            display: inline-block;
-            text-align: left;
-            font-size: 18px;
-            line-height: 20px;
-        }
-        & .sub {
-            font-size: 12px;
-        }
-    }
-    & .version {
-        text-align: center;
-        color: #888;
-    }
+  }
+  & .version {
+    text-align: center;
+    color: #888;
+  }
 }
 </style>
