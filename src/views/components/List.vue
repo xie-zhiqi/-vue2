@@ -2,7 +2,11 @@
 <div id="list">
   <div class="head">
     <div class="title">
-      <Icon type="md-list" size="16" style="margin-top: -2px;"></Icon> {{$route.name}}
+      <slot name="title">
+        <Icon :type="icon || 'md-list'" size="16" style="margin-top: -2px;"></Icon>
+        <!-- {{$route.name}} -->
+        {{ title || 'Data list' }}
+      </slot>
     </div>
     <!-- .title -->
     <div class="extra">
@@ -19,6 +23,10 @@
 <script>
 export default {
   name: 'list',
+  props: {
+    title: String,
+    icon: String
+  },
   data: () => ({
 
   })
@@ -29,6 +37,7 @@ export default {
   position: relative;
   border: 1px solid #dcdee2;
   border-bottom-style: none;
+  font-size: 14px;
   & .title {
     padding: 12px 16px;
   }

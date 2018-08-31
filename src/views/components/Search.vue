@@ -39,6 +39,7 @@ export default {
   position: relative;
   border: 1px solid #dcdee2;
   border-bottom-style: none;
+  font-size: 14px;
   & .title {
     padding: 12px 16px;
   }

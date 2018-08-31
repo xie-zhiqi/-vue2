@@ -14,11 +14,18 @@ const ax = axios.create({
   transformRequest: [
     (data, headers) => qs.stringify(data) // 序列化请求的数据
   ],
+  /*
+    // 修改请求的数据再发送到服务器
+    transformRequest: [
+      (data, headers) => JSON.stringify(data) // 序列化请求的数据
+    ],
+    // 修改请求头信息
+    headers: {
+      'Content-Type': 'application/json'
+    },
+   */
   timeout: timeout // 配置请求超时
 })
-
-// 配置默认请求头
-// ax.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 添加 axios 实例响应拦截器
 ax.interceptors.response.use(response => {

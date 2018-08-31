@@ -35,10 +35,6 @@ export default {
         pageSize: this.pageSize
       }
     },
-    // 重置当前页码
-    resetCurrent() {
-      this.current = 1
-    },
     // 改变页码
     handlePageChange(page) {
       this.current = page

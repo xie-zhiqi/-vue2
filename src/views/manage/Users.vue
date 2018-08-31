@@ -8,11 +8,11 @@
         <Icon type="md-document" size="16" style="margin-top: -2px;"></Icon> Create </a>
     </div>
     <!-- extra -->
-    <div slot="toolbar" style="padding: 16px;border-top:1px solid #dcdee2;">
+    <div class="toolbar">
       <Button type="primary" @click="handleBatchDelete" :disabled="!toolbar.visible" style="margin-right: 8px;">Delete</Button>
       <span class="number">Selected {{ toolbar.number }} items</span>
     </div>
-    <!-- toolbar -->
+    <!-- .toolbar -->
     <VTablePage ref="list" :columns="columns" :loading="list.loading" :data="list.data" :total="list.total" @on-page-change="handleGetList" @on-selection-change="handleSelectionChange"></VTablePage>
     <!-- VTablePage -->
   </List>
@@ -42,8 +42,8 @@ export default {
       // 工具条(批量删除)
       toolbar: {
         ids: [], // ID数组
-        visible: false, // 按钮可视状态
-        number: 0 // 选择数量
+        number: 0, // 选择数量
+        visible: false // 按钮可视状态
       },
       // 表单数据(用户)
       edit: {
@@ -297,4 +297,11 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
+#users {
+  & .toolbar {
+    padding: 12px 16px;
+    border: 1px solid #dcdee2;
+    border-bottom-style: none;
+  }
+}
 </style>
