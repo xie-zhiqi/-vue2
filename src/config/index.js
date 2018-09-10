@@ -1,9 +1,9 @@
 let version = '2.0.0' // 系统版本
 let baseAPI = {
-  production: 'https://api.prod.xx.com',
-  release: 'https://api.release.xx.com',
-  test: 'https://api.test.xx.com',
-  development: 'http://api.dev.xx.com'
+  development: 'http://dev.api.xx.com',
+  test: 'https://test.api.xx.com',
+  release: 'https://release.api.xx.com',
+  production: 'https://prod.api.xx.com'
 }
 let env = process.env.NODE_ENV
 let baseURL = baseAPI[env]

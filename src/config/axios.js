@@ -45,12 +45,12 @@ ax.interceptors.response.use(response => {
   if (env === 'development' || env === 'test') {
     if (code === 0) {
       console.log(data) // 控制台输出响应数据
-      return response.data // 响应正确的数据
+      return data // 响应正确的数据
     }
     store.commit('RES_ERROR', response) // 响应错误数据
   } else {
     if (code === 0) {
-      return response.data // 响应正确的数据
+      return data // 响应正确的数据
     }
     Message.error(msg) // 提示错误信息
   }
