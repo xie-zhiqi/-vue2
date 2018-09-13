@@ -1,23 +1,32 @@
 <template>
-<div id="env-config" v-if="envConfig.visible">
-  <p class="url base-url"> BaseURL : {{ envConfig.baseURL }} </p>
-  <!-- .base-url -->
-  <p class="url" v-for="item in env" :key="item" v-if="envConfig.baseURL !== envConfig.baseAPI[item]">
-    <Icon v-if="envConfig.newURL === envConfig.baseAPI[item]" type="md-checkmark-circle-outline" size="16" style="margin-top: -2px;"></Icon>
-    <a href="#" @click.prevent="handleChange(envConfig.baseAPI[item], envName[item])">
-      <strong>{{envName[item]}}URL : </strong> {{ envConfig.baseAPI[item] }} </a>
-  </p>
-  <!-- .url -->
-  <Form ref="envConfig" :model="envConfig" :rules="envConfigRule" @keyup.enter.native="handleSave('envConfig')">
-    <FormItem prop="newURL">
-      <Input v-model="envConfig.newURL" placeholder="You can enter newURL"></Input>
+<div id="env-config">
+  <div class="env" v-for="item in env" :key="item">
+    <template v-if="item === envConfig.env">
+    <Icon type="md-checkmark-circle-outline" size="16"></Icon>
+    <strong>{{envName[item]}} environment</strong>
+    <p>baseAPI: {{ envConfig.baseAPI[item] }}</p>
+    </template>
+    <template v-else>
+    <Tooltip placement="right-start">
+    <a href="#" @click.prevent="handleChange(item)">
+      <strong>{{envName[item]}} environment</strong></a>
+      <div slot="content">
+        <p>baseAPI: {{ envConfig.baseAPI[item] }}</p>
+      </div>
+    </Tooltip>
+    </template>
+  </div>
+  <!-- .env -->
+  <Form ref="envConfig" :model="envConfig" @keyup.enter.native="handleSave">
+    <FormItem>
+      <Input v-model="envConfig.newBaseAPI" placeholder="You can enter new API"></Input>
     </FormItem>
     <Row :gutter="16">
       <Col span="12">
-      <Button long type="primary" @click="handleSave('envConfig')">Save</Button>
+      <Button long type="primary" @click="handleSave">Save</Button>
       </Col>
       <Col span="12">
-      <Button long @click="handleReset('envConfig')">Reset</Button>
+      <Button long @click="handleReset">Reset</Button>
       </Col>
     </Row>
   </Form>
@@ -27,75 +36,69 @@
 <script>
 import config from '@/config'
 export default {
-  name: 'EnvBase',
+  name: 'EnvConfig',
   data: () => ({
-    env: ['production', 'release', 'test', 'development'],
+    env: ['development', 'test', 'release', 'production'],
     envName: {
-      production: 'Production',
-      release: 'Release',
+      development: 'Development',
       test: 'Test',
-      development: 'Development'
+      release: 'Release',
+      production: 'Production'
     },
     // 表单数据对象(接口URL)
     envConfig: {
       baseURL: '',
-      newURL: '',
-      visible: false
-    },
-    // 表单验证规则(接口URL)
-    envConfigRule: {
-      newURL: [{
-        required: true,
-        message: 'Please enter your newURL',
-        trigger: 'blur'
-      }]
+      newBaseAPI: '',
+      env: ''
     }
   }),
   mounted() {
     const {
       baseAPI,
-      baseURL
+      baseURL,
+      env
     } = config
-    const env = process.env.NODE_ENV
     if (env === 'development' || env === 'test') {
       this.envConfig = {
         baseAPI,
         baseURL,
-        newURL: localStorage.getItem('newURL') || '',
-        visible: true
+        env: localStorage.getItem('env') || env,
+        newBaseAPI: localStorage.getItem('newBaseAPI') || ''
       }
     }
   },
   methods: {
-    handleChange(name, env) {
+    handleChange(env) {
+      const {
+        baseAPI
+      } = this.envConfig
       this.$Modal.confirm({
-        title: 'Warning',
-        content: `Are you sure switch to ${env} environment?`,
+        title: 'Setting',
+        content: `Are you sure switch to ${this.envName[env]} environment?`,
         okText: 'OK',
         cancelText: 'Cancel',
         onOk: () => {
-          this.$emit('on-click', false)
           this.$Message.success('Save success!')
-          this.envConfig.newURL = name
-          localStorage.setItem('newURL', name)
+          this.$emit('on-click')
+          this.envConfig.env = env
+          this.envConfig.newBaseAPI = baseAPI[env]
+          localStorage.setItem('env', env)
+          localStorage.setItem('newBaseAPI', baseAPI[env])
         }
       })
     },
-    handleSave(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.$emit('on-click', false)
-          this.$Message.success('Save success!')
-          localStorage.setItem('newURL', this.envConfig.newURL)
-        }
-      })
+    handleSave() {
+      this.$Message.success('Save success!')
+      this.$emit('on-click')
+      localStorage.setItem('newBaseAPI', this.envConfig.newBaseAPI)
     },
-    handleReset(name) {
-      this.$refs[name].resetFields()
-      this.$emit('on-click', false)
+    handleReset() {
+      this.$refs['envConfig'].resetFields()
       this.$Message.success('Reset Success!')
-      this.envConfig.newURL = ''
-      localStorage.removeItem('newURL')
+      this.$emit('on-click')
+      this.envConfig.newBaseAPI = ''
+      localStorage.removeItem('env')
+      localStorage.removeItem('newBaseAPI')
     }
   }
 }
@@ -104,13 +107,12 @@ export default {
 #env-config {
   position: absolute;
   width: 288px;
-  & .url {
-    margin-bottom: 16px;
-    color: #888;
+  & .ivu-form {
+    margin-top: 16px;
   }
-  & .base-url {
-    color: #333;
-    font-weight: 700;
+  & .env {
+    margin-bottom: 8px;
+    color: #888;
   }
 }
 </style>

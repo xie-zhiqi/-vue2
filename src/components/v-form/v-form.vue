@@ -1,5 +1,5 @@
 <template>
-<div id="v-form" @keyup.enter="handleSubmit('form')">
+<div id="v-form" @keyup.enter.native="handleSubmit('form')">
   <Form ref="form" :model="model" :rules="rules" :inline="inline" :label-width="labelWidth" :label-position="labelPosition" :style="formWidth">
     <slot name="head"> </slot>
     <FormItem v-for="(item, index) in elem" :key="index" :prop="item.prop" :label="item.label" :label-width="item.labelWidth" :style="item.width">

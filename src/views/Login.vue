@@ -12,7 +12,7 @@
           </p>
         </div>
         <!-- .logo-info -->
-        <VForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" @on-submit="handleLogin" btn-long submit-text="Sign in"></VForm>
+        <VForm ref="login" :elem="loginElem" :model="login" :rules="loginRule" :btn-loading="this.$store.state.app.loading" btn-long submit-text="Sign in" @on-submit="handleLogin"></VForm>
         <!-- VForm -->
         <p class="version">Version: {{ version }}</p>
         <!-- .version -->
@@ -45,7 +45,7 @@ export default {
   data: () => ({
     // 设置属性对象
     settings: {
-      button: true,
+      button: false,
       visible: false
     },
     // 表单元素数组(登录)
@@ -79,38 +79,40 @@ export default {
   }),
   mounted() {
     const {
-      version
+      version,
+      env
     } = config
-    const env = process.env.NODE_ENV
     switch (env) {
-      case 'production':
-        this.settings.button = false
-        this.version = `${version} Production`
-        break
       case 'release':
         this.version = `${version} Release`
         break
+      case 'production':
+        // this.version = `${version} Production`
+        this.version = version
+        break
       default:
+        this.settings.button = true
         this.login = {
           user: 'admin',
           pwd: 'wasd@007'
         }
-        this.version = env === 'test' ? `${version} Test` : `${version} Develop`
+        this.version = env === 'development' ? `${version} Develop` : `${version} Test`
     }
   },
   methods: {
+    // 项目环境设置
     handleSettings() {
       this.settings.visible = !this.settings.visible
     },
+    // 用户登录
     handleLogin(name) {
       // 配置默认接口地址
       ax.defaults.baseURL = localStorage.getItem('newURL') || config.baseURL
-      // 用户登录
+
       this.$store.commit('LOADING', true)
-      const para = Object.assign({}, this.login)
       // 模拟异步请求
       setTimeout(() => {
-        login(para).then(res => {
+        login(this.login).then(res => {
           // 获取用户信息
           sessionStorage.setItem('user', JSON.stringify(res.data))
           // 获取菜单列表

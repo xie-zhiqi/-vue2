@@ -1,6 +1,6 @@
 'use strict'
-let env
-switch (process.env.npm_lifecycle_event) {
+let env = process.env.npm_lifecycle_event
+switch (env) {
   case 'test':
     env = '"test"'
     break
