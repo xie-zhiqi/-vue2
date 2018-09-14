@@ -107,7 +107,7 @@ export default {
     // 用户登录
     handleLogin(name) {
       // 配置默认接口地址
-      ax.defaults.baseURL = localStorage.getItem('newURL') || config.baseURL
+      ax.defaults.baseURL = localStorage.getItem('newBaseAPI') || config.baseURL
 
       this.$store.commit('LOADING', true)
       // 模拟异步请求

@@ -9,7 +9,7 @@ const {env, baseURL, timeout} = config
 const ax = axios.create({
   // 是否跨站点访问控制请求使用凭证(Cookie)
   withCredentials: true,
-  baseURL: localStorage.getItem('newURL') || baseURL, // 配置接口地址
+  baseURL: localStorage.getItem('newBaseAPI') || baseURL, // 配置接口地址
   // 修改请求的数据再发送到服务器
   transformRequest: [
     (data, headers) => qs.stringify(data) // 序列化请求的数据
