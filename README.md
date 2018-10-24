@@ -1,7 +1,3 @@
-![logo](/build/logo.png "logo")
-
-<!-- # Vuejs Admin Block -->
-
 **Demo:** <http://vab.cssue.com/>
 
 > -   Username: admin
@@ -9,139 +5,180 @@
 
 ## 特性
 
-1.  基于 Vue.js 的企业级中后台开源模板
+1.  基于 Vue.js 的企业级中后台开源项目
 2.  基于 Vue 官方命令行工具 Vue CLI 2 脚手架搭建
 3.  使用 Vue 官方核心插件 Vue Router, Vuex
 4.  使用 Vue 官方建议的 Axios 插件进行 HTTP 操作
 5.  采用时下热门的 UI 组件库 iView
 6.  通过 Mock.js 插件拦截 Ajax 请求并生成随机数据
-
-### 技术栈
-
--   axios @0.18.x
--   iview @3.x
--   mockjs @1.x
--   vue @2.5.x
--   vue-router @3.x
--   vuex @3.x
--   ECMAScript 6
--   cssnext
+7.  使用 cssnext 预处理 编写样式
 
 ## 开发构建
 
 ### 目录结构
 
 ```bash
-├── /build/          # 项目构建(webpack)相关配置
-├── /config/         # 项目开发环境配置
-├── /src/            # 源码目录
-│ ├── /assets/       # 组件静态资源(图片)
-│ ├── /components/   # 公共组件
-│ ├── /config/       # 基础配置
-│ ├── /mock/         # 数据模拟
-│ ├── /router/       # 路由配置
-│ ├── /services/     # 数据接口
-│ ├── /store/        # vuex状态管理
-│ ├── /utils/        # 工具函数
-│ ├── /views/        # 路由组件(页面维度)
-│ ├── App.vue        # 组件入口
-│ └── main.js        # 程序入口
-├── /static/         # 非组件静态资源
-├── .babelrc         # ES6语法编译配置
-├── .editorconfig    # 定义代码格式
-├── .eslintignore    # ES6规范忽略文件
-├── .eslintrc.js     # ES6语法规范配置
-├── .gitignore       # git忽略文件
-├── index.html       # 页面入口
-├── package.json     # 项目依赖
-└── README.md        # 项目文档
+├── /build/            # 项目构建(webpack)相关配置
+├── /config/           # 项目开发环境配置
+├── /src/              # 源码目录
+│ ├── /assets/         # 组件静态资源(图片)
+│ ├── /components/     # 公共组件
+│ ├── /config/         # 项目配置
+│ ├── /mock/           # 数据模拟
+│ ├── /router/         # 路由配置
+│ ├── /services/       # 数据接口
+│ ├── /store/          # vuex状态管理
+│ ├── /utils/          # 工具函数
+│ ├── /views/          # 路由组件(页面维度)
+│ ├── App.vue          # 组件入口
+│ └── main.js          # 应用入口
+├── /static/           # 非组件静态资源
+├── .babelrc           # ES6语法编译配置
+├── .editorconfig      # 定义代码格式
+├── .eslintignore      # ES6规范忽略文件
+├── .eslintrc.js       # ES6语法规范配置
+├── .gitignore         # git忽略文件
+├── .postcssrc         # PostCSS插件配置
+├── index.html         # 页面入口
+├── LICENSE            # 版权信息
+├── package-lock.json  # 项目依赖包
+├── package.json       # 项目依赖包
+└── README.md          # 项目文档
 ```
 
-开发主流程
+### 开发流程
 
-1, 进入 router 目录, 打开 routes.js 文件, 添加路由组件, 如 Users
+Step 1, 新建组件(测试) views/Test.vue
 
-```javascript
-{
-  path: '/manage/users',
-  name: 'Users',
-  component: resolve => {
-    require(['@/views/manage/Users'], resolve)
+```html
+<template>
+<div id="test">
+  <Spin v-if="loading" size="large" fix></Spin>
+  <h2 v-else>This is a {{ title }}</h2>
+</div>
+</template>
+<script>
+import { test } from '@/services/test'
+export default {
+  name: 'Test',
+  data: () => ({
+    title: '',
+    loading: false
+  }),
+  mounted() {
+    this.loading = true
+    // 模拟异步请求
+    setTimeout(() => {
+      test().then(res => {
+        this.loading = false
+        this.title = res.data
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    }, 500)
   }
 }
+</script>
+<style lang="postcss" scoped>
+/* 样式使用 cssnext 预处理 */
+#test {
+  & h2 {
+    border-left: 2px solid #CCC;
+    padding-left: 12px;
+  }
+}
+</style>
 ```
 
-具体阅读 router/routes.js 源码
-
-2, 进入 views 目录, 新建路由组件, 如 Users.vue
-
-```bash
-├── /src/
-│ ├── /views/
-│ │ ├── /manage/
-│ │ │ ├── Users.vue
-```
-
-具体阅读 views/manage/Users.vue 源码
-
-3, 进入 services 目录, 新建数据接口文件, 如 users.js
-
-```bash
-├── /src/
-│ ├── /services/
-│ │ ├── /manage/
-│ │ │ ├── users.js
-```
-
-具体阅读 services/manage/users.js 源码
-
-4, 进入 mock 目录, 打开 app.js 文件添加临时菜单, 如 Users
+Step 2, 添加路由(测试) router/routes.js
 
 ```javascript
-{
-  name: 'Manage',
-  path: '/manage',
-  children: [{
-    name: 'Users',
-    path: '/manage/users'
-  }]
+export default[
+  {
+    path: '/',
+    redirect: '/',
+    name: 'SysLayout',
+    component: resolve => {
+      require(['@/views/common/layouts/Layout'], resolve)
+    },
+    children: [
+      {
+        // 添加路由(测试)
+        path: '/test',
+        name: 'Test',
+        component: resolve => {
+          require(['@/views/Test'], resolve)
+        }
+      }
+    ]
+  }
+]
+```
+
+Step 3, 添加临时菜单(测试) mock/app.js
+
+```javascript
+export default(Mock, qs) => {
+  Mock.mock(/\/menu/, {
+    data: [
+      {
+        // 添加临时菜单(测试)
+        name: 'Test',
+        path: '/test'
+      }
+    ]
+  })
 }
 ```
 
-具体阅读 mock/app.js 源码
+\* **注意**
 
-5, 如需 mock 数据, 进入 mock 目录, 新建数据模拟文件, 如 users.js
+> -   添加临时菜单需要重新登录才能显示新菜单
 
-```bash
-├── /src/
-│ ├── /mock/
-│ │ ├── users.js
-```
-
-具体阅读 mock/users.js 源码
-
-6, 进入 mock 目录, 打开 index.js 文件添加数据模拟文件, 如 users
+Step 4, 新建接口管理文件 services/test.js
 
 ```javascript
-import users from './users'
+import ax from '@/config/axios'
 
-// 用户管理
-users(Mock, qs)
+export const test = () => ax.get('/test')
 ```
 
-具体阅读 mock/index.js 源码
+Step 5, 新建数据模拟文件 mock/test.js
 
-7, 如需使用 vuex 存储状态请阅读 views/common/partials/Sidebar.vue 组件和 store 目录源码
+```javascript
+export default(Mock, qs) => {
+  Mock.mock(/\/test/, () => ({
+    data: 'test page',
+    error: {
+      code: 0,
+      msg: 'Get test success'
+    }
+  }))
+}
+```
+
+Step 6, 使用数据模拟文件 mock/index.js
+
+```javascript
+import Mock from 'mockjs'
+import qs from 'qs'
+import test from './test'
+
+const mock = () => {
+  test(Mock, qs)
+}
+
+export default {mock}
+```
+
+\* **提示**
+
+> -   如需使用 vuex 存储状态, 请阅读 views/common/partials/Sidebar.vue 组件和 store 目录源码
 
 ### 快速开始
 
-克隆项目文件:
-
-```bash
-git clone git@gitee.com:cssui/vue-admin-block.git
-```
-
-进入项目安装依赖:
+Step 1, 安装依赖:
 
 ```bash
 # 安装依赖
@@ -150,7 +187,7 @@ yarn
 npm install
 ```
 
-开发：
+Step 2, 开发:
 
 ```bash
 # 启用热加载到 localhost:8090
@@ -159,7 +196,7 @@ npm start
 npm run dev
 ```
 
-构建：
+Step 3, 构建:
 
 ```bash
 # 构建最小测试

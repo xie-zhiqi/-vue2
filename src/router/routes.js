@@ -21,6 +21,12 @@ export default[
           require(['@/views/Dashboard'], resolve)
         }
       }, {
+        path: '/test',
+        name: 'Test',
+        component: resolve => {
+          require(['@/views/Test'], resolve)
+        }
+      }, {
         path: '/hello/hello-world',
         name: 'HelloWorld',
         component: resolve => {

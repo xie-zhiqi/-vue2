@@ -7,8 +7,8 @@
       <div v-else class="login">
         <div class="logo-info">
           <img class="logo" src="../assets/logo.png" alt="logo">
-          <p class="name">企业级中后台模板 <br>
-            <span class="sub">基于 Vue.js 的开源模板</span>
+          <p class="name">企业级中后台项目 <br>
+            <span class="sub">基于 Vue.js 的开源项目</span>
           </p>
         </div>
         <!-- .logo-info -->

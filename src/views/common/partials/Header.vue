@@ -4,7 +4,7 @@
     <Col :xs="0" :sm="0" :md="6">
     <div class="logo-info">
       <img class="logo" src="../../../assets/logo.png" alt="logo">
-      <p class="name">企业级中后台模板 <br> <span class="sub">基于 Vue.js 的开源模板</span></p>
+      <p class="name">企业级中后台项目 <br> <span class="sub">基于 Vue.js 的开源项目</span></p>
     </div>
     <!-- .logo-info -->
     </Col>
@@ -19,8 +19,8 @@
     <div class="login-info">
       <Dropdown placement="bottom-end" trigger="click" @on-click="handleDropdown">
         <strong class="user">
-        <Avatar style="background-color: #55b387" icon="md-person" size="small"></Avatar>
-        {{ userName }}
+          <Avatar style="background-color: #55b387" icon="md-person" size="small"></Avatar>
+          {{ userName }}
         </strong>
         <DropdownMenu class="list" slot="list">
           <DropdownItem v-for="item in dropdown" :key="item.name" :name="item.name">

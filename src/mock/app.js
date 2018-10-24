@@ -30,6 +30,9 @@ export default(Mock, qs) => {
         name: 'Dashboard',
         path: '/'
       }, {
+        name: 'Test',
+        path: '/test'
+      }, {
         name: 'Hello',
         path: '/hello',
         children: [
