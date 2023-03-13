@@ -1,10 +1,12 @@
 <template>
-<div id="user-edit">
-  <Modal v-model="modal.visible" :title="modal.title" footer-hide>
-    <IForm :key="modal.visible" :model="edit" :elem="userElem" :rules="userRule" :loading="loading.form" :btn-loading="loading.btn" :width="360" :label-width="80" button button-text="Cancel" @on-submit="handleSubmit" @on-click="modal.visible = false" />
-    <!-- IForm -->
-  </Modal>
-</div>
+  <div id="user-edit">
+    <Modal v-model="modal.visible" :title="modal.title" footer-hide>
+      <IForm :key="modal.visible" :model="edit" :elem="userElem" :rules="userRule" :loading="loading.form"
+        :btn-loading="loading.btn" :width="360" :label-width="80" button button-text="Cancel" @on-submit="handleSubmit"
+        @on-click="modal.visible = false" />
+      <!-- IForm -->
+    </Modal>
+  </div>
 </template>
 <script>
 import {
@@ -348,5 +350,4 @@ export default {
   }
 };
 </script>
-<style lang="postcss" scoped>
-</style>
+<style lang="postcss" scoped></style>
